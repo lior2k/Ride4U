@@ -3,6 +3,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 // test
+// test2
 public class Register extends AppCompatActivity {
 
     @Override
