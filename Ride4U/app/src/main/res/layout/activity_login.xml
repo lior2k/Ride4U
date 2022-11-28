@@ -14,9 +14,13 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="560dp"
+        android:fontFamily="sans-serif-condensed"
         android:gravity="center"
         android:text="@string/ride4u"
         android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+        android:textColor="#F44336"
+        android:textColorHighlight="#7A0A0A"
+        android:textColorLink="#00BCD4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +82,6 @@
         android:layout_width="114dp"
         android:layout_height="39dp"
         android:text="Forgot Password"
-        tools:layout_editor_absoluteX="229dp"
+        tools:layout_editor_absoluteX="227dp"
         tools:layout_editor_absoluteY="514dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
