@@ -1,5 +1,4 @@
 package com.r4u.ride4u;
-// asdasd
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
