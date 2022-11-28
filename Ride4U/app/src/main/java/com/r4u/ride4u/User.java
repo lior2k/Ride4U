@@ -1,2 +1,5 @@
-package com.r4u.ride4u;public class User {
+package com.r4u.ride4u;
+
+// class for the users
+public class User {
 }
