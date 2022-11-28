@@ -2,7 +2,7 @@ package com.r4u.ride4u;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-
+// test
 public class Register extends AppCompatActivity {
 
     @Override
