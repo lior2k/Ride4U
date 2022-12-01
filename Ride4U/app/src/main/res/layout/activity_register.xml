@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="54dp"
-        android:layout_marginBottom="340dp"
+        android:layout_marginBottom="328dp"
         android:ems="10"
         android:hint="Confirm password"
         android:inputType="textPassword"
@@ -33,18 +33,20 @@
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/EmailTextBox"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="UnknownIdInLayout" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="152dp"
-        tools:layout_editor_absoluteY="503dp" />
+        tools:layout_editor_absoluteY="623dp" />
 
     <EditText
         android:id="@+id/editTextTextEmailAddress2"
@@ -54,9 +56,10 @@
         android:hint="Enter email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="207dp" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="270dp" />
 
     <EditText
         android:id="@+id/editTextNumberPassword"
@@ -65,8 +68,11 @@
         android:ems="10"
         android:hint="Enter ID"
         android:inputType="numberPassword"
-        tools:layout_editor_absoluteX="101dp"
-        tools:layout_editor_absoluteY="416dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="358dp" />
 
     <EditText
         android:id="@+id/editTextTextPersonName"
@@ -75,14 +81,18 @@
         android:ems="10"
         android:hint="Enter username"
         android:inputType="textPersonName"
-        tools:layout_editor_absoluteX="98dp"
-        tools:layout_editor_absoluteY="140dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="182dp" />
 
     <ImageButton
         android:id="@+id/imageButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:srcCompat="?attr/actionModeCloseDrawable"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
 
