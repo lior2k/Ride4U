@@ -32,13 +32,14 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/username"
-            android:hint="Username"
+            android:id="@+id/id"
+            android:hint="ID"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,21 +59,22 @@
                 android:layout_margin="5dp"
                 android:background="#00000000"
                 android:elevation="0dp"
-                android:text="Forget Password?"
+                android:text="Forgot Password?"
                 android:textColor="#000" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/loginBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="GO"
+            android:text="Login"
             android:background="#000"
             android:textColor="#fff"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"/>
 
         <Button
-            android:id="@+id/Go_to_register"
+            android:id="@+id/registerBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="right"

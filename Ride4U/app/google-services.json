@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "599639278300",
+    "project_id": "ride4u-3a773",
+    "storage_bucket": "ride4u-3a773.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599639278300:android:41d8466185ec0c000aea19",
+        "android_client_info": {
+          "package_name": "com.r4u.ride4u"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599639278300-q544jilt8joacfqhrmr19kqr7s66dn50.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.r4u.ride4u",
+            "certificate_hash": "afdef3b403cad06679019288cf60b637b9b77d17"
+          }
+        },
+        {
+          "client_id": "599639278300-njcts4a985r8np6m107juetk6iv5b619.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqykpr9rjmSWSxBoVujREjshG8x2vYyJA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599639278300-njcts4a985r8np6m107juetk6iv5b619.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
