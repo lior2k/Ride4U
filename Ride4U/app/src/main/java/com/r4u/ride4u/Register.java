@@ -1,14 +1,11 @@
 package com.r4u.ride4u;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,11 +13,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-// test
-// test2
 public class Register extends AppCompatActivity {
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.firebaseio.com/").getReference();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +41,7 @@ public class Register extends AppCompatActivity {
                 final EditText passwordETxt = password.getEditText();
                 final EditText confirmPasswordETxt = confirmPassword.getEditText();
 
-                // convert fields to strings and check that they're not empty
+                // convert fields to string variables and check that they're not empty
                 if (firstnameETxt != null && lastnameETxt != null && emailETxt != null && idETxt != null && passwordETxt != null && confirmPasswordETxt != null) {
                     if (firstnameETxt.getText() != null && lastnameETxt.getText() != null && emailETxt.getText() != null && idETxt.getText() != null && passwordETxt.getText() != null && confirmPasswordETxt.getText() != null) {
                         final String firstnameTxt = firstnameETxt.getText().toString();
@@ -86,11 +82,10 @@ public class Register extends AppCompatActivity {
 
 
                         }
+                    } else {
+                        Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 
