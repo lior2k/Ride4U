@@ -22,9 +22,15 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        setupLoginButton();
+        setupRegisterButton();
+        setupForgotPasswordButton();
+
+    }
+
+    private void setupLoginButton() {
         final TextInputLayout id = findViewById(R.id.id);
         final TextInputLayout password = findViewById(R.id.password);
-
         final Button loginBtn = findViewById(R.id.loginBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +77,9 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void setupRegisterButton() {
         final Button registerBtn = findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +87,9 @@ public class Login extends AppCompatActivity {
                 startActivity(new Intent(Login.this, Register.class));
             }
         });
+    }
 
+    private void setupForgotPasswordButton() {
         final Button forgotPWBtn = findViewById(R.id.forgotPWBtn);
         forgotPWBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +98,5 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-
-
 
 }

@@ -22,6 +22,12 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        setupSignUpButton();
+        setupBackToLoginBtn();
+
+    }
+
+    private void setupSignUpButton() {
         final TextInputLayout firstname = findViewById(R.id.firstname);
         final TextInputLayout lastname = findViewById(R.id.lastname);
         final TextInputLayout email = findViewById(R.id.email);
@@ -88,7 +94,9 @@ public class Register extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void setupBackToLoginBtn() {
         final Button backToLoginBtn = findViewById(R.id.backToLoginBtn);
         backToLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,4 +105,5 @@ public class Register extends AppCompatActivity {
             }
         });
     }
+
 }

@@ -21,9 +21,14 @@ public class ForgotPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_password);
 
+        setupSendNewPasswordButton();
+        setupBackBtn();
+
+    }
+
+    private void setupSendNewPasswordButton() {
         final TextInputLayout email = findViewById(R.id.email);
         final TextInputLayout id = findViewById(R.id.id);
-
         final Button sendNewPWBtn = findViewById(R.id.sendNewPWBtn);
         sendNewPWBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -71,7 +76,9 @@ public class ForgotPassword extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void setupBackBtn() {
         final Button backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,4 +87,5 @@ public class ForgotPassword extends AppCompatActivity {
             }
         });
     }
+
 }
