@@ -20,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 // test2
 public class Register extends AppCompatActivity {
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/");
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.firebaseio.com/").getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +48,12 @@ public class Register extends AppCompatActivity {
                 // convert fields to strings and check that they're not empty
                 if (firstnameETxt != null && lastnameETxt != null && emailETxt != null && idETxt != null && passwordETxt != null && confirmPasswordETxt != null) {
                     if (firstnameETxt.getText() != null && lastnameETxt.getText() != null && emailETxt.getText() != null && idETxt.getText() != null && passwordETxt.getText() != null && confirmPasswordETxt.getText() != null) {
-                        final String firstnameTxt = firstnameETxt.toString();
-                        final String lastnameTxt = lastnameETxt.toString();
-                        final String emailTxt = email.toString();
-                        final String idTxt = id.toString();
-                        final String passwordTxt = password.toString();
-                        final String confirmPasswordTxt = confirmPassword.toString();
+                        final String firstnameTxt = firstnameETxt.getText().toString();
+                        final String lastnameTxt = lastnameETxt.getText().toString();
+                        final String emailTxt = emailETxt.getText().toString();
+                        final String idTxt = idETxt.getText().toString();
+                        final String passwordTxt = passwordETxt.getText().toString();
+                        final String confirmPasswordTxt = confirmPasswordETxt.getText().toString();
 
                         // check that passwords match
                         if (!passwordTxt.equals(confirmPasswordTxt)) {
@@ -68,13 +68,13 @@ public class Register extends AppCompatActivity {
                                     if (snapshot.hasChild(idTxt)) {
                                         Toast.makeText(Register.this, "ID is already registered", Toast.LENGTH_SHORT).show();
                                     } else {
-
                                         // sending data to realtime firebase database
                                         databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                                         databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                                         databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
                                         databaseReference.child("users").child(idTxt).child("password").setValue(passwordTxt);
                                         Toast.makeText(Register.this, "Registered successfully", Toast.LENGTH_SHORT).show();
+                                        finish();
                                     }
                                 }
 

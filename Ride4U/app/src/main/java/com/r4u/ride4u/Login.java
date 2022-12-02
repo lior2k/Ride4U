@@ -16,7 +16,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/");
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.firebaseio.com/").getReference();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +33,8 @@ public class Login extends AppCompatActivity {
                 final EditText passwordETxt = password.getEditText();
                 if (idETxt != null && passwordETxt != null) {
                     if (idETxt.getText() != null && passwordETxt.getText() != null) {
-                        final String idTxt = idETxt.toString();
-                        final String passwordTxt = passwordETxt.toString();
+                        final String idTxt = idETxt.getText().toString();
+                        final String passwordTxt = passwordETxt.getText().toString();
 
                         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
