@@ -1,12 +1,19 @@
 package com.r4u.ride4u;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -16,7 +23,13 @@ import com.google.firebase.database.ValueEventListener;
 public class Register extends AppCompatActivity {
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
-
+    private FirebaseAuth authProfile;
+    private String firstnameTxt;
+    private String lastnameTxt;
+    private String emailTxt;
+    private String idTxt;
+    private String passwordTxt;
+    private String confirmPasswordTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,44 +64,19 @@ public class Register extends AppCompatActivity {
                 // convert fields to string variables and check that they're not empty
                 if (firstnameETxt != null && lastnameETxt != null && emailETxt != null && idETxt != null && passwordETxt != null && confirmPasswordETxt != null) {
                     if (firstnameETxt.getText() != null && lastnameETxt.getText() != null && emailETxt.getText() != null && idETxt.getText() != null && passwordETxt.getText() != null && confirmPasswordETxt.getText() != null) {
-                        final String firstnameTxt = firstnameETxt.getText().toString();
-                        final String lastnameTxt = lastnameETxt.getText().toString();
-                        final String emailTxt = emailETxt.getText().toString();
-                        final String idTxt = idETxt.getText().toString();
-                        final String passwordTxt = passwordETxt.getText().toString();
-                        final String confirmPasswordTxt = confirmPasswordETxt.getText().toString();
+                        firstnameTxt = firstnameETxt.getText().toString();
+                        lastnameTxt = lastnameETxt.getText().toString();
+                        emailTxt = emailETxt.getText().toString();
+                        idTxt = idETxt.getText().toString();
+                        passwordTxt = passwordETxt.getText().toString();
+                        confirmPasswordTxt = confirmPasswordETxt.getText().toString();
 
                         // check that passwords match
                         if (!passwordTxt.equals(confirmPasswordTxt)) {
                             Toast.makeText(Register.this, "Passwords are not matching", Toast.LENGTH_SHORT).show();
                         } else {
-
-                            databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                                    //check if id is already registered
-                                    if (snapshot.hasChild(idTxt)) {
-                                        Toast.makeText(Register.this, "ID is already registered", Toast.LENGTH_SHORT).show();
-                                    } else {
-                                        // sending data to realtime firebase database
-                                        databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
-                                        databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
-                                        databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
-                                        databaseReference.child("users").child(idTxt).child("password").setValue(passwordTxt);
-                                        Toast.makeText(Register.this, "Registered successfully", Toast.LENGTH_SHORT).show();
-                                        finish();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-
-                        }
+                            authRegistration();
+                            finish();                        }
                     } else {
                         Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                     }
@@ -106,5 +94,48 @@ public class Register extends AppCompatActivity {
             }
         });
     }
+
+    private void authRegistration() {
+        authProfile = FirebaseAuth.getInstance();
+        authProfile.createUserWithEmailAndPassword(emailTxt, passwordTxt)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            realTimeRegistration();
+                            Toast.makeText(getApplicationContext(),"Registration successful!", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            // Registration failed
+                            Toast.makeText(getApplicationContext(),"Registration failed!! Please try again later", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+    private void realTimeRegistration() {
+        databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                //check if id is already registered
+                if (snapshot.hasChild(idTxt)) {
+                    Toast.makeText(Register.this, "ID is already registered", Toast.LENGTH_SHORT).show();
+                } else {
+                    // sending data to realtime firebase database
+                    databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
+                    databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
+                    databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
+                    databaseReference.child("users").child(idTxt).child("password").setValue(passwordTxt);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
 }
