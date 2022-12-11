@@ -126,7 +126,7 @@ public class Register extends AppCompatActivity {
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
-                    databaseReference.child("users").child(idTxt).child("password").setValue(passwordTxt);
+//                    databaseReference.child("users").child(idTxt).child("password").setValue(passwordTxt);
                 }
             }
 
