@@ -52,13 +52,23 @@ public class AddPost extends AppCompatActivity {
 
         initDatePicker();
         dateButton = findViewById(R.id.date_picker_button);
+        dateButton.setText(getTodaysDate());
         dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                datePickerDialog.show();
             }
         });
 
+    }
+
+    private String getTodaysDate() {
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        month = month + 1;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        return makeDateString(day, month, year);
     }
 
     private void initDatePicker() {
@@ -70,14 +80,14 @@ public class AddPost extends AppCompatActivity {
                 dateButton.setText(date);
             }
         };
+
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
-
-
+        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
     }
 
     private String makeDateString(int dayOfMonth, int month, int year) {
@@ -109,6 +119,7 @@ public class AddPost extends AppCompatActivity {
             return "NOV";
         if (month == 12)
             return "DEC";
+//        should never happen
         return "JUN";
     }
 
