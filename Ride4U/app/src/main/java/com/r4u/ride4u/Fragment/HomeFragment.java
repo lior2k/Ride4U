@@ -29,16 +29,18 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initPostList();
 
-        searchView = v.findViewById(R.id.search_bar);
-        listView = v.findViewById(R.id.list_view);
+        searchView = view.findViewById(R.id.search_bar);
+        listView = view.findViewById(R.id.list_view);
+        listView.requestLayout();
         ListViewBaseAdapter baseAdapter = new ListViewBaseAdapter(getActivity().getApplicationContext(), posts);
         listView.setAdapter(baseAdapter);
+        baseAdapter.notifyDataSetChanged();
 
-        return v;
+        return view;
     }
 
     private void initPostList() {

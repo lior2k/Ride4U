@@ -10,8 +10,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textview"
         android:gravity="center"
-        android:text="text???">
-
+        android:text="">
     </TextView>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
