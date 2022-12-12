@@ -17,6 +17,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.Post;
 import com.r4u.ride4u.PostActivity;
 import com.r4u.ride4u.R;
+import com.r4u.ride4u.User;
+
 import java.util.ArrayList;
 
 
@@ -70,19 +72,53 @@ public class HomeFragment extends Fragment {
 
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+            public void onDataChange(DataSnapshot dataSnapShot) {
                 posts = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-                    posts.add(new Post(snapshot.getKey(), snapshot.child("firstname").getValue(String.class),
-                            snapshot.child("lastname").getValue(String.class), "desc", snapshot.child("src").getValue(String.class),
-                            snapshot.child("dest").getValue(String.class), snapshot.child("seats").getValue(String.class),
-                            snapshot.child("time").getValue(String.class)));
+                    Post newPost;
+                    String driverID = snapshot.getKey();
+                    String firstName = snapshot.child("firstname").getValue(String.class);
+                    String lastName = snapshot.child("lastname").getValue(String.class);
+                    String description = snapshot.child("description").getValue(String.class);
+                    String src = snapshot.child("src").getValue(String.class);
+                    String dest = snapshot.child("dest").getValue(String.class);
+                    String seats = snapshot.child("seats").getValue(String.class);
+                    String time = snapshot.child("time").getValue(String.class);
+                    String date = snapshot.child("date").getValue(String.class);
+                    User driver = getDriver(driverID);
+//                    posts.add(new Post(snapshot.getKey(), snapshot.child("firstname").getValue(String.class),
+//                            snapshot.child("lastname").getValue(String.class), "desc", snapshot.child("src").getValue(String.class),
+//                            snapshot.child("dest").getValue(String.class), snapshot.child("seats").getValue(String.class),
+//                            snapshot.child("time").getValue(String.class)));
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getCode());
+            }
+        });
+    }
+
+    private User getDriver(String id) {
+        User driver = new User();
+        databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+                    if (id.equals(snapshot.getKey())) {
+                        String email = snapshot.child("email").getValue(String.class);
+                        String firstName = snapshot.child("firstname").getValue(String.class);
+                        String lastName = snapshot.child("lastname").getValue(String.class);
+
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error.getMessage());
             }
         });
     }

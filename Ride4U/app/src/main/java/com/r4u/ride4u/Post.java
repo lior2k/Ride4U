@@ -2,40 +2,41 @@ package com.r4u.ride4u;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
+
 public class Post {
 
-    private final String publisherID;
-    private final String publisherFirstName;
-    private final String publisherLastName;
 //    private final String postID;
-    private final String description;
     private final String source;
     private final String destination;
+    private final String description;
     private String seats;
     private final String leavingTime;
 
-    public Post(String publisherID, String publisherFirstName, String publisherLastName, String description, String source, String destination, String seats, String leavingTime) {
-        this.publisherID = publisherID;
-//        this.postID = postID;
-        this.publisherFirstName = publisherFirstName;
-        this.publisherLastName = publisherLastName;
-        this.description = description;
+    private final User driver;
+    private final ArrayList<User> passengers;
+
+    public Post(User driver, String source, String destination, String description, String seats, String leavingTime) {
         this.source = source;
         this.destination = destination;
+        this.description = description;
         this.seats = seats;
         this.leavingTime = leavingTime;
+
+        this.driver = driver;
+        passengers = new ArrayList<>();
     }
 
     public String getPublisherID() {
-        return publisherID;
+        return driver.getId();
     }
 
-//    public String getPostID() {
-//        return postID;
-//    }
+    public String getPublisherFirstName() {
+        return driver.getFirstname();
+    }
 
-    public String getDescription() {
-        return description;
+    public String getPublisherLastName() {
+        return driver.getLastname();
     }
 
     public String getSource() {
@@ -46,12 +47,8 @@ public class Post {
         return destination;
     }
 
-    public String getPublisherFirstName() {
-        return publisherFirstName;
-    }
-
-    public String getPublisherLastName() {
-        return publisherLastName;
+    public String getDescription() {
+        return description;
     }
 
     public String getSeats() {
@@ -62,15 +59,19 @@ public class Post {
         return leavingTime;
     }
 
-    public String decrementSeats() {
-        seats = String.valueOf(Integer.parseInt(seats)-1);
-        return seats;
+    public ArrayList<User> getPassengers() {
+        return passengers;
+    }
+
+    public void addPassenger(User passenger) {
+        seats = String.valueOf(Integer.parseInt(seats)-1); // seats--
+        passengers.add(passenger);
     }
 
     @NonNull
     @Override
     public String toString() {
-        return "[ID: "+publisherID+", firstname: "+publisherFirstName+", lastname: "+publisherLastName+", src: "+source+", dest:"+destination+"]";
+        return "[ID: "+driver.getId()+", src: "+source+", dest:"+destination+"]";
     }
 
 }

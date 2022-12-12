@@ -2,12 +2,9 @@ package com.r4u.ride4u;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.r4u.ride4u.Fragment.HomeFragment;
@@ -45,8 +42,8 @@ public class PostActivity extends AppCompatActivity {
         joinRide.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String newSeats = post.decrementSeats();
-                databaseReference.child("posts").child(post.getPublisherID()).child("seats").setValue(newSeats);
+                post.addPassenger(Login.user); //update post's passenger list - this method also updates the available seats
+                databaseReference.child("posts").child(post.getPublisherID()).child("seats").setValue(post.getSeats()); // update the post in realtimedb
 
                 // notify driver
 

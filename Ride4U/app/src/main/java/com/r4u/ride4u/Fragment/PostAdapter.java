@@ -26,7 +26,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_postview, parent, false);
 
         TextView textView = (TextView) convertView.findViewById(R.id.textview);
-        textView.setText("Leaving from: " + p.getSource() + "\nGoing to: " + p.getDestination() + "\nLeaving at: 00:00");
+        textView.setText("Leaving from: " + p.getSource() + "\nGoing to: " + p.getDestination() + "\nLeaving at: "+p.getLeavingTime());
         return convertView;
     }
 }
