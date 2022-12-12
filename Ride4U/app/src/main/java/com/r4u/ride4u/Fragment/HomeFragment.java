@@ -18,7 +18,6 @@ import com.r4u.ride4u.Post;
 import com.r4u.ride4u.PostActivity;
 import com.r4u.ride4u.R;
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class HomeFragment extends Fragment {
@@ -75,7 +74,7 @@ public class HomeFragment extends Fragment {
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     posts.add(new Post(snapshot.getKey(), snapshot.child("firstname").getValue(String.class),
                             snapshot.child("lastname").getValue(String.class), "desc", snapshot.child("src").getValue(String.class),
-                            snapshot.child("dest").getValue(String.class), Integer.parseInt(Objects.requireNonNull(snapshot.child("seats").getValue(String.class))),
+                            snapshot.child("dest").getValue(String.class), snapshot.child("seats").getValue(Integer.class),
                             snapshot.child("time").getValue(String.class)));
                 }
             }
