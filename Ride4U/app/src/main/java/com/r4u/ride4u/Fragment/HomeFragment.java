@@ -24,7 +24,8 @@ public class HomeFragment extends Fragment {
 
     SearchView searchView;
     ListView listView;
-    public static ArrayList<Post> posts;
+    PostAdapter postAdapter;
+    public static ArrayList<Post> posts = new ArrayList<>();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
 
     @Override
@@ -33,7 +34,6 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-
         initPostList();
         setupListView(view);
         setupListListener();
@@ -43,10 +43,11 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        postAdapter.notifyDataSetChanged();
+    }
 
     private void setupListListener() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -61,20 +62,20 @@ public class HomeFragment extends Fragment {
 
     private void setupListView(View view) {
         listView = view.findViewById(R.id.list_view);
-        PostAdapter postAdapter = new PostAdapter(getContext(), 0, posts);
+        postAdapter = new PostAdapter(getContext(), 0, posts);
         listView.setAdapter(postAdapter);
     }
 
     private void initPostList() {
-        posts = new ArrayList<>();
+
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
-
+                posts = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     posts.add(new Post(snapshot.getKey(), snapshot.child("firstname").getValue(String.class),
                             snapshot.child("lastname").getValue(String.class), "desc", snapshot.child("src").getValue(String.class),
-                            snapshot.child("dest").getValue(String.class), snapshot.child("seats").getValue(Integer.class),
+                            snapshot.child("dest").getValue(String.class), snapshot.child("seats").getValue(String.class),
                             snapshot.child("time").getValue(String.class)));
                 }
             }

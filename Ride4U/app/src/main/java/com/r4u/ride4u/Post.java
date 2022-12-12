@@ -11,10 +11,10 @@ public class Post {
     private final String description;
     private final String source;
     private final String destination;
-    private int seats;
+    private String seats;
     private final String leavingTime;
 
-    public Post(String publisherID, String publisherFirstName, String publisherLastName, String description, String source, String destination, int seats, String leavingTime) {
+    public Post(String publisherID, String publisherFirstName, String publisherLastName, String description, String source, String destination, String seats, String leavingTime) {
         this.publisherID = publisherID;
 //        this.postID = postID;
         this.publisherFirstName = publisherFirstName;
@@ -54,12 +54,17 @@ public class Post {
         return publisherLastName;
     }
 
-    public int getSeats() {
+    public String getSeats() {
         return seats;
     }
 
     public String getLeavingTime() {
         return leavingTime;
+    }
+
+    public String decrementSeats() {
+        seats = String.valueOf(Integer.parseInt(seats)-1);
+        return seats;
     }
 
     @NonNull
