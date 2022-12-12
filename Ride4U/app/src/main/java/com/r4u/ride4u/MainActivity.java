@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.r4u.ride4u.Fragment.AddFragment;
 import com.r4u.ride4u.Fragment.HomeFragment;
 import com.r4u.ride4u.Fragment.ProfileFragment;
 import com.r4u.ride4u.Fragment.SearchFragment;
