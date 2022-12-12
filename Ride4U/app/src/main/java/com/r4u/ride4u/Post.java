@@ -11,8 +11,10 @@ public class Post {
     private final String description;
     private final String source;
     private final String destination;
+    private int seats;
+    private final String leavingTime;
 
-    public Post(String publisherID, String publisherFirstName, String publisherLastName, String description, String source, String destination) {
+    public Post(String publisherID, String publisherFirstName, String publisherLastName, String description, String source, String destination, int seats, String leavingTime) {
         this.publisherID = publisherID;
 //        this.postID = postID;
         this.publisherFirstName = publisherFirstName;
@@ -20,6 +22,8 @@ public class Post {
         this.description = description;
         this.source = source;
         this.destination = destination;
+        this.seats = seats;
+        this.leavingTime = leavingTime;
     }
 
     public String getPublisherID() {
@@ -48,6 +52,14 @@ public class Post {
 
     public String getPublisherLastName() {
         return publisherLastName;
+    }
+
+    public int getSeats() {
+        return seats;
+    }
+
+    public String getLeavingTime() {
+        return leavingTime;
     }
 
     @NonNull
