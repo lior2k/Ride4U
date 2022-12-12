@@ -32,14 +32,13 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         initPostList();
-
+        initSearchWidgets(view);
         searchView = view.findViewById(R.id.search_bar);
         listView = view.findViewById(R.id.list_view);
         listView.requestLayout();
         ListViewBaseAdapter baseAdapter = new ListViewBaseAdapter(getActivity().getApplicationContext(), posts);
         listView.setAdapter(baseAdapter);
         baseAdapter.notifyDataSetChanged();
-
         return view;
     }
 
@@ -57,6 +56,22 @@ public class HomeFragment extends Fragment {
                 System.out.println(error.getMessage());
             }
         });
-
     }
+
+    private void initSearchWidgets(View view) {
+        searchView = view.findViewById(R.id.search_bar);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+
 }
