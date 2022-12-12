@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.r4u.ride4u.Fragment.AddFragment;
 import com.r4u.ride4u.Fragment.HomeFragment;
 import com.r4u.ride4u.Fragment.ProfileFragment;
 import com.r4u.ride4u.Fragment.SearchFragment;
@@ -46,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
                         case R.id.nav_add:
                             selectedFragment = null;
-//                            startActivity(new Intent(MainActivity.this, PostActivity.class)); // start the add post activity
+                            startActivity(new Intent(MainActivity.this, AddPost.class)); // start the add post activity
                             break;
 
                         case R.id.nav_profile:
