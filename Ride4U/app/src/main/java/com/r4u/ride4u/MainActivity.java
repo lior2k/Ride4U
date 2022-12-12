@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
 
                         case R.id.nav_add:
-                            selectedFragment = null;
+                            selectedFragment = new AddFragment();
 //                            startActivity(new Intent(MainActivity.this, PostActivity.class)); // start the add post activity
                             break;
 
