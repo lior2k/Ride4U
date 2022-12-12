@@ -43,6 +43,45 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="379dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:inputType="number"
+            android:digits="0123456789:"
+            android:id="@+id/seats_number"
+            android:hint="Number of seats"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:layout_width="379dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="16dp"-->
+<!--            android:id="@+id/when"-->
+<!--            android:hint="When"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">-->
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
+
+        <Button
+            android:id="@+id/date_picker_button"
+            android:layout_width="379dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="@string/date_picker_button"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            style="?android:spinnerStyle"
+            />
+
+
 
     </LinearLayout>
 

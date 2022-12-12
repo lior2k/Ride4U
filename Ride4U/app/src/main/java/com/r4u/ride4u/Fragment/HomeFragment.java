@@ -1,6 +1,7 @@
 package com.r4u.ride4u.Fragment;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,8 +34,9 @@ public class HomeFragment extends Fragment {
 
         initPostList();
 
-        searchView = view.findViewById(R.id.search_bar);
+
         listView = view.findViewById(R.id.list_view);
+        searchView = view.findViewById(R.id.search_bar);
         listView.requestLayout();
         ListViewBaseAdapter baseAdapter = new ListViewBaseAdapter(getActivity().getApplicationContext(), posts);
         listView.setAdapter(baseAdapter);
@@ -43,8 +45,13 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+
+
     private void initPostList() {
         posts = new ArrayList<>();
+//        posts.add(new Post("123", "123", "123", "123", "123", "123"));
+//        posts.add(new Post("ariel", "ariel", "123", "123", "ariel", "ariel"));
+//        posts.add(new Post("lior", "123", "123", "123", "lior", "lior"));
         databaseReference.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
