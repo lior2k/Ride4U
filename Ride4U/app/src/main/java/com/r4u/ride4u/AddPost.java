@@ -5,13 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AddPost extends AppCompatActivity {
 
@@ -34,13 +37,104 @@ public class AddPost extends AppCompatActivity {
 
     DatePickerDialog datePickerDialog;
     Button dateButton;
+    Button timeButton;
+    int hour, minute;
+    Button submitButton;
 
+    private String source;
+    private String destination;
+    private String seats;
+    private String description;
+    private String date;
+    private String time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
+
         initCitiesList();
+        setupFromAndToAutoComplete();
+        setupDateButton();
+        setupTimeButton();
+        setupSubmitButton();
+    }
+
+    private void setupSubmitButton() {
+        submitButton = findViewById(R.id.submit_button);
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText seatsView = findViewById(R.id.seats_number);
+                final EditText descriptionView = findViewById(R.id.description);
+
+                if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsView.getText().length() > 0
+                        && descriptionView.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0)
+                {
+                    source = autoCompleteTextViewSrc.getText().toString();
+                    destination = autoCompleteTextViewDest.getText().toString();
+                    seats = seatsView.getText().toString();
+                    description = descriptionView.getText().toString();
+                    date = dateButton.getText().toString();
+                    time = timeButton.getText().toString();
+
+                    insertPostToDataBase();
+                }
+                else {
+                    Toast.makeText(AddPost.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+
+    private void insertPostToDataBase() {
+        databaseReference.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void setupTimeButton() {
+        timeButton = findViewById(R.id.time_picker_button);
+        timeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int selectedMinute) {
+                        hour = hourOfDay;
+                        minute = selectedMinute;
+                        timeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
+                    }
+                };
+                int style = AlertDialog.THEME_HOLO_LIGHT;
+                TimePickerDialog timePickerDialog = new TimePickerDialog(AddPost.this, style, onTimeSetListener, hour, minute, true);
+                timePickerDialog.setTitle("Select Time");
+                timePickerDialog.show();
+            }
+        });
+    }
+
+    private void setupDateButton() {
+        initDatePicker();
+        dateButton = findViewById(R.id.date_picker_button);
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
+    }
+
+    private void setupFromAndToAutoComplete() {
         autoCompleteTextViewSrc = findViewById(R.id.src);
         autoCompleteTextViewDest = findViewById(R.id.dest);
 
@@ -48,34 +142,13 @@ public class AddPost extends AppCompatActivity {
         adapterDestCities = new ArrayAdapter<>(this, R.layout.cities_list, cities);
         autoCompleteTextViewSrc.setAdapter(adapterSrcCities);
         autoCompleteTextViewDest.setAdapter(adapterDestCities);
-
-
-        initDatePicker();
-        dateButton = findViewById(R.id.date_picker_button);
-        dateButton.setText(getTodaysDate());
-        dateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                datePickerDialog.show();
-            }
-        });
-
     }
 
-    private String getTodaysDate() {
-        Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        month = month + 1;
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        return makeDateString(day, month, year);
-    }
 
     private void initDatePicker() {
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month + 1;
                 String date = makeDateString(dayOfMonth, month, year);
                 dateButton.setText(date);
             }
@@ -95,32 +168,8 @@ public class AddPost extends AppCompatActivity {
     }
 
     private String getMonthFormat(int month) {
-        if (month == 1)
-            return "JAN";
-        if (month == 2)
-            return "FEB";
-        if (month == 3)
-            return "MAR";
-        if (month == 4)
-            return "APR";
-        if (month == 5)
-            return "MAY";
-        if (month == 6)
-            return "JUN";
-        if (month == 7)
-            return "JUL";
-        if (month == 8)
-            return "AUG";
-        if (month == 9)
-            return "SEP";
-        if (month == 10)
-            return "OCT";
-        if (month == 11)
-            return "NOV";
-        if (month == 12)
-            return "DEC";
-//        should never happen
-        return "JUN";
+        String [] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
+        return months[month];
     }
 
     private void initCitiesList() {

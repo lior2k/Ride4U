@@ -7,4 +7,6 @@
     <string name="dest">To</string>
     <string name="seats">Number od seats</string>
     <string name="date_picker_button">Select Date</string>
+    <string name="time_picker_button">Select Time</string>
+    <string name="submit">Submit</string>
 </resources>
