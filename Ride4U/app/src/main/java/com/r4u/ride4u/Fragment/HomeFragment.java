@@ -34,10 +34,10 @@ public class HomeFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        initPostList();
+
         setupListView(view);
         setupListListener();
-
+        initPostList();
         searchView = view.findViewById(R.id.search_bar);
 
         return view;
@@ -85,5 +85,6 @@ public class HomeFragment extends Fragment {
                 System.out.println(error.getCode());
             }
         });
+
     }
 }

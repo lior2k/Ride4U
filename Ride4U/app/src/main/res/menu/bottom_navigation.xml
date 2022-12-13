@@ -7,8 +7,8 @@
         android:title=""/>
 
     <item
-        android:id="@+id/nav_search"
-        android:icon="@drawable/ic_search"
+        android:id="@+id/nav_posts"
+        android:icon="@drawable/ic_posts"
         android:title=""/>
 
     <item

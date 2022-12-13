@@ -1,17 +1,13 @@
 package com.r4u.ride4u.Fragment;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-
 import com.r4u.ride4u.Post;
 import com.r4u.ride4u.R;
-
 import java.util.List;
-
 
 public class PostAdapter extends ArrayAdapter<Post> {
 

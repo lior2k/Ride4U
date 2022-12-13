@@ -2,10 +2,8 @@ package com.r4u.ride4u;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +33,7 @@ public class PostActivity extends AppCompatActivity {
     }
 
     private void setValue() {
-        TextView textView = (TextView) findViewById(R.id.textview);
+        TextView textView = findViewById(R.id.textview);
         textView.setText("Leaving from: " + post.getSource() + "\nGoing to: " + post.getDestination() + "\nLeaving at: "+post.getLeavingTime()
                 +"\nSeats: "+post.getSeats()+"\nPosted By: "+post.getPublisherFirstName()+" "+post.getPublisherLastName());
     }
