@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 public class AddPost extends AppCompatActivity {
 
@@ -72,8 +73,8 @@ public class AddPost extends AppCompatActivity {
                 final EditText descriptionTxt = descriptionView.getEditText();
                 if (descriptionTxt != null && seatsTxt != null) {
                     if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsTxt.getText().length() > 0
-                            && descriptionTxt.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0)
-                    {
+                            && descriptionTxt.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0) {
+
                         source = autoCompleteTextViewSrc.getText().toString();
                         destination = autoCompleteTextViewDest.getText().toString();
                         seats = seatsTxt.getText().toString();
@@ -81,7 +82,12 @@ public class AddPost extends AppCompatActivity {
                         date = dateButton.getText().toString();
                         time = timeButton.getText().toString();
 
-                        insertPostToDataBase();
+                        if ((source.equals("Ariel") || destination.equals("Ariel")) && !(source.equals(destination))) {
+                            insertPostToDataBase();
+                            finish();
+                        } else {
+                            Toast.makeText(AddPost.this, "Either source of destination has to be Ariel!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else {
                         Toast.makeText(AddPost.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -93,10 +99,9 @@ public class AddPost extends AppCompatActivity {
 
     private void insertPostToDataBase() {
         DatabaseReference newPostRef = databaseReference.child("posts").push();
-//        TODO: add date and postID
         if (newPostRef.getKey() != null) {
-            newPostRef.setValue(new Post(Login.user.getId(), newPostRef.getKey(), Login.user.getFirstname(), Login.user.getLastname(), description, source, destination, seats, time, date));
-            newPostRef.child(newPostRef.getKey()).removeValue();
+            newPostRef.setValue(new Post(newPostRef.getKey(), Login.user.getId(), Login.user.getFirstname(), Login.user.getLastname(), seats, source, destination, time, date, description));
+            newPostRef.child("postID").removeValue();
         }
     }
 

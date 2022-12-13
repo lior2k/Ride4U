@@ -35,7 +35,7 @@ public class PostActivity extends AppCompatActivity {
     private void setValue() {
         TextView textView = findViewById(R.id.textview);
         textView.setText("Leaving from: " + post.getSource() + "\nGoing to: " + post.getDestination() + "\nLeaving at: "+post.getLeavingTime()
-                +"\nSeats: "+post.getSeats()+"\nPosted By: "+post.getPublisherFirstName()+" "+post.getPublisherLastName());
+                +" " +post.getLeavingDate()+"\nSeats: "+post.getSeats()+"\nPosted By: "+post.getPublisherFirstName()+" "+post.getPublisherLastName());
     }
 
     private void setupJoinRideButton() {
@@ -44,7 +44,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String newSeats = post.decrementSeats();
-                databaseReference.child("posts").child(post.getPublisherID()).child("seats").setValue(newSeats);
+                databaseReference.child("posts").child(post.getPostID()).child("seats").setValue(newSeats);
 
                 // notify driver
 

@@ -4,29 +4,33 @@ import androidx.annotation.NonNull;
 
 public class Post {
 
+    private final String postID;
     private final String publisherID;
     private final String publisherFirstName;
     private final String publisherLastName;
-    private final String postID;
-    private final String description;
+
+    private String seats;
     private final String source;
     private final String destination;
-    private String seats;
     private final String leavingTime;
     private final String leavingDate;
+    private final String description;
 
-    public Post(String publisherID, String postID, String publisherFirstName, String publisherLastName, String description, String source,
-                String destination, String seats, String leavingTime, String leavingDate) {
-        this.publisherID = publisherID;
+
+
+    public Post(String postID, String publisherID, String publisherFirstName, String publisherLastName, String seats , String source,
+                String destination, String leavingTime, String leavingDate, String description) {
         this.postID = postID;
+        this.publisherID = publisherID;
         this.publisherFirstName = publisherFirstName;
         this.publisherLastName = publisherLastName;
-        this.description = description;
+
+        this.seats = seats;
         this.source = source;
         this.destination = destination;
-        this.seats = seats;
         this.leavingTime = leavingTime;
         this.leavingDate = leavingDate;
+        this.description = description;
     }
 
     public String getPublisherID() {

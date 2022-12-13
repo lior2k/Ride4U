@@ -48,4 +48,7 @@ public class User {
         this.email = email;
     }
 
+    public String toString() {
+        return "[id: "+id+", firstname: "+firstname+", lastname: "+lastname+", email: "+email+"]";
+    }
 }
