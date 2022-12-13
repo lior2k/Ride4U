@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -21,7 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
     FirebaseAuth autoProfile;
-    public static String userID;
+    public static User user;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
 
@@ -98,13 +97,16 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    private void getIdByEmail(String emailForID) {
+    private void getIdByEmail(String email) {
         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-                    if (emailForID.equals(snapshot.child("email").getValue(String.class))) {
-                        userID = snapshot.getKey();
+                    if (email.equals(snapshot.child("email").getValue(String.class))) {
+                        String userID = snapshot.getKey();
+                        String firstName = snapshot.child("firstname").getValue(String.class);
+                        String lastName = snapshot.child("lastname").getValue(String.class);
+                        user = new User(firstName, lastName, email, userID);
                         break;
                     }
                 }
