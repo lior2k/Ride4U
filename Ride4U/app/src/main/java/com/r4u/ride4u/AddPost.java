@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -65,41 +66,38 @@ public class AddPost extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText seatsView = findViewById(R.id.seats_number);
-                final EditText descriptionView = findViewById(R.id.description);
+                final TextInputLayout seatsView = findViewById(R.id.seats_number);
+                final TextInputLayout descriptionView = findViewById(R.id.description);
+                final EditText seatsTxt = seatsView.getEditText();
+                final EditText descriptionTxt = descriptionView.getEditText();
+                if (descriptionTxt != null && seatsTxt != null) {
+                    if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsTxt.getText().length() > 0
+                            && descriptionTxt.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0)
+                    {
+                        source = autoCompleteTextViewSrc.getText().toString();
+                        destination = autoCompleteTextViewDest.getText().toString();
+                        seats = seatsTxt.getText().toString();
+                        description = descriptionTxt.getText().toString();
+                        date = dateButton.getText().toString();
+                        time = timeButton.getText().toString();
 
-                if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsView.getText().length() > 0
-                        && descriptionView.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0)
-                {
-                    source = autoCompleteTextViewSrc.getText().toString();
-                    destination = autoCompleteTextViewDest.getText().toString();
-                    seats = seatsView.getText().toString();
-                    description = descriptionView.getText().toString();
-                    date = dateButton.getText().toString();
-                    time = timeButton.getText().toString();
-
-                    insertPostToDataBase();
+                        insertPostToDataBase();
+                    }
+                    else {
+                        Toast.makeText(AddPost.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                else {
-                    Toast.makeText(AddPost.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
     }
 
     private void insertPostToDataBase() {
-        databaseReference.child("posts").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        DatabaseReference newPostRef = databaseReference.child("posts").push();
+//        TODO: add date and postID
+        if (newPostRef.getKey() != null) {
+            newPostRef.setValue(new Post(Login.user.getId(), newPostRef.getKey(), Login.user.getFirstname(), Login.user.getLastname(), description, source, destination, seats, time, date));
+            newPostRef.child(newPostRef.getKey()).removeValue();
+        }
     }
 
     private void setupTimeButton() {

@@ -7,16 +7,18 @@ public class Post {
     private final String publisherID;
     private final String publisherFirstName;
     private final String publisherLastName;
-//    private final String postID;
+    private final String postID;
     private final String description;
     private final String source;
     private final String destination;
     private String seats;
     private final String leavingTime;
+    private final String leavingDate;
 
-    public Post(String publisherID, String publisherFirstName, String publisherLastName, String description, String source, String destination, String seats, String leavingTime) {
+    public Post(String publisherID, String postID, String publisherFirstName, String publisherLastName, String description, String source,
+                String destination, String seats, String leavingTime, String leavingDate) {
         this.publisherID = publisherID;
-//        this.postID = postID;
+        this.postID = postID;
         this.publisherFirstName = publisherFirstName;
         this.publisherLastName = publisherLastName;
         this.description = description;
@@ -24,15 +26,20 @@ public class Post {
         this.destination = destination;
         this.seats = seats;
         this.leavingTime = leavingTime;
+        this.leavingDate = leavingDate;
     }
 
     public String getPublisherID() {
         return publisherID;
     }
 
-//    public String getPostID() {
-//        return postID;
-//    }
+    public String getLeavingDate() {
+        return leavingDate;
+    }
+
+    public String getPostID() {
+        return postID;
+    }
 
     public String getDescription() {
         return description;

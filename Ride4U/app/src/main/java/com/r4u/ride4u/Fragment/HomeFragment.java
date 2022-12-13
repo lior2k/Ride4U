@@ -73,10 +73,10 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 posts = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-                    posts.add(new Post(snapshot.getKey(), snapshot.child("firstname").getValue(String.class),
-                            snapshot.child("lastname").getValue(String.class), "desc", snapshot.child("src").getValue(String.class),
-                            snapshot.child("dest").getValue(String.class), snapshot.child("seats").getValue(String.class),
-                            snapshot.child("time").getValue(String.class)));
+//                    posts.add(new Post(snapshot.getKey(), snapshot.child("firstname").getValue(String.class),
+//                            snapshot.child("lastname").getValue(String.class), "desc", snapshot.child("src").getValue(String.class),
+//                            snapshot.child("dest").getValue(String.class), snapshot.child("seats").getValue(String.class),
+//                            snapshot.child("time").getValue(String.class)));
                 }
             }
 
