@@ -111,7 +111,7 @@
             android:layout_margin="16dp"
             android:text="@string/submit"
             android:background="#000"
-            android:textColor="#fff"
+            android:textColor="@color/black"
             android:textAlignment="center"
             android:textSize="20sp"
             />

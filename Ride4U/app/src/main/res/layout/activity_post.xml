@@ -9,11 +9,16 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:textAlignment="center"
+        android:layout_height="wrap_content"
         android:id="@+id/textview"
-        android:text="">
-
+        android:layout_marginTop="25dp"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textStyle="bold|italic"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/white"
+        android:background="@color/backgroundColor">
     </TextView>
 
     <Button
@@ -22,7 +27,8 @@
         android:layout_height="75dp"
         android:layout_margin="10dp"
         android:layout_gravity="center"
-        android:text="Join Ride">
+        android:text="Join Ride"
+        android:textSize="20sp">
     </Button>
 
 <!--    <Button-->

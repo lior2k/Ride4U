@@ -82,11 +82,13 @@ public class AddPost extends AppCompatActivity {
                         date = dateButton.getText().toString();
                         time = timeButton.getText().toString();
 
-                        if ((source.equals("Ariel") || destination.equals("Ariel")) && !(source.equals(destination))) {
+                        if ((!source.equals("Ariel") && !destination.equals("Ariel"))) {
+                            Toast.makeText(AddPost.this, "Either source of destination has to be Ariel!", Toast.LENGTH_SHORT).show();
+                        } else if (!source.equals(destination)) {
+                            Toast.makeText(AddPost.this, "Source and Destination must be different!", Toast.LENGTH_SHORT).show();
+                        } else {
                             insertPostToDataBase();
                             finish();
-                        } else {
-                            Toast.makeText(AddPost.this, "Either source of destination has to be Ariel!", Toast.LENGTH_SHORT).show();
                         }
                     }
                     else {
