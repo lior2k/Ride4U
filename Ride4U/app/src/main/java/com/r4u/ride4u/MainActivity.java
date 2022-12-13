@@ -1,17 +1,15 @@
 package com.r4u.ride4u;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import androidx.fragment.app.Fragment;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.r4u.ride4u.Fragment.HomeFragment;
 import com.r4u.ride4u.Fragment.ProfileFragment;
-import com.r4u.ride4u.Fragment.SearchFragment;
+import com.r4u.ride4u.Fragment.MyPostsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
     }
 
-    private BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener =
+    private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener =
             new BottomNavigationView.OnItemSelectedListener() {
                 @SuppressLint("NonConstantResourceId")
                 @Override
@@ -39,8 +37,8 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_home:
                             selectedFragment = new HomeFragment();
                             break;
-                        case R.id.nav_search:
-                            selectedFragment = new SearchFragment();
+                        case R.id.nav_posts:
+                            selectedFragment = new MyPostsFragment();
                             break;
 
                         case R.id.nav_add:
@@ -64,5 +62,4 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             };
-
 }
