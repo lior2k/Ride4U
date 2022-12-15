@@ -104,6 +104,7 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            check_admin();
                             realTimeRegistration();
                             Toast.makeText(getApplicationContext(),"Registration successful!", Toast.LENGTH_LONG).show();
                             finish();
@@ -131,7 +132,6 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "ID is already registered", Toast.LENGTH_SHORT).show();
                 } else {
                     // sending data to realtime firebase database
-                    check_admin();
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
@@ -149,15 +149,15 @@ public class Register extends AppCompatActivity {
         databaseReference.child("admins").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+                databaseReference.child("users").child(idTxt).child("isAdmin").setValue("false");
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-                    if(idTxt.equals(snapshot.getKey())){
+                    if (idTxt.equals(snapshot.getKey())) {
                         databaseReference.child("users").child(idTxt).child("isAdmin").setValue("true");
-                    }
-                    else {
-                        databaseReference.child("users").child(idTxt).child("isAdmin").setValue("false");
+                        break;
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
