@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.r4u.ride4u.Post;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.User;
 
@@ -21,12 +20,18 @@ public class UsersAdapter extends ArrayAdapter<User> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        User u = getItem(position);
+        User user = getItem(position);
         if (convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.users_list, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.user_view, parent, false);
 
-//        TextView textView = (TextView) convertView.findViewById(R.id.textview);
-//        textView.setText("");
+        TextView fullNameView = (TextView) convertView.findViewById(R.id.fullname_text);
+        String fullName = getContext().getString(R.string.fullName, user.getFirstname() , user.getLastname());
+        fullNameView.setText(fullName);
+
+        TextView idView = (TextView) convertView.findViewById(R.id.id_text);
+        String id = getContext().getString(R.string.id, user.getId());
+        idView.setText(id);
+
         return convertView;
     }
 }

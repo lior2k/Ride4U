@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.widget.SearchView;
@@ -13,6 +14,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.Adapters.PostAdapter;
+import com.r4u.ride4u.Adapters.UsersAdapter;
 
 import java.util.ArrayList;
 
@@ -21,8 +24,8 @@ public class RemoveUser extends AppCompatActivity {
     SearchView searchView;
     ListView listView;
 
-    ArrayList<User> arrayList;
-    ArrayAdapter adapter;
+    ArrayList<User> usersList;
+    UsersAdapter usersAdapter;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
 
@@ -32,35 +35,38 @@ public class RemoveUser extends AppCompatActivity {
         setContentView(R.layout.activity_remove_user);
 
         searchView = findViewById(R.id.user_search_bar);
-        listView = findViewById(R.id.user_list_view);
-        arrayList = new ArrayList<>();
-        initArrayList();
-        adapter = new ArrayAdapter<>(getApplicationContext(), R.layout.users_list, arrayList);
 
-        listView.setAdapter(adapter);
+        initUsersList();
+        setupListView();
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.getFilter().filter(query);
+                usersAdapter.getFilter().filter(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
+                usersAdapter.getFilter().filter(newText);
                 return false;
             }
         });
     }
 
-    private void initArrayList() {
+    private void setupListView() {
+        listView = findViewById(R.id.user_list_view);
+        usersAdapter = new UsersAdapter(getApplicationContext(), 0, usersList);
+        listView.setAdapter(usersAdapter);
+    }
+
+    private void initUsersList() {
+        usersList = new ArrayList<>();
         databaseReference.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                arrayList = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    arrayList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
+                    usersList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
                             snapshot.child("email").getValue(String.class), snapshot.getKey(), false));
                 }
             }
