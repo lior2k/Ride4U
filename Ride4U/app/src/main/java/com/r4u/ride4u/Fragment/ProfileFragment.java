@@ -2,30 +2,41 @@ package com.r4u.ride4u.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.Login;
 import com.r4u.ride4u.R;
-// https://www.youtube.com/watch?v=O17fvn7kztg&ab_channel=UiLoverAndroid - profile tutorial
+
 public class ProfileFragment extends Fragment {
 
-    private String email;
-    private String name;
-    private String last_name;
-    private int id;
-    DatabaseReference databaseReference;
-
-
+    //    private String user_password;
+    TextView profileName;
+    TextView profileEmail;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+        profileName = view.findViewById(R.id.profile_name);
+        profileEmail = view.findViewById(R.id.profile_email);
+        initProfile();
+        return view;
+    }
+
+    private void initProfile() {
+        profileName.setText(Login.user.getFirstname() + " " + Login.user.getLastname());
+        profileEmail.setText(Login.user.getEmail());
     }
 
 }

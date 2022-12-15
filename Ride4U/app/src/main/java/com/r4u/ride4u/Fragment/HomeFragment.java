@@ -18,14 +18,14 @@ import com.r4u.ride4u.Post;
 import com.r4u.ride4u.PostActivity;
 import com.r4u.ride4u.R;
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class HomeFragment extends Fragment {
 
     SearchView searchView;
     ListView listView;
-    public static ArrayList<Post> posts;
+    PostAdapter postAdapter;
+    public static ArrayList<Post> posts = new ArrayList<>();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
 
     @Override
@@ -35,29 +35,19 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        initPostList();
-<<<<<<< HEAD
-        initSearchWidgets(view);
-        searchView = view.findViewById(R.id.search_bar);
-        listView = view.findViewById(R.id.list_view);
-        listView.requestLayout();
-        ListViewBaseAdapter baseAdapter = new ListViewBaseAdapter(getActivity().getApplicationContext(), posts);
-        listView.setAdapter(baseAdapter);
-        baseAdapter.notifyDataSetChanged();
-=======
         setupListView(view);
         setupListListener();
-
+        initPostList();
         searchView = view.findViewById(R.id.search_bar);
 
->>>>>>> 878caf3b4297494ae9c31fe76def467c4f431831
         return view;
     }
 
-//    @Override
-//    public void onViewCreated(View view, Bundle savedInstanceState) {
-//
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        postAdapter.notifyDataSetChanged();
+    }
 
     private void setupListListener() {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -68,27 +58,25 @@ public class HomeFragment extends Fragment {
                 startActivity(postActivity);
             }
         });
-<<<<<<< HEAD
-=======
     }
 
     private void setupListView(View view) {
         listView = view.findViewById(R.id.list_view);
-        PostAdapter postAdapter = new PostAdapter(getContext(), 0, posts);
+        postAdapter = new PostAdapter(getContext(), 0, posts);
         listView.setAdapter(postAdapter);
     }
 
     private void initPostList() {
-        posts = new ArrayList<>();
+
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
-
+                posts = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-                    posts.add(new Post(snapshot.getKey(), snapshot.child("firstname").getValue(String.class),
-                            snapshot.child("lastname").getValue(String.class), "desc", snapshot.child("src").getValue(String.class),
-                            snapshot.child("dest").getValue(String.class), Integer.parseInt(Objects.requireNonNull(snapshot.child("seats").getValue(String.class))),
-                            snapshot.child("time").getValue(String.class)));
+                    posts.add(new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
+                            snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
+                            snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
+                            snapshot.child("description").getValue(String.class)));
                 }
             }
 
@@ -97,23 +85,6 @@ public class HomeFragment extends Fragment {
                 System.out.println(error.getCode());
             }
         });
->>>>>>> 878caf3b4297494ae9c31fe76def467c4f431831
+
     }
-
-    private void initSearchWidgets(View view) {
-        searchView = view.findViewById(R.id.search_bar);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-    }
-
 }

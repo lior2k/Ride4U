@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -21,7 +20,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
     FirebaseAuth autoProfile;
-//    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+    public static User user;
+    public static String firebase_url = "https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/";
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance(firebase_url).getReference();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,7 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+                                    getIdByEmail(emailTxt);
                                     Toast.makeText(getApplicationContext(),"Login successful!", Toast.LENGTH_LONG).show();
                                     startActivity(new Intent(Login.this, MainActivity.class));
                                     finish();
@@ -89,6 +92,28 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Login.this, ForgotPassword.class));
+            }
+        });
+    }
+
+    private void getIdByEmail(String email) {
+        databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+                    if (email.equals(snapshot.child("email").getValue(String.class))) {
+                        String userID = snapshot.getKey();
+                        String firstName = snapshot.child("firstname").getValue(String.class);
+                        String lastName = snapshot.child("lastname").getValue(String.class);
+                        user = new User(firstName, lastName, email, userID);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error.getMessage());
             }
         });
     }
