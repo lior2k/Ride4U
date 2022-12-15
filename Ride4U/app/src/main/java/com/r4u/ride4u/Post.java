@@ -1,6 +1,6 @@
 package com.r4u.ride4u;
-
-import androidx.annotation.NonNull;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Post {
 
@@ -9,17 +9,18 @@ public class Post {
     private final String publisherFirstName;
     private final String publisherLastName;
 
-    private String seats;
+    private final String seats;
     private final String source;
     private final String destination;
     private final String leavingTime;
     private final String leavingDate;
     private final String description;
 
-
+    private final List<String> passengerIDs;
 
     public Post(String postID, String publisherID, String publisherFirstName, String publisherLastName, String seats , String source,
                 String destination, String leavingTime, String leavingDate, String description) {
+
         this.postID = postID;
         this.publisherID = publisherID;
         this.publisherFirstName = publisherFirstName;
@@ -31,6 +32,8 @@ public class Post {
         this.leavingTime = leavingTime;
         this.leavingDate = leavingDate;
         this.description = description;
+
+        this.passengerIDs = new ArrayList<>();
     }
 
     public String getPublisherID() {
@@ -65,23 +68,45 @@ public class Post {
         return publisherLastName;
     }
 
+    // The initial amount of seats available for passengers.
     public String getSeats() {
         return seats;
+    }
+
+    // current amount of available spots for passengers.
+    public String getAvailableSeats() {
+        return String.valueOf(Integer.parseInt(seats) - passengerIDs.size());
     }
 
     public String getLeavingTime() {
         return leavingTime;
     }
 
-    public String decrementSeats() {
-        seats = String.valueOf(Integer.parseInt(seats)-1);
-        return seats;
+    public List<String> getPassengerIDs() {
+        return this.passengerIDs;
     }
 
-    @NonNull
+    public boolean addPassenger(String passengerID) {
+        if (isFull()) {
+            return false;
+        }
+        for (String id : passengerIDs) {
+            if (id.equals(passengerID)) {
+                return false;
+            }
+        }
+        passengerIDs.add(passengerID);
+        return true;
+    }
+
+    // drive is full - signed up passengers are equal to the amount of available seats of the drive.
+    public boolean isFull() {
+        return passengerIDs.size() == Integer.parseInt(seats);
+    }
+
     @Override
     public String toString() {
-        return "[ID: "+publisherID+", firstname: "+publisherFirstName+", lastname: "+publisherLastName+", src: "+source+", dest:"+destination+"]";
+        return "[ID: "+publisherID+", firstname: "+publisherFirstName+", lastname: "+publisherLastName+", src: "+source+", dest:"+destination+"passengersSize:"+passengerIDs.size()+"/"+seats+"]";
     }
 
 }
