@@ -21,8 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 public class Login extends AppCompatActivity {
     FirebaseAuth autoProfile;
     public static User user;
-
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+    public static String firebase_url = "https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/";
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance(firebase_url).getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,6 @@ public class Login extends AppCompatActivity {
         setupForgotPasswordButton();
 
     }
-
 
     private void setupLoginButton() {
         final TextInputLayout email = findViewById(R.id.email);
