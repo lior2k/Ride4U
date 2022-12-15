@@ -149,15 +149,15 @@ public class Register extends AppCompatActivity {
         databaseReference.child("admins").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+                databaseReference.child("users").child(idTxt).child("isAdmin").setValue("false");
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-                    if(idTxt.equals(snapshot.getKey())){
+                    if (idTxt.equals(snapshot.getKey())) {
                         databaseReference.child("users").child(idTxt).child("isAdmin").setValue("true");
-                    }
-                    else {
-                        databaseReference.child("users").child(idTxt).child("isAdmin").setValue("false");
+                        break;
                     }
                 }
             }
+            
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
