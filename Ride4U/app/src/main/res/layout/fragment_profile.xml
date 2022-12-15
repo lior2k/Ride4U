@@ -429,18 +429,40 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/button"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="30dp"
-                android:background="@drawable/background_button"
-                android:textColor="#ffffff"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:text="Edit Profile"/>
+                >
+                <Button
+                    android:id="@+id/edit_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="22dp"
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/background_button"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:text="Edit Profile"/>
+
+                <Button
+                    android:id="@+id/admin_options"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/edit_profile"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginRight="22dp"
+                    android:background="@drawable/background_button"
+                    android:text="Admin Options"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
         </LinearLayout>
     </ScrollView>
 >>>>>>> 23a7e8c4b325a120a4cb9f59779673d9f68fb846
 
 </FrameLayout>
+

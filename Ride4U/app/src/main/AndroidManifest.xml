@@ -16,6 +16,20 @@
         android:theme="@style/Theme.Ride4U"
         tools:targetApi="31">
         <activity
+            android:name=".RemoveUser"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".AdminOperations"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".PostActivity"
             android:exported="false">
             <meta-data
