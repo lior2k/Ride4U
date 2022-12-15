@@ -105,7 +105,12 @@ public class Login extends AppCompatActivity {
                         String userID = snapshot.getKey();
                         String firstName = snapshot.child("firstname").getValue(String.class);
                         String lastName = snapshot.child("lastname").getValue(String.class);
-                        user = new User(firstName, lastName, email, userID);
+                        String isAdminStr = snapshot.child("isAdmin").getValue(String.class);
+                        Boolean isAdmin = false;
+                        if (isAdminStr != null) {
+                            isAdmin = str_to_boolean(isAdminStr);
+                        }
+                        user = new User(firstName, lastName, email, userID, isAdmin);
                         break;
                     }
                 }
@@ -118,4 +123,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    private Boolean str_to_boolean(String isAdmin) {
+        return isAdmin.equals("true");
+    }
 }

@@ -131,12 +131,33 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "ID is already registered", Toast.LENGTH_SHORT).show();
                 } else {
                     // sending data to realtime firebase database
+                    check_admin();
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
                 }
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void check_admin() {
+        databaseReference.child("admins").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+                    if(idTxt.equals(snapshot.getKey())){
+                        databaseReference.child("users").child(idTxt).child("isAdmin").setValue("true");
+                    }
+                    else {
+                        databaseReference.child("users").child(idTxt).child("isAdmin").setValue("false");
+                    }
+                }
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
