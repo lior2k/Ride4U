@@ -9,4 +9,6 @@
     <string name="date_picker_button">Select Date</string>
     <string name="time_picker_button">Select Time</string>
     <string name="submit">Submit</string>
+    <string name="postContent">Leaving from: %1$s \nGoing to: %2$s \nDate: %3$s \nTime: %4$s \nAvailable Seats: %5$s / %6$s</string>
+    <string name="fullName">%1$s %2$s</string>
 </resources>
