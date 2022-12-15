@@ -1,4 +1,4 @@
-package com.r4u.ride4u.Fragment;
+package com.r4u.ride4u.Adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

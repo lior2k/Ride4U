@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.Adapters.PostAdapter;
 import com.r4u.ride4u.Post;
 import com.r4u.ride4u.PostActivity;
 import com.r4u.ride4u.R;
