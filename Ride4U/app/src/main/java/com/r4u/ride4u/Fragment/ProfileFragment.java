@@ -19,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.AdminOperations;
 import com.r4u.ride4u.Login;
-import com.r4u.ride4u.PostActivity;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.Register;
 

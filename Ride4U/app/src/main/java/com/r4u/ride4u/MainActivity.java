@@ -22,44 +22,51 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
-        bottomNavigationView.setOnItemSelectedListener(navigationItemSelectedListener);
+        setupNavBar();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(), "homeTag").commit();
     }
 
-    private final BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener =
-            new BottomNavigationView.OnItemSelectedListener() {
-                @SuppressLint("NonConstantResourceId")
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    private void setupNavBar() {
+        BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener =
+                new BottomNavigationView.OnItemSelectedListener() {
+                    @SuppressLint("NonConstantResourceId")
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                    switch (item.getItemId()) {
-                        case R.id.nav_home:
-                            selectedFragment = new HomeFragment();
-                            break;
-                        case R.id.nav_posts:
-                            selectedFragment = new MyPostsFragment();
-                            break;
+                        switch (item.getItemId()) {
+                            case R.id.nav_home:
+                                selectedFragment = new HomeFragment();
+                                break;
+                            case R.id.nav_posts:
+                                selectedFragment = new MyPostsFragment();
+                                break;
 
-                        case R.id.nav_add:
-                            selectedFragment = null;
-                            startActivity(new Intent(MainActivity.this, AddPost.class)); // start the add post activity
-                            break;
+                            case R.id.nav_add:
+                                selectedFragment = null;
+                                startActivity(new Intent(MainActivity.this, AddPost.class)); // start the add post activity
+                                break;
 
-                        case R.id.nav_profile:
+                            case R.id.nav_profile:
 //                            SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
 //                            editor.putString("profileId", FirebaseAuth.getInstance().getCurrentUser().getUid());
 //                            editor.apply();
-                            selectedFragment = new ProfileFragment();
-                            break;
+                                selectedFragment = new ProfileFragment();
+                                break;
+                        }
+
+                        if (selectedFragment != null) {
+                            if (selectedFragment instanceof HomeFragment) {
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment, "homeTag").commit();
+                            } else {
+                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+                            }
+                        }
+
+                        return false;
                     }
 
-                    if (selectedFragment != null) {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                    }
-
-                    return false;
-                }
-
-            };
+                };
+        bottomNavigationView.setOnItemSelectedListener(navigationItemSelectedListener);
+    }
 }

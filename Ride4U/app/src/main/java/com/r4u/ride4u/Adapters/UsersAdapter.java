@@ -25,8 +25,8 @@ public class UsersAdapter extends ArrayAdapter<User> {
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.users_list, parent, false);
 
-        TextView textView = (TextView) convertView.findViewById(R.id.textview);
-        textView.setText("");
+//        TextView textView = (TextView) convertView.findViewById(R.id.textview);
+//        textView.setText("");
         return convertView;
     }
 }
