@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,7 @@ public class ProfileFragment extends Fragment {
 //    private String user_password;
     TextView profileName;
     TextView profileEmail;
+    Button adminBtn;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,7 +33,15 @@ public class ProfileFragment extends Fragment {
         profileName = view.findViewById(R.id.profile_name);
         profileEmail = view.findViewById(R.id.profile_email);
         initProfile();
+        setAdminBtn(view);
         return view;
+    }
+
+    private void setAdminBtn(View view) {
+        adminBtn = view.findViewById(R.id.admin_options);
+        if (!Login.user.getIsAdmin()) {
+            adminBtn.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initProfile() {
