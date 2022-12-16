@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.r4u.ride4u.FCMSend;
 import com.r4u.ride4u.Login;
 import com.r4u.ride4u.Post;
 import com.r4u.ride4u.R;
@@ -56,6 +57,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 databaseReference.child("posts").child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
 
                 // notify driver
+                String title = "New Passenger!";
+                String msg = Login.user.getFirstname() + Login.user.getLastname() + "joined your ride from " + post.getSource() + "to " + post.getDestination() + "at " + post.getLeavingTime();
+                FCMSend.pushNotification(getContext(),
+                        "eKS5oCafSQi3IFeH4zHN_M:APA91bFAFKXAuSSByfLMjj-AWlBqF4rWSrIW-B4_DvXmp2EAwTWN5oL-5kOBWxhMwnmV9jtMdAZmO2_la-W7q5NQ5qkvK2Re7WzJth6pRb1r2NXXS6JjYjd5Xr2HLAN61NpUsFh3SYOM",
+                        title,
+                        msg);
 
                 // add to my rides
 
