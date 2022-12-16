@@ -18,6 +18,14 @@ public class User {
 
     public User() {}
 
+    public User(User user) {
+        this.id = user.getId();
+        this.firstname = user.getFirstname();
+        this.lastname = user.getLastname();
+        this.email = user.getEmail();
+        this.isAdmin = user.getIsAdmin();
+    }
+
     public Boolean getIsAdmin() {
         return isAdmin;
     }

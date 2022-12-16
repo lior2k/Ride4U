@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.widget.SearchView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,17 +30,20 @@ public class RemoveUser extends AppCompatActivity {
     UsersAdapter usersAdapter;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
+    FirebaseAuth autoProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_user);
 
-        searchView = findViewById(R.id.user_search_bar);
-
         initUsersList();
         setupListView();
+        setupSearchView();
+    }
 
+    private void setupSearchView() {
+        searchView = findViewById(R.id.user_search_bar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -58,6 +63,28 @@ public class RemoveUser extends AppCompatActivity {
         listView = findViewById(R.id.user_list_view);
         usersAdapter = new UsersAdapter(getApplicationContext(), 0, usersList);
         listView.setAdapter(usersAdapter);
+        setupItemFromListView();
+    }
+
+    private void setupItemFromListView() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                User selectedUser = (User) parent.getAdapter().getItem(position);
+                removeUserFromRealTimeDB(selectedUser);
+                removeUserFromAuthDB(selectedUser.getEmail());
+
+            }
+        });
+    }
+
+    private void removeUserFromAuthDB(String email) {
+        autoProfile = FirebaseAuth.getInstance();
+        autoProfile.getUid();
+    }
+
+    private void removeUserFromRealTimeDB(User user) {
+
     }
 
     private void initUsersList() {
