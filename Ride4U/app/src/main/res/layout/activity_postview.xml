@@ -46,4 +46,5 @@
         app:srcCompat="@drawable/ic_joinride"
         android:layout_below="@+id/postTextContent"/>
 
+
 </RelativeLayout>

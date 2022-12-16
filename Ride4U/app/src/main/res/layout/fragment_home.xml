@@ -8,6 +8,15 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Posts"
+        android:textSize="40sp"
+        android:textStyle="bold|italic"
+        android:textAlignment="center">
+    </TextView>
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
@@ -18,7 +27,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="Search Item">
-
     </androidx.appcompat.widget.SearchView>
 
 
