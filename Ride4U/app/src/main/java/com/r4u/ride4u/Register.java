@@ -24,7 +24,7 @@ import java.util.Objects;
 
 public class Register extends AppCompatActivity {
 
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     private FirebaseAuth authProfile;
     private String firstnameTxt;
     private String lastnameTxt;

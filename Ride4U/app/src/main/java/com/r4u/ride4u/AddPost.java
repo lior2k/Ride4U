@@ -2,7 +2,6 @@ package com.r4u.ride4u;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -15,14 +14,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
@@ -34,7 +31,7 @@ public class AddPost extends AppCompatActivity {
     AutoCompleteTextView autoCompleteTextViewDest;
     ArrayAdapter<String> adapterSrcCities;
     ArrayAdapter<String> adapterDestCities;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     ArrayList<String> cities;
 
     DatePickerDialog datePickerDialog;
