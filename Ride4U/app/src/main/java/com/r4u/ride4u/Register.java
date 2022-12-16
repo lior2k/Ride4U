@@ -20,6 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class Register extends AppCompatActivity {
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
@@ -63,7 +65,7 @@ public class Register extends AppCompatActivity {
 
                 // convert fields to string variables and check that they're not empty
                 if (firstnameETxt != null && lastnameETxt != null && emailETxt != null && idETxt != null && passwordETxt != null && confirmPasswordETxt != null) {
-                    if (firstnameETxt.getText() != null && lastnameETxt.getText() != null && emailETxt.getText() != null && idETxt.getText() != null && passwordETxt.getText() != null && confirmPasswordETxt.getText() != null) {
+                    if (firstnameETxt.getText().length() > 0 && lastnameETxt.getText().length() > 0 && emailETxt.getText().length() > 0 && idETxt.getText().length() > 0 && passwordETxt.getText().length() > 0 && confirmPasswordETxt.getText().length() > 0) {
                         firstnameTxt = firstnameETxt.getText().toString();
                         lastnameTxt = lastnameETxt.getText().toString();
                         emailTxt = emailETxt.getText().toString();
@@ -76,7 +78,7 @@ public class Register extends AppCompatActivity {
                             Toast.makeText(Register.this, "Passwords are not matching", Toast.LENGTH_SHORT).show();
                         } else {
                             authRegistration();
-                            finish();                        }
+                        }
                     } else {
                         Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                     }
@@ -104,10 +106,16 @@ public class Register extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             realTimeRegistration();
                             Toast.makeText(getApplicationContext(),"Registration successful!", Toast.LENGTH_LONG).show();
+                            finish();
                         }
                         else {
                             // Registration failed
-                            Toast.makeText(getApplicationContext(),"Registration failed!! Please try again later", Toast.LENGTH_LONG).show();
+                            String message = Objects.requireNonNull(task.getException()).getLocalizedMessage();
+                            if (message != null && message.startsWith("The given password is invalid")) {
+                                Toast.makeText(getApplicationContext(),"password is invalid, it should be at least 6 characters", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                            }
                         }
                     }
                 });
@@ -123,10 +131,30 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "ID is already registered", Toast.LENGTH_SHORT).show();
                 } else {
                     // sending data to realtime firebase database
+                    check_admin();
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
-//                    databaseReference.child("users").child(idTxt).child("password").setValue(passwordTxt);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void check_admin() {
+        databaseReference.child("admins").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+                databaseReference.child("users").child(idTxt).child("isAdmin").setValue("false");
+                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+                    if (idTxt.equals(snapshot.getKey())) {
+                        databaseReference.child("users").child(idTxt).child("isAdmin").setValue("true");
+                        break;
+                    }
                 }
             }
 
