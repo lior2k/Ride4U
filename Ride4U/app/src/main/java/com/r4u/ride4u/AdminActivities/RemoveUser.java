@@ -1,24 +1,21 @@
-package com.r4u.ride4u;
-
+package com.r4u.ride4u.AdminActivities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import androidx.appcompat.widget.SearchView;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.r4u.ride4u.Adapters.PostAdapter;
 import com.r4u.ride4u.Adapters.UsersAdapter;
-
+import com.r4u.ride4u.R;
+import com.r4u.ride4u.Objects.User;
+import com.r4u.ride4u.UserActivities.Login;
 import java.util.ArrayList;
 
 public class RemoveUser extends AppCompatActivity {

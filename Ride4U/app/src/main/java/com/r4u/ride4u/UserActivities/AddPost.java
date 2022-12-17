@@ -1,4 +1,4 @@
-package com.r4u.ride4u;
+package com.r4u.ride4u.UserActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,8 +20,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.Objects.Post;
+import com.r4u.ride4u.R;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 
@@ -40,18 +44,20 @@ public class AddPost extends AppCompatActivity {
     int hour, minute;
     Button submitButton;
 
+    HashMap<String, String> citiesAndPrices;
+
     private String source;
     private String destination;
     private String seats;
     private String description;
     private String date;
     private String time;
+    private String cost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_post);
-
         initCitiesList();
         setupFromAndToAutoComplete();
         setupDateButton();
@@ -61,36 +67,34 @@ public class AddPost extends AppCompatActivity {
 
     private void setupSubmitButton() {
         submitButton = findViewById(R.id.submit_button);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final TextInputLayout seatsView = findViewById(R.id.seats_number);
-                final TextInputLayout descriptionView = findViewById(R.id.description);
-                final EditText seatsTxt = seatsView.getEditText();
-                final EditText descriptionTxt = descriptionView.getEditText();
-                if (descriptionTxt != null && seatsTxt != null) {
-                    if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsTxt.getText().length() > 0
-                            && descriptionTxt.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0) {
+        submitButton.setOnClickListener(v -> {
+            final TextInputLayout seatsView = findViewById(R.id.seats_number);
+            final TextInputLayout descriptionView = findViewById(R.id.description);
+            final EditText seatsTxt = seatsView.getEditText();
+            final EditText descriptionTxt = descriptionView.getEditText();
+            if (descriptionTxt != null && seatsTxt != null) {
+                if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsTxt.getText().length() > 0
+                        && descriptionTxt.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0) {
 
-                        source = autoCompleteTextViewSrc.getText().toString();
-                        destination = autoCompleteTextViewDest.getText().toString();
-                        seats = seatsTxt.getText().toString();
-                        description = descriptionTxt.getText().toString();
-                        date = dateButton.getText().toString();
-                        time = timeButton.getText().toString();
+                    source = autoCompleteTextViewSrc.getText().toString();
+                    destination = autoCompleteTextViewDest.getText().toString();
+                    seats = seatsTxt.getText().toString();
+                    description = descriptionTxt.getText().toString();
+                    date = dateButton.getText().toString();
+                    time = timeButton.getText().toString();
+                    cost = (source.equals("Ariel")) ? citiesAndPrices.get(destination) : citiesAndPrices.get(source);
 
-                        if ((!source.equals("Ariel") && !destination.equals("Ariel"))) {
-                            Toast.makeText(AddPost.this, "Either source of destination has to be Ariel!", Toast.LENGTH_SHORT).show();
-                        } else if (source.equals(destination)) {
-                            Toast.makeText(AddPost.this, "Source and Destination must be different!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            insertPostToDataBase();
-                            finish();
-                        }
+                    if ((!source.equals("Ariel") && !destination.equals("Ariel"))) {
+                        Toast.makeText(AddPost.this, "Either source of destination has to be Ariel!", Toast.LENGTH_SHORT).show();
+                    } else if (source.equals(destination)) {
+                        Toast.makeText(AddPost.this, "Source and Destination must be different!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        insertPostToDataBase();
+                        finish();
                     }
-                    else {
-                        Toast.makeText(AddPost.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-                    }
+                }
+                else {
+                    Toast.makeText(AddPost.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -98,30 +102,36 @@ public class AddPost extends AppCompatActivity {
 
     private void insertPostToDataBase() {
         DatabaseReference newPostRef = databaseReference.child("posts").push();
+
+//        databaseReference.child("cities").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                cost = (source.equals("Ariel")) ? snapshot.child(destination).getValue(String.class) : snapshot.child(source).getValue(String.class);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
         if (newPostRef.getKey() != null) {
-            newPostRef.setValue(new Post(newPostRef.getKey(), Login.user.getId(), Login.user.getFirstname(), Login.user.getLastname(), seats, source, destination, time, date, description));
+            newPostRef.setValue(new Post(newPostRef.getKey(), Login.user.getId(), Login.user.getFirstname(), Login.user.getLastname(), seats, source, destination, time, date, cost, description));
             newPostRef.child("postID").removeValue();
         }
     }
 
     private void setupTimeButton() {
         timeButton = findViewById(R.id.time_picker_button);
-        timeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int selectedMinute) {
-                        hour = hourOfDay;
-                        minute = selectedMinute;
-                        timeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
-                    }
-                };
-                int style = AlertDialog.THEME_HOLO_LIGHT;
-                TimePickerDialog timePickerDialog = new TimePickerDialog(AddPost.this, style, onTimeSetListener, hour, minute, true);
-                timePickerDialog.setTitle("Select Time");
-                timePickerDialog.show();
-            }
+        timeButton.setOnClickListener(v -> {
+            TimePickerDialog.OnTimeSetListener onTimeSetListener = (view, hourOfDay, selectedMinute) -> {
+                hour = hourOfDay;
+                minute = selectedMinute;
+                timeButton.setText(String.format(Locale.getDefault(), "%02d:%02d", hour, minute));
+            };
+            int style = AlertDialog.THEME_HOLO_LIGHT;
+            TimePickerDialog timePickerDialog = new TimePickerDialog(AddPost.this, style, onTimeSetListener, hour, minute, true);
+            timePickerDialog.setTitle("Select Time");
+            timePickerDialog.show();
         });
     }
 
@@ -176,11 +186,13 @@ public class AddPost extends AppCompatActivity {
 
     private void initCitiesList() {
         cities = new ArrayList<>();
+        citiesAndPrices = new HashMap<>();
         databaseReference.child("cities").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     cities.add(snapshot.getKey());
+                    citiesAndPrices.put(snapshot.getKey(), snapshot.getValue(String.class));
                 }
             }
 

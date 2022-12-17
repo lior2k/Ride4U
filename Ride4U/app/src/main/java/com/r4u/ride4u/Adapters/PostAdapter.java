@@ -9,11 +9,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.r4u.ride4u.Login;
-import com.r4u.ride4u.Post;
+import com.r4u.ride4u.UserActivities.Login;
+import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
 import java.util.List;
 
@@ -30,7 +29,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
         Post post = getItem(position);
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_postview, parent, false);
-
         setupPostText(convertView, post);
 
         addPersonsDrawings(convertView, post);
@@ -74,6 +72,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
         String content = getContext().getString(R.string.postContent, post.getSource(), post.getDestination(),
                 post.getLeavingDate(),post.getLeavingTime(), post.getAvailableSeats(), post.getSeats());
         postContent.setText(content);
+
+        // post cost
+        TextView postCost = convertView.findViewById(R.id.costText);
+        String cost = getContext().getString(R.string.costNIS, post.getCost());
+        postCost.setText(cost);
     }
 
     // Set the join ride button functionality.

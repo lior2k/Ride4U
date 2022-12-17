@@ -8,10 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.r4u.ride4u.R;
-import com.r4u.ride4u.User;
+import com.r4u.ride4u.Objects.User;
 
 import java.util.ArrayList;
 

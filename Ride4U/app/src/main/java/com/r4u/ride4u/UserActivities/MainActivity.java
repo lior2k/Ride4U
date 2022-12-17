@@ -1,4 +1,4 @@
-package com.r4u.ride4u;
+package com.r4u.ride4u.UserActivities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.r4u.ride4u.Fragment.HomeFragment;
 import com.r4u.ride4u.Fragment.ProfileFragment;
 import com.r4u.ride4u.Fragment.MyPostsFragment;
+import com.r4u.ride4u.R;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.r4u.ride4u;
+package com.r4u.ride4u.UserActivities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.R;
 
 import java.util.Objects;
 
@@ -104,7 +105,7 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            check_admin();
+                            checkAdmin();
                             realTimeRegistration();
                             Toast.makeText(getApplicationContext(),"Registration successful!", Toast.LENGTH_LONG).show();
                             finish();
@@ -149,7 +150,7 @@ public class Register extends AppCompatActivity {
         });
     }
 
-    private void check_admin() {
+    private void checkAdmin() {
         databaseReference.child("admins").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {

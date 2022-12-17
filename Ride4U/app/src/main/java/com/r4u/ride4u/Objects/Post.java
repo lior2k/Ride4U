@@ -1,4 +1,4 @@
-package com.r4u.ride4u;
+package com.r4u.ride4u.Objects;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,12 +14,13 @@ public class Post {
     private final String destination;
     private final String leavingTime;
     private final String leavingDate;
+    private final String cost;
     private final String description;
 
     private final List<String> passengerIDs;
 
     public Post(String postID, String publisherID, String publisherFirstName, String publisherLastName, String seats , String source,
-                String destination, String leavingTime, String leavingDate, String description) {
+                String destination, String leavingTime, String leavingDate, String cost,String description) {
 
         this.postID = postID;
         this.publisherID = publisherID;
@@ -31,6 +32,7 @@ public class Post {
         this.destination = destination;
         this.leavingTime = leavingTime;
         this.leavingDate = leavingDate;
+        this.cost = cost;
         this.description = description;
 
         this.passengerIDs = new ArrayList<>();
@@ -68,6 +70,8 @@ public class Post {
         return publisherLastName;
     }
 
+    public String getCost() {return cost;}
+
     // The initial amount of seats available for passengers.
     public String getSeats() {
         return seats;
@@ -103,6 +107,10 @@ public class Post {
         return true;
     }
 
+    public String getPublisherFullName() {
+        return getPublisherFirstName()+" "+getPublisherLastName();
+    }
+
     // drive is full - signed up passengers are equal to the amount of available seats of the drive.
     public boolean isFull() {
         return passengerIDs.size() == Integer.parseInt(seats);
@@ -110,7 +118,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "[ID: "+publisherID+", firstname: "+publisherFirstName+", lastname: "+publisherLastName+", src: "+source+", dest:"+destination+"passengersSize:"+passengerIDs.size()+"/"+seats+"]";
+        return getPublisherFullName();
     }
 
 }

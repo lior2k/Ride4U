@@ -13,8 +13,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.Adapters.PostAdapter;
-import com.r4u.ride4u.Login;
-import com.r4u.ride4u.Post;
+import com.r4u.ride4u.UserActivities.Login;
+import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
 import java.util.ArrayList;
 
@@ -33,11 +33,28 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        setupListView(view);
         initPostList();
-        searchView = view.findViewById(R.id.search_bar);
+        setupListView(view);
+        setupSearchView(view);
 
         return view;
+    }
+
+    private void setupSearchView(View view) {
+        searchView = view.findViewById(R.id.search_bar);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                postAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                postAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }
 
     // Create a new PostAdapter and set it to be the listview adapter.
@@ -56,7 +73,9 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 posts = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+
                     Post newPost = createPost(snapshot);
+
                     // if post is full don't show it (need to add time&date check)
                     if (!newPost.isFull())
                         posts.add(newPost);
@@ -67,6 +86,7 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getCode());
             }
+
         });
     }
 
@@ -75,7 +95,7 @@ public class HomeFragment extends Fragment {
         Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
                 snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
                 snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
-                snapshot.child("description").getValue(String.class));
+                snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
         for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
             newPost.addPassenger(sp.getValue(String.class));
         }
