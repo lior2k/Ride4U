@@ -95,6 +95,7 @@ public class MyPostsFragment extends Fragment {
                     }
                     if(Login.user.getId().equals(newPost.getPublisherID()) || newPost.getPassengerIDs().contains(Login.user.getId())) {
                         history.add(newPost);
+                        System.out.println(newPost.getLeavingDate());
                     }
 
 
