@@ -40,25 +40,23 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    // Create a new PostAdapter and set it to be the listview adapter.
     private void setupListView(View view) {
         listView = view.findViewById(R.id.list_view);
         postAdapter = new PostAdapter(getContext(), 0, posts);
         listView.setAdapter(postAdapter);
     }
 
+
+    // Iterate over firebase's posts, create each post and add it to an arraylist which is later used
+    // by the listview adapter to represent the posts onto the screen.
     private void initPostList() {
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 posts = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-                    Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
-                            snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
-                            snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
-                            snapshot.child("description").getValue(String.class));
-                    for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
-                        newPost.addPassenger(sp.getValue(String.class));
-                    }
+                    Post newPost = createPost(snapshot);
                     // if post is full don't show it (need to add time&date check)
                     if (!newPost.isFull())
                         posts.add(newPost);
@@ -70,6 +68,17 @@ public class HomeFragment extends Fragment {
                 System.out.println(error.getCode());
             }
         });
+    }
 
+    // Create and return a new post built from a snapshot of the realtime firebase.
+    private Post createPost(DataSnapshot snapshot) {
+        Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
+                snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
+                snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
+                snapshot.child("description").getValue(String.class));
+        for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
+            newPost.addPassenger(sp.getValue(String.class));
+        }
+        return newPost;
     }
 }
