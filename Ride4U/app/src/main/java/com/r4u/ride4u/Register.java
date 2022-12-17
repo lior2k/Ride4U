@@ -13,6 +13,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -103,6 +104,7 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            check_admin();
                             realTimeRegistration();
                             Toast.makeText(getApplicationContext(),"Registration successful!", Toast.LENGTH_LONG).show();
                             finish();
@@ -130,10 +132,13 @@ public class Register extends AppCompatActivity {
                     Toast.makeText(Register.this, "ID is already registered", Toast.LENGTH_SHORT).show();
                 } else {
                     // sending data to realtime firebase database
-                    check_admin();
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
+                    FirebaseUser currentUser = authProfile.getCurrentUser();
+                    if (currentUser != null) {
+                        databaseReference.child("users").child(idTxt).child("AuthUid").setValue(currentUser.getUid());
+                    }
                 }
             }
 

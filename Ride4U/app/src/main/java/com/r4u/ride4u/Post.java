@@ -87,6 +87,10 @@ public class Post {
     }
 
     public boolean addPassenger(String passengerID) {
+        // Can't be a passenger of your own ride.
+        if (passengerID.equals(publisherID)) {
+            return false;
+        }
         if (isFull()) {
             return false;
         }

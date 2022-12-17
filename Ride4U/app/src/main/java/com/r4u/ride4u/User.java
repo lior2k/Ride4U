@@ -1,22 +1,25 @@
 package com.r4u.ride4u;
 
+import androidx.annotation.NonNull;
+
 public class User {
 
     private String id;
     private String firstname;
     private String lastname;
     private String email;
-    private Boolean isAdmin;
+    private final String Uid;
+    private final Boolean isAdmin;
 
-    public User(String fname, String lname, String email, String id, Boolean isAdmin) {
+    public User(String fname, String lname, String email, String id, Boolean isAdmin, String u_id) {
         firstname = fname;
         lastname = lname;
         this.email = email;
         this.id = id;
         this.isAdmin = isAdmin;
+        this.Uid = u_id;
     }
-
-    public User() {}
+    public String getUid() { return Uid; }
 
     public Boolean getIsAdmin() {
         return isAdmin;
@@ -54,7 +57,9 @@ public class User {
         this.email = email;
     }
 
+    @NonNull
     public String toString() {
         return "[id: "+id+", firstname: "+firstname+", lastname: "+lastname+", email: "+email+"]";
     }
+
 }
