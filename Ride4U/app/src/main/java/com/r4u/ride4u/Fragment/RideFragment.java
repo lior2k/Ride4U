@@ -21,8 +21,8 @@ public class RideFragment extends Fragment {
     ListView active_rides;
     ListView ride_history;
 
-    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data1);
-    ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data2);
+//    ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data1);
+//    ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data2);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
