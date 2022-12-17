@@ -63,9 +63,11 @@
             android:id="@+id/seats_number"
             android:hint="Number of seats"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textColorHint="#757575" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

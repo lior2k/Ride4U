@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.User;
@@ -16,7 +17,14 @@ import java.util.ArrayList;
 
 public class UsersAdapter extends ArrayAdapter<User> {
 
+
     public UsersAdapter(@NonNull Context context, int resource, ArrayList<User> users_list) {super(context, resource, users_list);}
+
+
+    @Override
+    public User getItem(int position) {
+        return super.getItem(position);
+    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
