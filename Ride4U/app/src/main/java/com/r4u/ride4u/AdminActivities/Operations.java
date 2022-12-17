@@ -1,11 +1,13 @@
-package com.r4u.ride4u;
+package com.r4u.ride4u.AdminActivities;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
-public class AdminOperations extends AppCompatActivity {
+import com.r4u.ride4u.R;
+
+public class Operations extends AppCompatActivity {
 
     ImageButton removeUserBtn;
     ImageButton pricesBtn;
@@ -23,7 +25,7 @@ public class AdminOperations extends AppCompatActivity {
         pricesBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AdminOperations.this, ChangePrices.class));
+                startActivity(new Intent(Operations.this, ChangePrices.class));
             }
         });
     }
@@ -33,7 +35,7 @@ public class AdminOperations extends AppCompatActivity {
         removeUserBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(AdminOperations.this, RemoveUser.class));
+                startActivity(new Intent(Operations.this, RemoveUser.class));
             }
         });
     }

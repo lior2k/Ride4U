@@ -1,4 +1,4 @@
-package com.r4u.ride4u;
+package com.r4u.ride4u.UserActivities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -17,6 +17,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.R;
+import com.r4u.ride4u.Objects.User;
 
 public class Login extends AppCompatActivity {
     FirebaseAuth autoProfile;
@@ -78,22 +80,12 @@ public class Login extends AppCompatActivity {
 
     private void setupRegisterButton() {
         final Button registerBtn = findViewById(R.id.registerBtn);
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Login.this, Register.class));
-            }
-        });
+        registerBtn.setOnClickListener(view -> startActivity(new Intent(Login.this, Register.class)));
     }
 
     private void setupForgotPasswordButton() {
         final Button forgotPWBtn = findViewById(R.id.forgotPWBtn);
-        forgotPWBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Login.this, ForgotPassword.class));
-            }
-        });
+        forgotPWBtn.setOnClickListener(view -> startActivity(new Intent(Login.this, ForgotPassword.class)));
     }
 
     private void getIdByEmail(String email) {

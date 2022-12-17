@@ -3,7 +3,6 @@ package com.r4u.ride4u.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -12,15 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.r4u.ride4u.AdminOperations;
-import com.r4u.ride4u.Login;
+import com.r4u.ride4u.AdminActivities.Operations;
+import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.R;
-import com.r4u.ride4u.Register;
 
 public class ProfileFragment extends Fragment {
 
@@ -48,7 +41,7 @@ public class ProfileFragment extends Fragment {
             adminBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getContext(), AdminOperations.class));
+                    startActivity(new Intent(getContext(), Operations.class));
                 }
             });
         }

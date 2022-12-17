@@ -28,6 +28,19 @@
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/costText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:text=""
+        android:textSize="12.5sp"
+        android:textAlignment="center"
+        android:gravity="center_horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2.5dp"
+        android:textStyle="bold"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/postTextContent"

@@ -1,6 +1,4 @@
 package com.r4u.ride4u.Adapters;
-
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import com.r4u.ride4u.Post;
+import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
 import java.util.List;
 
@@ -32,8 +30,6 @@ public class RideAdapter extends ArrayAdapter<Post> {
         setupPostText(convertView, post);
 
         addPersonsDrawings(convertView, post);
-
-
 
         return convertView;
     }
@@ -68,5 +64,9 @@ public class RideAdapter extends ArrayAdapter<Post> {
         String content = getContext().getString(R.string.postContent, post.getSource(), post.getDestination(),
                 post.getLeavingDate(), post.getLeavingTime(), post.getAvailableSeats(), post.getSeats());
         postContent.setText(content);
+
+        TextView postCost = convertView.findViewById(R.id.costText);
+        String cost = getContext().getString(R.string.costNIS, post.getCost());
+        postCost.setText(cost);
     }
 }

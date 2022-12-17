@@ -1,4 +1,4 @@
-package com.r4u.ride4u;
+package com.r4u.ride4u.Objects;
 
 import androidx.annotation.NonNull;
 
@@ -11,9 +11,9 @@ public class User {
     private final String Uid;
     private final Boolean isAdmin;
 
-    public User(String fname, String lname, String email, String id, Boolean isAdmin, String u_id) {
-        firstname = fname;
-        lastname = lname;
+    public User(String firstname, String lastname, String email, String id, Boolean isAdmin, String u_id) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.id = id;
         this.isAdmin = isAdmin;

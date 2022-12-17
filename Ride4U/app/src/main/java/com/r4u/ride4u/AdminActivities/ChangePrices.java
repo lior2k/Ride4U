@@ -1,4 +1,4 @@
-package com.r4u.ride4u;
+package com.r4u.ride4u.AdminActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +21,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.UserActivities.Login;
+import com.r4u.ride4u.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ChangePrices extends AppCompatActivity {
 
@@ -54,28 +55,25 @@ public class ChangePrices extends AppCompatActivity {
 
     private void setupSubmitButton() {
         submitButton = findViewById(R.id.submit_button);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final TextInputLayout newPriceView = findViewById(R.id.new_price);
-                final EditText newPriceTxt = newPriceView.getEditText();
-                if (newPriceTxt != null) {
-                    if (autoCompleteTextViewCity.getText().length() > 0 && newPriceTxt.getText().length() > 0) {
+        submitButton.setOnClickListener(v -> {
+            final TextInputLayout newPriceView = findViewById(R.id.new_price);
+            final EditText newPriceTxt = newPriceView.getEditText();
+            if (newPriceTxt != null) {
+                if (autoCompleteTextViewCity.getText().length() > 0 && newPriceTxt.getText().length() > 0) {
 
-                        chosenCity = autoCompleteTextViewCity.getText().toString();
-                        newPrice = newPriceTxt.getText().toString();
-                        System.out.println(chosenCity);
-                        System.out.println(newPrice);
+                    chosenCity = autoCompleteTextViewCity.getText().toString();
+                    newPrice = newPriceTxt.getText().toString();
+                    System.out.println(chosenCity);
+                    System.out.println(newPrice);
 
-                        if (chosenCity.equals("Ariel")) {
-                            Toast.makeText(ChangePrices.this, "Ariel price cannot change", Toast.LENGTH_SHORT).show();
-                        } else {
-                            ChangePriceInDataBase();
-                        }
+                    if (chosenCity.equals("Ariel")) {
+                        Toast.makeText(ChangePrices.this, "Ariel price cannot change", Toast.LENGTH_SHORT).show();
+                    } else {
+                        ChangePriceInDataBase();
                     }
-                    else {
-                        Toast.makeText(ChangePrices.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-                    }
+                }
+                else {
+                    Toast.makeText(ChangePrices.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -83,18 +81,8 @@ public class ChangePrices extends AppCompatActivity {
 
     private void ChangePriceInDataBase() {
         databaseReference.child("cities").child(chosenCity).setValue(newPrice)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        finish();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"Changing price failed!! Please try again later", Toast.LENGTH_LONG).show();
-                    }
-                });
+                .addOnSuccessListener(aVoid -> finish())
+                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(),"Changing price failed!! Please try again later", Toast.LENGTH_LONG).show());
     }
 
     private void setupNewPrice() {
@@ -109,12 +97,9 @@ public class ChangePrices extends AppCompatActivity {
 
     private void setupCurrentPrice() {
         currentPrice = findViewById(R.id.current_price);
-        autoCompleteTextViewCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String city = (String) parent.getAdapter().getItem(position);
-                currentPrice.setText(citiesAndPrices.get(city));
-            }
+        autoCompleteTextViewCity.setOnItemClickListener((parent, view, position, id) -> {
+            String city = (String) parent.getAdapter().getItem(position);
+            currentPrice.setText(citiesAndPrices.get(city));
         });
     }
 

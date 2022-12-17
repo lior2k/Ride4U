@@ -10,15 +10,14 @@ import android.widget.ToggleButton;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.Adapters.RideAdapter;
-import com.r4u.ride4u.Login;
-import com.r4u.ride4u.Post;
+import com.r4u.ride4u.UserActivities.Login;
+import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
 import java.util.ArrayList;
 
@@ -62,17 +61,14 @@ public class MyPostsFragment extends Fragment {
 
     private void swapLists(ToggleButton toggleButton, ListView lv1, ListView lv2) {
 
-        toggleButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(toggleButton.isChecked()) {
-                    lv1.setVisibility(View.GONE);
-                    lv2.setVisibility(View.VISIBLE);
-                }
-                else {
-                    lv1.setVisibility(View.VISIBLE);
-                    lv2.setVisibility(View.GONE);
-                }
+        toggleButton.setOnClickListener(v -> {
+            if(toggleButton.isChecked()) {
+                lv1.setVisibility(View.GONE);
+                lv2.setVisibility(View.VISIBLE);
+            }
+            else {
+                lv1.setVisibility(View.VISIBLE);
+                lv2.setVisibility(View.GONE);
             }
         });
 
@@ -88,7 +84,7 @@ public class MyPostsFragment extends Fragment {
                     Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
                             snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
                             snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
-                            snapshot.child("description").getValue(String.class));
+                            snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
 
                     for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
                         newPost.addPassenger(sp.getValue(String.class));
