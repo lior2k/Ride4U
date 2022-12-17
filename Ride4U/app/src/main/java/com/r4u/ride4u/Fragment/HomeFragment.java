@@ -56,7 +56,9 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 posts = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+
                     Post newPost = createPost(snapshot);
+
                     // if post is full don't show it (need to add time&date check)
                     if (!newPost.isFull())
                         posts.add(newPost);
