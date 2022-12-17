@@ -2,7 +2,6 @@ package com.r4u.ride4u;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -47,7 +46,7 @@ public class Register extends AppCompatActivity {
         final TextInputLayout firstname = findViewById(R.id.firstname);
         final TextInputLayout lastname = findViewById(R.id.lastname);
         final TextInputLayout email = findViewById(R.id.email);
-        final TextInputLayout id = findViewById(R.id.id);
+        final TextInputLayout id = findViewById(R.id.history_);
         final TextInputLayout password = findViewById(R.id.password);
         final TextInputLayout confirmPassword = findViewById(R.id.confirmPassword);
 
