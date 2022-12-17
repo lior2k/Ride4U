@@ -32,7 +32,7 @@ public class ForgotPassword extends AppCompatActivity {
 
     private void setupSendNewPasswordButton() {
         final TextInputLayout email = findViewById(R.id.email);
-        final TextInputLayout id = findViewById(R.id.id);
+        final TextInputLayout id = findViewById(R.id.history_);
         final Button sendNewPWBtn = findViewById(R.id.sendNewPWBtn);
         sendNewPWBtn.setOnClickListener(new View.OnClickListener() {
 
