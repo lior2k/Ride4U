@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -135,6 +136,10 @@ public class Register extends AppCompatActivity {
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
+                    FirebaseUser currentUser = authProfile.getCurrentUser();
+                    if (currentUser != null) {
+                        databaseReference.child("users").child(idTxt).child("AuthUid").setValue(currentUser.getUid());
+                    }
                 }
             }
 

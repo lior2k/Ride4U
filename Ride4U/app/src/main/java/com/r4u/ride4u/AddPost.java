@@ -34,7 +34,7 @@ public class AddPost extends AppCompatActivity {
     AutoCompleteTextView autoCompleteTextViewDest;
     ArrayAdapter<String> adapterSrcCities;
     ArrayAdapter<String> adapterDestCities;
-    DatabaseReference databaseReference = FirebaseDatabase.getInstance("https://ride4u-3a773-default-rtdb.europe-west1.firebasedatabase.app/").getReference();
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     ArrayList<String> cities;
 
     DatePickerDialog datePickerDialog;

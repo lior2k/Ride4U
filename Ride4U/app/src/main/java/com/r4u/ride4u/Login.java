@@ -105,12 +105,13 @@ public class Login extends AppCompatActivity {
                         String userID = snapshot.getKey();
                         String firstName = snapshot.child("firstname").getValue(String.class);
                         String lastName = snapshot.child("lastname").getValue(String.class);
+                        String Uid = snapshot.child("AuthUid").getValue(String.class);
                         String isAdminStr = snapshot.child("isAdmin").getValue(String.class);
                         Boolean isAdmin = false;
                         if (isAdminStr != null) {
                             isAdmin = str_to_boolean(isAdminStr);
                         }
-                        user = new User(firstName, lastName, email, userID, isAdmin);
+                        user = new User(firstName, lastName, email, userID, isAdmin, Uid);
                         break;
                     }
                 }

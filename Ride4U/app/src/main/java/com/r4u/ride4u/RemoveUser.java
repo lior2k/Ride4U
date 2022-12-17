@@ -72,16 +72,16 @@ public class RemoveUser extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 User selectedUser = (User) parent.getAdapter().getItem(position);
                 removeUserFromRealTimeDB(selectedUser);
-                removeUserFromAuthDB(selectedUser.getEmail());
+                removeUserFromAuthDB(selectedUser.getUid());
 
             }
         });
     }
 
-    private void removeUserFromAuthDB(String email) {
+    private void removeUserFromAuthDB(String Uid) {
         autoProfile = FirebaseAuth.getInstance();
-        autoProfile.getUid();
     }
+
 
     private void removeUserFromRealTimeDB(User user) {
 
@@ -94,7 +94,7 @@ public class RemoveUser extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     usersList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
-                            snapshot.child("email").getValue(String.class), snapshot.getKey(), false));
+                            snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class)));
                 }
             }
 
