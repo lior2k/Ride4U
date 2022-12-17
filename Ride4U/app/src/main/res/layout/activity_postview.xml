@@ -12,7 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_posts">
-
     </ImageView>
 
     <TextView
@@ -37,7 +36,7 @@
         android:textStyle="bold|italic"
         android:text=""
         android:textColor="@color/white"
-        android:background="@color/backgroundColor">
+        android:background="@drawable/post_background">
     </TextView>
 
     <ImageButton
