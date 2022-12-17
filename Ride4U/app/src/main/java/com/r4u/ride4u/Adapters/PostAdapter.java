@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -28,6 +30,36 @@ public class PostAdapter extends ArrayAdapter<Post> {
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_postview, parent, false);
 
+        setupPostText(convertView, post);
+
+        addPersonsDrawings(convertView, post);
+
+        setupJoinRideBtn(convertView, post);
+
+        return convertView;
+    }
+
+    private void addPersonsDrawings(View convertView, Post post) {
+        RelativeLayout RL = convertView.findViewById(R.id.relativeLayout);
+        int persons = Integer.parseInt(post.getSeats());
+        int unfilledPersons = Integer.parseInt(post.getAvailableSeats());
+        for (int i = 0; i < persons; i++) {
+            ImageView per = new ImageView(getContext());
+            per.setId(i+1);
+            if (i >= (persons - unfilledPersons)) {
+                per.setImageResource(R.drawable.ic_personempty);
+            } else {
+                per.setImageResource(R.drawable.ic_person);
+            }
+            RL.addView(per);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) per.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.BELOW, R.id.postTextContent);
+            if (i != 0)
+                layoutParams.addRule(RelativeLayout.RIGHT_OF, i);
+        }
+    }
+
+    private void setupPostText(View convertView, Post post) {
         TextView posterName = convertView.findViewById(R.id.postPersonName);
         String fullName = getContext().getString(R.string.fullName, post.getPublisherFirstName(), post.getPublisherLastName());
         posterName.setText(fullName);
@@ -36,14 +68,10 @@ public class PostAdapter extends ArrayAdapter<Post> {
         String content = getContext().getString(R.string.postContent, post.getSource(), post.getDestination(),
                 post.getLeavingDate(),post.getLeavingTime(), post.getAvailableSeats(), post.getSeats());
         postContent.setText(content);
-
-        joinRideBtn = convertView.findViewById(R.id.joinRideImgBtn);
-        setupJoinRideBtn(post);
-
-        return convertView;
     }
 
-    private void setupJoinRideBtn(Post post) {
+    private void setupJoinRideBtn(View convertView, Post post) {
+        joinRideBtn = convertView.findViewById(R.id.joinRideImgBtn);
         joinRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
