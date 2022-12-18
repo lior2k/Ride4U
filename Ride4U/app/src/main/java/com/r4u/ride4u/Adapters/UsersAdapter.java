@@ -31,11 +31,11 @@ public class UsersAdapter extends ArrayAdapter<User> {
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.user_view, parent, false);
 
-        TextView fullNameView = (TextView) convertView.findViewById(R.id.fullname_text);
+        TextView fullNameView = convertView.findViewById(R.id.fullname_text);
         String fullName = getContext().getString(R.string.fullName, user.getFirstname() , user.getLastname());
         fullNameView.setText(fullName);
 
-        TextView idView = (TextView) convertView.findViewById(R.id.id_text);
+        TextView idView = convertView.findViewById(R.id.id_text);
         String id = getContext().getString(R.string.id, user.getId());
         idView.setText(id);
 

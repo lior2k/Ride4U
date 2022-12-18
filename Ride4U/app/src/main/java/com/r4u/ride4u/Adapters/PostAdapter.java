@@ -19,9 +19,12 @@ import java.util.List;
 public class PostAdapter extends ArrayAdapter<Post> {
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
+    boolean usedByHomeFrg; // should be true if this adapter is used for the home fragment posts
 
-    public PostAdapter(Context ctx, int resource, List<Post> posts) {
+
+    public PostAdapter(Context ctx, int resource, List<Post> posts, boolean usedByHomeFrg) {
         super(ctx, resource, posts);
+        this.usedByHomeFrg = usedByHomeFrg;
     }
 
     @Override
@@ -33,7 +36,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         addPersonsDrawings(convertView, post);
 
-        setupJoinRideBtn(convertView, post);
+        // at home fragment we need to see and setup the join ride button, at my posts fragment we hide the join ride button
+        if (usedByHomeFrg)
+            setupJoinRideBtn(convertView, post);
+        else
+            convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
 
         return convertView;
     }
@@ -67,13 +74,13 @@ public class PostAdapter extends ArrayAdapter<Post> {
         String fullName = getContext().getString(R.string.fullName, post.getPublisherFirstName(), post.getPublisherLastName());
         posterName.setText(fullName);
 
-        // post contents
+        // set post contents
         TextView postContent = convertView.findViewById(R.id.postTextContent);
         String content = getContext().getString(R.string.postContent, post.getSource(), post.getDestination(),
                 post.getLeavingDate(),post.getLeavingTime(), post.getAvailableSeats(), post.getSeats());
         postContent.setText(content);
 
-        // post cost
+        // set post price on top right
         TextView postCost = convertView.findViewById(R.id.costText);
         String cost = getContext().getString(R.string.costNIS, post.getCost());
         postCost.setText(cost);
@@ -87,7 +94,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             public void onClick(View v) {
                 // validate joining (user not already signed up for this ride / ride is not full / user is not the poster of the post)
                 if (!post.addPassenger(Login.user.getId())) {
-                    Toast.makeText(getContext(), "Failed to join ride", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Already part of this post", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // user joined the ride - update database
