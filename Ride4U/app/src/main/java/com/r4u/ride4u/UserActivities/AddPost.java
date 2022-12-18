@@ -103,8 +103,11 @@ public class AddPost extends AppCompatActivity {
     private void insertPostToDataBase() {
         DatabaseReference newPostRef = databaseReference.child("posts").push();
         if (newPostRef.getKey() != null) {
-            newPostRef.setValue(new Post(newPostRef.getKey(), Login.user.getId(), Login.user.getFirstname(), Login.user.getLastname(), seats, source, destination, time, date, cost, description));
+            Post p = new Post(newPostRef.getKey(), Login.user.getId(), Login.user.getFirstname(), Login.user.getLastname(), seats, source, destination, time, date, cost, description);
+            newPostRef.setValue(p);
             newPostRef.child("postID").removeValue();
+//            Login.user.getRideHistory().add(p);
+//            databaseReference.child("users").child(Login.user.getId()).child("rideHistory").setValue(Login.user.getRideHistory());
         }
     }
 

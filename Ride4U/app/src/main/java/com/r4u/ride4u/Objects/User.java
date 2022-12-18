@@ -5,10 +5,10 @@ import androidx.annotation.NonNull;
 
 public class User {
 
-    private String id;
-    private String firstname;
-    private String lastname;
-    private String email;
+    private final String id;
+    private final String firstname;
+    private final String lastname;
+    private final String email;
     private final String Uid;
     private final Boolean isAdmin;
 
@@ -40,23 +40,6 @@ public class User {
 
     public String getId() {
         return id;
-    }
-
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     @NonNull
