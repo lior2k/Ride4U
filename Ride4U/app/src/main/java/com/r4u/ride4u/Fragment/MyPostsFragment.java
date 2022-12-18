@@ -67,9 +67,6 @@ public class MyPostsFragment extends Fragment {
 
 
     private void swapLists(ToggleButton toggleButton, ListView lv1, ListView lv2) {
-
-
-
         toggleButton.setOnClickListener(v -> {
             if(toggleButton.isChecked()) {
                 lv1.setVisibility(View.GONE);
@@ -88,7 +85,6 @@ public class MyPostsFragment extends Fragment {
         String [] Splited_String = Date.split("\\s+");
         int MonthNumber =  Arrays.asList(months).indexOf(Splited_String[1])+1;
         return  Splited_String[0]+"\\"+ MonthNumber +"\\"+Splited_String[2]+" "+Time;
-
     }
 
     private boolean CompareDateAndTime(String DateAndTime) {
@@ -113,14 +109,10 @@ public class MyPostsFragment extends Fragment {
                 history = new ArrayList<>();
                 active = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-
                     Post newPost = createPost(snapshot);
                     classificationHistoryOrActive(newPost);
-
-
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getCode());

@@ -99,6 +99,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 // TODO notify driver
 
                 // TODO add to my rides
+//                Login.user.getRideHistory().add(post);
+//                databaseReference.child("users").child(Login.user.getId()).child("rideHistory").setValue(Login.user.getRideHistory());
 
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
             }

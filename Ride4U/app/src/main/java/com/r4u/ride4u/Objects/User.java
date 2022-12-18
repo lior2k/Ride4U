@@ -2,6 +2,7 @@ package com.r4u.ride4u.Objects;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 
 public class User {
 
@@ -9,6 +10,7 @@ public class User {
     private String firstname;
     private String lastname;
     private String email;
+//    private final ArrayList<Post> ride_history;
     private final String Uid;
     private final Boolean isAdmin;
 
@@ -19,6 +21,7 @@ public class User {
         this.id = id;
         this.isAdmin = isAdmin;
         this.Uid = u_id;
+//        this.ride_history = new ArrayList<>();
     }
     public String getUid() { return Uid; }
 
@@ -42,7 +45,6 @@ public class User {
         return id;
     }
 
-
     public void setId(String id) {
         this.id = id;
     }
@@ -58,6 +60,8 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+//    public ArrayList<Post> getRideHistory() {return this.ride_history;}
 
     @NonNull
     public String toString() {

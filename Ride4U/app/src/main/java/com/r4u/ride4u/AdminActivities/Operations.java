@@ -11,6 +11,7 @@ public class Operations extends AppCompatActivity {
 
     ImageButton removeUserBtn;
     ImageButton pricesBtn;
+    ImageButton addCityBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,7 @@ public class Operations extends AppCompatActivity {
         setContentView(R.layout.activity_admin_operations);
         setupRemoveUserBtn();
         setupPricesBtn();
+        setupAddCityBtn();
     }
 
     private void setupPricesBtn() {
@@ -36,6 +38,16 @@ public class Operations extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Operations.this, RemoveUser.class));
+            }
+        });
+    }
+
+    private void setupAddCityBtn() {
+        addCityBtn = findViewById(R.id.add_city);
+        addCityBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Operations.this, AddCity.class));
             }
         });
     }
