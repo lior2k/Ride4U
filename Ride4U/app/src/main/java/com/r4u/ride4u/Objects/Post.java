@@ -1,4 +1,6 @@
 package com.r4u.ride4u.Objects;
+import com.google.firebase.database.DataSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,6 +120,18 @@ public class Post {
     @Override
     public String toString() {
         return getPublisherFullName();
+    }
+
+    // Create and return a new post built from a snapshot of the realtime firebase.
+    public static Post createPost(DataSnapshot snapshot) {
+        Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
+                snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
+                snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
+                snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
+        for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
+            newPost.addPassenger(sp.getValue(String.class));
+        }
+        return newPost;
     }
 
 }
