@@ -61,9 +61,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
-            android:background="#000"
-            android:text="Login"
-            android:textColor="@color/black" />
+            android:background="@drawable/background_button"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text="Login"/>
 
         <Button
             android:id="@+id/registerBtn"
@@ -71,9 +72,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:background="#000"
-            android:text="Create Account"
-            android:textColor="@color/black"/>
+            android:background="@drawable/background_button"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text="Create Account"/>
 
         <Button
             android:id="@+id/forgotPWBtn"
@@ -81,8 +83,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:background="#000"
-            android:text="Reset Password"
-            android:textColor="@color/black"/>
+            android:background="@drawable/background_button"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:text="Reset Password"/>
+
     </LinearLayout>
 </LinearLayout>
