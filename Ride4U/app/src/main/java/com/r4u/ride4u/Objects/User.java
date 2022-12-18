@@ -2,6 +2,7 @@ package com.r4u.ride4u.Objects;
 
 import androidx.annotation.NonNull;
 
+
 public class User {
 
     private String id;
@@ -40,6 +41,7 @@ public class User {
     public String getId() {
         return id;
     }
+
 
     public void setId(String id) {
         this.id = id;
