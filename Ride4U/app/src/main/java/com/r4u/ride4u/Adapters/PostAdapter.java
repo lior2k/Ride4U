@@ -100,7 +100,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
                 // TODO add to my rides
 
-
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
             }
         });
