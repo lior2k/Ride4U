@@ -104,7 +104,7 @@ public class MyPostsFragment extends Fragment {
     private void classificationHistoryOrActive(Post newPost){
         if(Login.user.getId().equals(newPost.getPublisherID()) || newPost.getPassengerIDs().contains(Login.user.getId())) {
             String DateAndTime = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate() , newPost.getLeavingTime());
-            if(DateAndTimeFormat.CompareDateAndTime(DateAndTime, "GMT+1")) {
+            if(DateAndTimeFormat.compareDateAndTime(DateAndTime, "GMT+1")) {
                 history.add(newPost);
             }else {
                 active.add(newPost);
