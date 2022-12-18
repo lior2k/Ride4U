@@ -69,13 +69,12 @@ public class AddCity extends AppCompatActivity {
                     if (cityText.getText().length() > 0 && priceText.getText().length() > 0) {
                         insertedCity = cityText.getText().toString();
                         insertedPrice = priceText.getText().toString();
-                        System.out.println(insertedCity);
-                        System.out.println(insertedPrice);
 
 //                        checkRealCity();
                         boolean cityExistsInDatabase = checkCityExistsInDatabase();
                         if(!cityExistsInDatabase) {
                             databaseReference.child("cities").child(insertedCity).setValue(insertedPrice);
+                            finish();
                         }
                         else {
                             Toast.makeText(AddCity.this, "City already exists in database", Toast.LENGTH_SHORT).show();
@@ -113,7 +112,6 @@ public class AddCity extends AppCompatActivity {
 
     private boolean checkCityExistsInDatabase() {
         flag = false;
-        Task t = new Task
         databaseReference.child("cities").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
