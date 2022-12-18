@@ -49,6 +49,7 @@
         android:textStyle="bold|italic"
         android:text=""
         android:textColor="@color/white"
+        android:textAlignment="center"
         android:background="@drawable/post_background">
     </TextView>
 

@@ -113,7 +113,6 @@ public class AddCity extends AppCompatActivity {
 
     private boolean checkCityExistsInDatabase() {
         flag = false;
-        Task t = new Task
         databaseReference.child("cities").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
