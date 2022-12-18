@@ -19,9 +19,11 @@ import java.util.List;
 public class PostAdapter extends ArrayAdapter<Post> {
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
+    boolean usedByHomeFrg;
 
-    public PostAdapter(Context ctx, int resource, List<Post> posts) {
+    public PostAdapter(Context ctx, int resource, List<Post> posts, boolean usedByHomeFrg) {
         super(ctx, resource, posts);
+        this.usedByHomeFrg = usedByHomeFrg;
     }
 
     @Override
@@ -33,7 +35,10 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         addPersonsDrawings(convertView, post);
 
-        setupJoinRideBtn(convertView, post);
+        if (usedByHomeFrg)
+            setupJoinRideBtn(convertView, post);
+        else
+            convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
 
         return convertView;
     }
@@ -87,7 +92,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
             public void onClick(View v) {
                 // validate joining (user not already signed up for this ride / ride is not full / user is not the poster of the post)
                 if (!post.addPassenger(Login.user.getId())) {
-                    Toast.makeText(getContext(), "Failed to join ride", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Already part of this post", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // user joined the ride - update database

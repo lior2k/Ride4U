@@ -13,6 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.Adapters.PostAdapter;
+import com.r4u.ride4u.Adapters.dateAndTimeFormat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
@@ -60,7 +61,7 @@ public class HomeFragment extends Fragment {
     // Create a new PostAdapter and set it to be the listview adapter.
     private void setupListView(View view) {
         listView = view.findViewById(R.id.list_view);
-        postAdapter = new PostAdapter(getContext(), 0, posts);
+        postAdapter = new PostAdapter(getContext(), 0, posts, true);
         listView.setAdapter(postAdapter);
     }
 
@@ -74,10 +75,11 @@ public class HomeFragment extends Fragment {
                 posts = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
 
-                    Post newPost = createPost(snapshot);
+                    Post newPost = Post.createPost(snapshot);
 
-                    // if post is full don't show it (need to add time&date check)
-                    if (!newPost.isFull())
+                    // if post is full or user already joined or time has passed - don't show it
+                    String date_time = dateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
+                    if (!newPost.isFull() && !dateAndTimeFormat.CompareDateAndTime(date_time, "EET"))
                         posts.add(newPost);
                 }
             }
@@ -90,15 +92,4 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    // Create and return a new post built from a snapshot of the realtime firebase.
-    private Post createPost(DataSnapshot snapshot) {
-        Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
-                snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
-                snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
-                snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
-        for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
-            newPost.addPassenger(sp.getValue(String.class));
-        }
-        return newPost;
-    }
 }
