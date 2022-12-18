@@ -34,7 +34,6 @@ public class Post {
         this.leavingDate = leavingDate;
         this.cost = cost;
         this.description = description;
-
         this.passengerIDs = new ArrayList<>();
     }
 

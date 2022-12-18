@@ -92,19 +92,17 @@ public class MyPostsFragment extends Fragment {
     }
 
     private boolean CompareDateAndTime(String DateAndTime) {
-        SimpleDateFormat format = new SimpleDateFormat("dd\\MM\\yyyy HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd\\MM\\yyyy HH:mm");
         format.setTimeZone(TimeZone.getTimeZone("EET"));
-        Date PostDate = null;
+        Date PostDate;
         try {
             PostDate = format.parse(DateAndTime);
-
             System.out.println(new Date());
             return (new Date().after(PostDate));
         } catch (ParseException e) {
             e.printStackTrace();
         }
         return false;
-
     }
 
 
@@ -116,25 +114,9 @@ public class MyPostsFragment extends Fragment {
                 active = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
 
-                    Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
-                            snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
-                            snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
-                            snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
+                    Post newPost = createPost(snapshot);
+                    classificationHistoryOrActive(newPost);
 
-                    for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
-                        newPost.addPassenger(sp.getValue(String.class));
-                    }
-
-
-                    if(Login.user.getId().equals(newPost.getPublisherID()) || newPost.getPassengerIDs().contains(Login.user.getId())) {
-                        String DateAndTime = getDateAndTime(newPost.getLeavingDate() , newPost.getLeavingTime());
-                        if(!CompareDateAndTime(DateAndTime)) {
-                            history.add(newPost);
-                        }else {
-                            active.add(newPost);
-                        }
-
-                    }
 
                 }
             }
@@ -147,28 +129,28 @@ public class MyPostsFragment extends Fragment {
 
     }
 
-//    private Post createPost(DataSnapshot snapshot) {
-//        Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
-//                snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
-//                snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
-//                snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
-//        for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
-//            newPost.addPassenger(sp.getValue(String.class));
-//        }
-//        return newPost;
-//    }
-//
-//    private void classificationHistoryOrActive(Post newPost){
-//        if(Login.user.getId().equals(newPost.getPublisherID()) || newPost.getPassengerIDs().contains(Login.user.getId())) {
-//            String DateAndTime = getDateAndTime(newPost.getLeavingDate() , newPost.getLeavingTime());
-//            if(!CompareDateAndTime(DateAndTime)) {
-//                history.add(newPost);
-//            }else {
-//                active.add(newPost);
-//            }
-//
-//        }
-//    }
+    private Post createPost(DataSnapshot snapshot) {
+        Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
+                snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
+                snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
+                snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
+        for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
+            newPost.addPassenger(sp.getValue(String.class));
+        }
+        return newPost;
+    }
+
+    private void classificationHistoryOrActive(Post newPost){
+        if(Login.user.getId().equals(newPost.getPublisherID()) || newPost.getPassengerIDs().contains(Login.user.getId())) {
+            String DateAndTime = getDateAndTime(newPost.getLeavingDate() , newPost.getLeavingTime());
+            if(!CompareDateAndTime(DateAndTime)) {
+                history.add(newPost);
+            }else {
+                active.add(newPost);
+            }
+
+        }
+    }
 
 
 
