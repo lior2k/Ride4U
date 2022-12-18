@@ -8,23 +8,23 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class dateAndTimeFormat {
+public class DateAndTimeFormat {
 
-    public static String getDateAndTime(String Date , String Time) {
+    public static String getDateAndTime(String date , String time) {
         String [] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
-        String [] Splited_String = Date.split("\\s+");
+        String [] Splited_String = date.split("\\s+");
         int MonthNumber =  Arrays.asList(months).indexOf(Splited_String[1])+1;
-        return  Splited_String[0]+"\\"+ MonthNumber +"\\"+Splited_String[2]+" "+Time;
+        return  Splited_String[0]+"\\"+ MonthNumber +"\\"+Splited_String[2]+" "+time;
 
     }
 
-    public static boolean CompareDateAndTime(String DateAndTime, String timeZone) {
+    public static boolean compareDateAndTime(String dateAndTime, String timeZone) {
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat format = new SimpleDateFormat("dd\\MM\\yyyy HH:mm");
         format.setTimeZone(TimeZone.getTimeZone(timeZone));
         Date PostDate;
         try {
-            PostDate = format.parse(DateAndTime);
+            PostDate = format.parse(dateAndTime);
             return (new Date().after(PostDate));
         } catch (ParseException e) {
             e.printStackTrace();

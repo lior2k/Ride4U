@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.Adapters.PostAdapter;
-import com.r4u.ride4u.Adapters.dateAndTimeFormat;
+import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
@@ -78,8 +78,8 @@ public class HomeFragment extends Fragment {
                     Post newPost = Post.createPost(snapshot);
 
                     // if post is full or user already joined or time has passed - don't show it
-                    String date_time = dateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
-                    if (!newPost.isFull() && !dateAndTimeFormat.CompareDateAndTime(date_time, "EET"))
+                    String date_time = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
+                    if (!newPost.isFull() && !DateAndTimeFormat.compareDateAndTime(date_time, "EET"))
                         posts.add(newPost);
                 }
             }

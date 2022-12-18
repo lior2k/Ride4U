@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.Objects.User;
 import com.r4u.ride4u.R;
 
 import java.util.Objects;
@@ -140,12 +141,21 @@ public class Register extends AppCompatActivity {
                     if (currentUser != null) {
                         databaseReference.child("users").child(idTxt).child("AuthUid").setValue(currentUser.getUid());
                     }
+
+//                    String uID = "";
+//                    FirebaseUser currentUser = authProfile.getCurrentUser();
+//                    if (currentUser != null) {
+//                        uID = currentUser.getUid();
+//                    }
+//                    User newUser = new User(firstnameTxt, lastnameTxt, emailTxt, idTxt, false, uID);
+//                    databaseReference.child("users").child(idTxt).setValue(newUser);
+//                    databaseReference.child("users").child(idTxt).child("userId").removeValue();
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                System.out.println(error.getCode());
             }
         });
     }

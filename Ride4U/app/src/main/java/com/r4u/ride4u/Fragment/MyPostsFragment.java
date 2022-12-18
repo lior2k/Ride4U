@@ -16,7 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.Adapters.PostAdapter;
-import com.r4u.ride4u.Adapters.dateAndTimeFormat;
+import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
@@ -103,8 +103,8 @@ public class MyPostsFragment extends Fragment {
 
     private void classificationHistoryOrActive(Post newPost){
         if(Login.user.getId().equals(newPost.getPublisherID()) || newPost.getPassengerIDs().contains(Login.user.getId())) {
-            String DateAndTime = dateAndTimeFormat.getDateAndTime(newPost.getLeavingDate() , newPost.getLeavingTime());
-            if(dateAndTimeFormat.CompareDateAndTime(DateAndTime, "GMT+1")) {
+            String DateAndTime = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate() , newPost.getLeavingTime());
+            if(DateAndTimeFormat.compareDateAndTime(DateAndTime, "GMT+1")) {
                 history.add(newPost);
             }else {
                 active.add(newPost);
