@@ -93,7 +93,7 @@ public class MyPostsFragment extends Fragment {
 
     private boolean CompareDateAndTime(String DateAndTime) {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("dd\\MM\\yyyy HH:mm");
-        format.setTimeZone(TimeZone.getTimeZone("EET"));
+        format.setTimeZone(TimeZone.getTimeZone("GMT+1"));
         Date PostDate;
         try {
             PostDate = format.parse(DateAndTime);
