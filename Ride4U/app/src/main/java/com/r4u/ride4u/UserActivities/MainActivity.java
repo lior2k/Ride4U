@@ -23,13 +23,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         setupNavBar();
 
+        // on create we load the home fragment straight away
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
     }
 
+    // setup the navigation bar to load the corresponding fragment
     private void setupNavBar() {
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
         BottomNavigationView.OnItemSelectedListener navigationItemSelectedListener =
                 new BottomNavigationView.OnItemSelectedListener() {
                     @SuppressLint("NonConstantResourceId")
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
                             case R.id.nav_add:
                                 item.setChecked(true);
                                 selectedFragment = new AddPostFragment();
-//                                startActivity(new Intent(MainActivity.this, AddPost.class)); // start the add post activity
                                 break;
 
                             case R.id.nav_profile:
