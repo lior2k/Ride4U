@@ -39,7 +39,6 @@ public class MyPostsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_myposts, container, false);
-
         setupListView(view);
         setupSwapButton(view);
 
