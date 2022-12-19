@@ -2,6 +2,8 @@ package com.r4u.ride4u.Objects;
 
 import androidx.annotation.NonNull;
 
+import com.r4u.ride4u.UserActivities.Login;
+
 
 public class User {
 
@@ -40,6 +42,10 @@ public class User {
 
     public String getId() {
         return id;
+    }
+
+    public String getFullName() {
+        return Login.user.getFirstname() + " " + Login.user.getLastname();
     }
 
     @NonNull

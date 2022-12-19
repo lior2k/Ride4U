@@ -9,6 +9,13 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateAndTimeFormat {
+    /**
+     * Returns a combined string of the given date and time in a specific format.
+     *
+     * @param date The date string in the format "day month year".
+     * @param time The time string in the format "hh:mm".
+     * @return A string containing the combined date and time in the format "day\month\year hh:mm".
+     */
 
     public static String getDateAndTime(String date , String time) {
         String [] months = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
@@ -17,6 +24,15 @@ public class DateAndTimeFormat {
         return  Splited_String[0]+"\\"+ MonthNumber +"\\"+Splited_String[2]+" "+time;
 
     }
+
+    /**
+     * Compares the given date and time with the current date and time in the specified time zone.
+     *
+     * @param dateAndTime The date and time string in the format "dd\\MM\\yyyy HH:mm".
+     * @param timeZone    The time zone to use for the comparison.
+     * @return true if the given date and time is before the current date and time in the specified time zone,
+     *         false otherwise.
+     */
 
     public static boolean compareDateAndTime(String dateAndTime, String timeZone) {
         @SuppressLint("SimpleDateFormat")
