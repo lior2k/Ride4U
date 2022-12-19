@@ -13,7 +13,7 @@ import com.r4u.ride4u.R;
 import com.r4u.ride4u.Objects.User;
 
 import java.util.ArrayList;
-
+// This class is an adapter for displaying a list of users in a list view.
 public class UsersAdapter extends ArrayAdapter<User> {
 
 
@@ -26,6 +26,7 @@ public class UsersAdapter extends ArrayAdapter<User> {
     }
 
     @Override
+    //   Returns a view for the specified position in the list view.
     public View getView(int position, View convertView, ViewGroup parent) {
         User user = getItem(position);
         if (convertView == null)
