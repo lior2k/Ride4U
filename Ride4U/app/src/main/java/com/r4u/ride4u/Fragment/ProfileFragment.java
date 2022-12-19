@@ -26,9 +26,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-        profileName = view.findViewById(R.id.profile_name);
-        profileEmail = view.findViewById(R.id.profile_email);
-        initProfile();
+
+        initProfile(view);
         setAdminBtn(view);
         return view;
     }
@@ -47,8 +46,10 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void initProfile() {
-        profileName.setText(Login.user.getFirstname() + " " + Login.user.getLastname());
+    private void initProfile(View view) {
+        profileName = view.findViewById(R.id.profile_name);
+        profileEmail = view.findViewById(R.id.profile_email);
+        profileName.setText(Login.user.getFullName());
         profileEmail.setText(Login.user.getEmail());
     }
 

@@ -17,7 +17,10 @@ import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
+import com.r4u.ride4u.UserActivities.MainActivity;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -82,6 +85,7 @@ public class HomeFragment extends Fragment {
                     if (!newPost.isFull() && !DateAndTimeFormat.compareDateAndTime(date_time, "EET"))
                         posts.add(newPost);
                 }
+
             }
 
             @Override
