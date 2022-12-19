@@ -21,15 +21,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ChangePrices extends AppCompatActivity {
-
+    // Fields
     AutoCompleteTextView autoCompleteTextViewCity;
     ArrayAdapter<String> adapterCities;
     HashMap<String, String> citiesAndPrices;
     ArrayList<String> citiesList;
-
+    // Buttons
     Button submitButton;
     TextView currentPrice;
-
+    // Database
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     String chosenCity;
     String newPrice;
@@ -46,6 +46,14 @@ public class ChangePrices extends AppCompatActivity {
         setupSubmitButton();
     }
 
+    /**
+     * Sets up the behavior of the submit button in the ChangePrices activity.
+     * When the submit button is clicked, the function checks if the city and new price fields have been filled out.
+     * If both fields have been filled out, the function checks if the chosen city is "Ariel".
+     * If the chosen city is "Ariel", a toast message is displayed.
+     * If the chosen city is not "Ariel", the function updates the price in the database.
+     * If either of the fields has not been filled out, a toast message is displayed.
+     */
     private void setupSubmitButton() {
         submitButton = findViewById(R.id.submit_button);
         submitButton.setOnClickListener(v -> {
@@ -56,8 +64,6 @@ public class ChangePrices extends AppCompatActivity {
 
                     chosenCity = autoCompleteTextViewCity.getText().toString();
                     newPrice = newPriceTxt.getText().toString();
-                    System.out.println(chosenCity);
-                    System.out.println(newPrice);
 
                     if (chosenCity.equals("Ariel")) {
                         Toast.makeText(ChangePrices.this, "Ariel price cannot change", Toast.LENGTH_SHORT).show();
@@ -72,12 +78,19 @@ public class ChangePrices extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets a new price for a city that exists in the database
+     * Show a toast message if a failure occures.
+     */
     private void ChangePriceInDataBase() {
         databaseReference.child("cities").child(chosenCity).setValue(newPrice)
                 .addOnSuccessListener(aVoid -> finish())
                 .addOnFailureListener(e -> Toast.makeText(getApplicationContext(),"Changing price failed!! Please try again later", Toast.LENGTH_LONG).show());
     }
 
+    /**
+     * Sets the new price to be shows on screen.
+     */
     private void setupNewPrice() {
         final TextInputLayout newPriceView = findViewById(R.id.new_price);
         final EditText newPriceTxt = newPriceView.getEditText();
@@ -88,6 +101,9 @@ public class ChangePrices extends AppCompatActivity {
         }
     }
 
+    /**
+     * Updates an existing city price.
+     */
     private void setupCurrentPrice() {
         currentPrice = findViewById(R.id.current_price);
         autoCompleteTextViewCity.setOnItemClickListener((parent, view, position, id) -> {
@@ -96,6 +112,11 @@ public class ChangePrices extends AppCompatActivity {
         });
     }
 
+    /**
+     * Initializes the cities and prices data structures.
+     * Creates a map and a list for storing the cities and their corresponding prices.
+     * Populates the map and list with data from the database by using a value event listener.
+     */
     private void initCitiesAndPrices() {
         citiesAndPrices = new HashMap<>();
         citiesList = new ArrayList<>();
@@ -115,6 +136,9 @@ public class ChangePrices extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up that list showed on the list toggle button from the "cities" database.
+     */
     private void setupCityAutoComplete() {
         autoCompleteTextViewCity = findViewById(R.id.city);
         adapterCities = new ArrayAdapter<>(this, R.layout.cities_list, citiesList);

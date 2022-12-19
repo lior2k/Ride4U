@@ -78,16 +78,19 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    // go to register activity
     private void setupRegisterButton() {
         final Button registerBtn = findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(view -> startActivity(new Intent(Login.this, Register.class)));
     }
 
+    // go to reset password activity
     private void setupForgotPasswordButton() {
         final Button forgotPWBtn = findViewById(R.id.forgotPWBtn);
         forgotPWBtn.setOnClickListener(view -> startActivity(new Intent(Login.this, ForgotPassword.class)));
     }
 
+    // get the email stored at realtime database to compare with the email inserted.
     private void getIdByEmail(String email) {
         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

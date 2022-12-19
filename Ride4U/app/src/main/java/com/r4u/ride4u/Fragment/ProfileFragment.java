@@ -22,6 +22,7 @@ public class ProfileFragment extends Fragment {
     TextView profileEmail;
     Button adminBtn;
 
+    // This function creates the screen using the data pulled from the functions below.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -32,6 +33,8 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
+    // setting the admin options button
+    // if the user viewing the profile page is an admin he'll see an admin options button
     private void setAdminBtn(View view) {
         adminBtn = view.findViewById(R.id.admin_options);
         if (!Login.user.getIsAdmin()) {
@@ -46,11 +49,13 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+
+    // Initialize the profile's name and email acoording to the set database.
+
     private void initProfile(View view) {
         profileName = view.findViewById(R.id.profile_name);
         profileEmail = view.findViewById(R.id.profile_email);
         profileName.setText(Login.user.getFullName());
         profileEmail.setText(Login.user.getEmail());
     }
-
 }

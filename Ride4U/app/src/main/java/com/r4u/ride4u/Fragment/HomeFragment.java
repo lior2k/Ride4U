@@ -17,7 +17,10 @@ import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
+import com.r4u.ride4u.UserActivities.MainActivity;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
@@ -25,6 +28,7 @@ public class HomeFragment extends Fragment {
     ListView listView;
     PostAdapter postAdapter;
     public static ArrayList<Post> posts = new ArrayList<>();
+    ValueEventListener valueEventListener;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
 
     @Override
@@ -41,6 +45,7 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    // setup the search bar to filter the post list according to the poster (driver) full name.
     private void setupSearchView(View view) {
         searchView = view.findViewById(R.id.search_bar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -72,7 +77,7 @@ public class HomeFragment extends Fragment {
     // Iterate over firebase's posts, create each post and add it to an arraylist which is later used
     // by the listview adapter to represent the posts onto the screen.
     private void initPostList() {
-        databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
+        valueEventListener = databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 posts = new ArrayList<>();
@@ -93,6 +98,12 @@ public class HomeFragment extends Fragment {
             }
 
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        databaseReference.removeEventListener(valueEventListener);
     }
 
 }
