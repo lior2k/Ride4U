@@ -63,6 +63,9 @@ public class HomeFragment extends Fragment {
         listView = view.findViewById(R.id.list_view);
         postAdapter = new PostAdapter(getContext(), 0, posts, true);
         listView.setAdapter(postAdapter);
+
+
+
     }
 
 

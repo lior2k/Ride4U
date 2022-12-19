@@ -37,7 +37,7 @@ public class MyPostsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_myposts, container, false);
         setupListView(view);
 
@@ -47,7 +47,7 @@ public class MyPostsFragment extends Fragment {
 
         return view;
     }
-
+    // Create a new PostAdapters and set it to be the listviews adapter.
     private void setupListView(View view) {
         active_rides = view.findViewById(R.id.history_);
         ride_history = view.findViewById(R.id.active_);
@@ -57,7 +57,7 @@ public class MyPostsFragment extends Fragment {
         active_rides.setAdapter(ActiveRideAdapter);
     }
 
-
+    // In case of clicking on the toggle, switches between the two lists
     private void setupSwapButton(View view) {
         listTitle = view.findViewById(R.id.listTitle);
         ToggleButton toggleButton = view.findViewById(R.id.toggle_active_history);
@@ -77,7 +77,8 @@ public class MyPostsFragment extends Fragment {
         ride_history.setVisibility(View.GONE);
         listTitle.setText(requireContext().getString(R.string.activeRides));
     }
-
+    // Iterate over firebase's posts, create each post and add it to an arraylist that belongs to him which is later used
+    // by the listview adapter to represent the posts onto the screen.
     private void initPostList() {
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
@@ -100,7 +101,7 @@ public class MyPostsFragment extends Fragment {
         });
 
     }
-
+    // classify if the post belongs to active posts or history
     private void classificationHistoryOrActive(Post newPost){
         if(Login.user.getId().equals(newPost.getPublisherID()) || newPost.getPassengerIDs().contains(Login.user.getId())) {
             String DateAndTime = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate() , newPost.getLeavingTime());
