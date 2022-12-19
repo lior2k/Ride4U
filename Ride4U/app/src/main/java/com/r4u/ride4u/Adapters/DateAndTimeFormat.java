@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateAndTimeFormat {
-
     /**
      * Returns a combined string of the given date and time in a specific format.
      *
