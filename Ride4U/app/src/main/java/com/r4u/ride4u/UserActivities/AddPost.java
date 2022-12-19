@@ -1,10 +1,12 @@
 package com.r4u.ride4u.UserActivities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -54,6 +56,8 @@ public class AddPost extends AppCompatActivity {
     private String time;
     private String cost;
 
+    final int MAX_SEATS = 4;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +92,10 @@ public class AddPost extends AppCompatActivity {
                         Toast.makeText(AddPost.this, "Either source of destination has to be Ariel!", Toast.LENGTH_SHORT).show();
                     } else if (source.equals(destination)) {
                         Toast.makeText(AddPost.this, "Source and Destination must be different!", Toast.LENGTH_SHORT).show();
+                    } else if (Integer.parseInt(seats) > MAX_SEATS) {
+                        Toast.makeText(AddPost.this, "Max possible seats is 4", Toast.LENGTH_SHORT).show();
+                    } else if (!checkValidTime()) {
+                        Toast.makeText(AddPost.this, "Time has passed", Toast.LENGTH_SHORT).show();
                     } else {
                         insertPostToDataBase();
                         finish();
@@ -100,6 +108,15 @@ public class AddPost extends AppCompatActivity {
         });
     }
 
+    private boolean checkValidTime() {
+        Calendar cal = Calendar.getInstance();
+        int currHour = cal.get(Calendar.HOUR_OF_DAY);
+        int currMinute = cal.get(Calendar.MINUTE);
+        if (hour < currHour) {
+            return false;
+        } else return hour != currHour || minute >= currMinute;
+    }
+
     private void insertPostToDataBase() {
         DatabaseReference newPostRef = databaseReference.child("posts").push();
         if (newPostRef.getKey() != null) {
@@ -110,6 +127,7 @@ public class AddPost extends AppCompatActivity {
 //            databaseReference.child("users").child(Login.user.getId()).child("rideHistory").setValue(Login.user.getRideHistory());
         }
     }
+
 
     private void setupTimeButton() {
         timeButton = findViewById(R.id.time_picker_button);
@@ -156,7 +174,6 @@ public class AddPost extends AppCompatActivity {
                 dateButton.setText(date);
             }
         };
-
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
@@ -164,6 +181,8 @@ public class AddPost extends AppCompatActivity {
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        DatePicker datePicker = datePickerDialog.getDatePicker();
+        datePicker.setMinDate(cal.getTimeInMillis());
     }
 
     private String makeDateString(int dayOfMonth, int month, int year) {

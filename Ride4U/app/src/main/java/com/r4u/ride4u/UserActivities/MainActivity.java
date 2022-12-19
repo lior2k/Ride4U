@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         setupNavBar();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment(), "homeTag").commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
     }
 
     private void setupNavBar() {
@@ -37,33 +37,30 @@ public class MainActivity extends AppCompatActivity {
 
                         switch (item.getItemId()) {
                             case R.id.nav_home:
+                                item.setChecked(true);
                                 selectedFragment = new HomeFragment();
                                 break;
+
                             case R.id.nav_posts:
+                                item.setChecked(true);
                                 selectedFragment = new MyPostsFragment();
                                 break;
 
                             case R.id.nav_add:
+                                item.setChecked(true);
                                 selectedFragment = null;
                                 startActivity(new Intent(MainActivity.this, AddPost.class)); // start the add post activity
                                 break;
 
                             case R.id.nav_profile:
-//                            SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
-//                            editor.putString("profileId", FirebaseAuth.getInstance().getCurrentUser().getUid());
-//                            editor.apply();
+                                item.setChecked(true);
                                 selectedFragment = new ProfileFragment();
                                 break;
                         }
 
                         if (selectedFragment != null) {
-                            if (selectedFragment instanceof HomeFragment) {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment, "homeTag").commit();
-                            } else {
-                                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                            }
+                            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
                         }
-
                         return false;
                     }
 

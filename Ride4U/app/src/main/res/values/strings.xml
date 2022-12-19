@@ -22,4 +22,6 @@
     <string name="fullName">%1$s %2$s</string>
     <string name="id">%1$s</string>
     <string name="costNIS">%1$s NIS</string>
+    <string name="activeRides">Active Rides</string>
+    <string name="historyRides">History Rides</string>
 </resources>

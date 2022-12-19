@@ -40,12 +40,8 @@ public class MyPostsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_myposts, container, false);
         setupListView(view);
-        setupSwapButton(view);
 
-        active_rides.setVisibility(View.VISIBLE);
-        ride_history.setVisibility(View.GONE);
-        listTitle = view.findViewById(R.id.listTitle);
-        listTitle.setText("Active Rides");
+        setupSwapButton(view);
 
         initPostList();
 
@@ -63,19 +59,23 @@ public class MyPostsFragment extends Fragment {
 
 
     private void setupSwapButton(View view) {
+        listTitle = view.findViewById(R.id.listTitle);
         ToggleButton toggleButton = view.findViewById(R.id.toggle_active_history);
         toggleButton.setOnClickListener(v -> {
             if(toggleButton.isChecked()) {
                 active_rides.setVisibility(View.GONE);
                 ride_history.setVisibility(View.VISIBLE);
-                listTitle.setText("History Rides");
+                listTitle.setText(requireContext().getString(R.string.historyRides));
             } else {
                 active_rides.setVisibility(View.VISIBLE);
                 ride_history.setVisibility(View.GONE);
-                listTitle.setText("Active Rides");
+                listTitle.setText(requireContext().getString(R.string.activeRides));
             }
         });
 
+        active_rides.setVisibility(View.VISIBLE);
+        ride_history.setVisibility(View.GONE);
+        listTitle.setText(requireContext().getString(R.string.activeRides));
     }
 
     private void initPostList() {
@@ -90,6 +90,7 @@ public class MyPostsFragment extends Fragment {
                     classificationHistoryOrActive(newPost);
 
                 }
+
             }
 
             @Override

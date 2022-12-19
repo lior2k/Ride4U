@@ -93,9 +93,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="5dp"
-        android:background="#000"
-        android:text="SIGN UP"
-        android:textColor="@color/black"/>
+        android:background="@drawable/background_button"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:text="SIGN UP"/>
 
     <Button
         android:id="@+id/backToLoginBtn"
@@ -103,8 +104,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:background="#000"
-        android:text="Back to login"
-        android:textColor="@color/black" />
+        android:background="@drawable/background_button"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:text="Back to login"/>
 
 </LinearLayout>
