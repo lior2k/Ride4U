@@ -47,7 +47,6 @@ public class RemoveUser extends AppCompatActivity {
                 usersAdapter.getFilter().filter(query);
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 usersAdapter.getFilter().filter(newText);
@@ -78,7 +77,6 @@ public class RemoveUser extends AppCompatActivity {
     private void removeUserFromAuthDB(String Uid) {
         autoProfile = FirebaseAuth.getInstance();
     }
-
 
     private void removeUserFromRealTimeDB(User user) {
 
