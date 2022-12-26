@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import androidx.appcompat.widget.SearchView;
 import com.google.firebase.database.DataSnapshot;
@@ -48,6 +49,9 @@ public class HomeFragment extends Fragment {
     // setup the search bar to filter the post list according to the poster (driver) full name.
     private void setupSearchView(View view) {
         searchView = view.findViewById(R.id.search_bar);
+        EditText searchEditText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
