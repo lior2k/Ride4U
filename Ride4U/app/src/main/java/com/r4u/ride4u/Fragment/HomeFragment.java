@@ -72,11 +72,7 @@ public class HomeFragment extends Fragment {
         listView = view.findViewById(R.id.list_view);
         postAdapter = new PostAdapter(getContext(), 0, posts, true);
         listView.setAdapter(postAdapter);
-
-
-
     }
-
 
     // Iterate over firebase's posts, create each post and add it to an arraylist which is later used
     // by the listview adapter to represent the posts onto the screen.
