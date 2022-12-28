@@ -15,7 +15,7 @@
         android:layout_marginTop="8dp"
         android:text="Posts"
         android:textSize="30sp"
-        android:textColor="@color/teal_200"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:textAlignment="center">
     </TextView>
@@ -29,7 +29,9 @@
         app:layout_constraintHeight="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="Search Item">
+        app:queryHint="Search Item"
+
+        >
     </androidx.appcompat.widget.SearchView>
 
     <ListView
@@ -41,7 +43,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent">
+        app:layout_constraintTop_toBottomOf="parent"
+        android:divider="@color/white"
+        android:dividerHeight="1dp">
     </ListView>
 
 </LinearLayout>

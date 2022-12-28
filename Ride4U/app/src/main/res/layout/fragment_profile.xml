@@ -31,7 +31,8 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="#064A33">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/constraintLayout3"
@@ -383,6 +384,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#064A33"
                 >
                 <Button
                     android:id="@+id/edit_profile"
@@ -391,7 +393,7 @@
                     android:layout_marginLeft="22dp"
                     android:layout_marginRight="22dp"
                     android:layout_marginBottom="15dp"
-                    android:background="@drawable/background_button"
+                    android:background="@drawable/edittext_background"
                     android:textColor="#ffffff"
                     android:textStyle="bold"
                     android:textSize="18sp"
@@ -404,7 +406,7 @@
                     android:layout_below="@+id/edit_profile"
                     android:layout_marginLeft="22dp"
                     android:layout_marginRight="22dp"
-                    android:background="@drawable/background_button"
+                    android:background="@drawable/edittext_background"
                     android:text="Admin Options"
                     android:textColor="#ffffff"
                     android:textSize="18sp"
