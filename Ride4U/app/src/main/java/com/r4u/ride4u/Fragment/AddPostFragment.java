@@ -128,13 +128,20 @@ public class AddPostFragment extends Fragment {
     Check if the time selected by the user has already passed.
     @return true if the time selected by the user has not yet passed, false if it has
     */
+
     private boolean checkValidTime() {
         Calendar cal = Calendar.getInstance();
-        int currHour = cal.get(Calendar.HOUR_OF_DAY);
-        int currMinute = cal.get(Calendar.MINUTE);
-        if (hour < currHour) {
-            return false;
-        } else return hour != currHour || minute >= currMinute;
+        int currYear = cal.get(Calendar.YEAR);
+        int currMonth = cal.get(Calendar.MONTH);
+        int currDay = cal.get(Calendar.DAY_OF_MONTH);
+        if (date.equals(makeDateString(currDay, currMonth, currYear))) {
+            int currHour = cal.get(Calendar.HOUR_OF_DAY);
+            int currMinute = cal.get(Calendar.MINUTE);
+            if (hour < currHour) {
+                return false;
+            } else return hour != currHour || minute >= currMinute;
+        }
+        return true;
     }
 
     /**
