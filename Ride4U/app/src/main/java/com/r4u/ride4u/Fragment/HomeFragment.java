@@ -80,19 +80,26 @@ public class HomeFragment extends Fragment {
 
     // Iterate over firebase's posts, create each post and add it to an arraylist which is later used
     // by the listview adapter to represent the posts onto the screen.
+
+
+
+
+
     private void initPostList() {
         valueEventListener = databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 posts = new ArrayList<>();
-                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-
-                    Post newPost = Post.createPost(snapshot);
-
-                    // if post is full or user already joined or time has passed - don't show it
-                    String date_time = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
-                    if (!newPost.isFull() && !DateAndTimeFormat.compareDateAndTime(date_time, "EET"))
-                        posts.add(newPost);
+                for(DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
+                    for(DataSnapshot cities : toOrfrom.getChildren()) {
+                        for(DataSnapshot snapshot : cities.getChildren()) {
+                            Post newPost = Post.createPost(snapshot);
+                            // if post is full or user already joined or time has passed - don't show it
+                            String date_time = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
+                            if (!newPost.isFull() && !DateAndTimeFormat.compareDateAndTime(date_time, "EET"))
+                                posts.add(newPost);
+                        }
+                    }
                 }
             }
 
