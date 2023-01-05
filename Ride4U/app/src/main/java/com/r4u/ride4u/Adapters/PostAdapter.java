@@ -98,10 +98,14 @@ public class PostAdapter extends ArrayAdapter<Post> {
                     return;
                 }
                 // user joined the ride - update database
-                databaseReference.child("posts").child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
-                databaseReference.child("posts").child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
+                DatabaseReference postRoot = post.getSource().equals("Ariel") ?
+                        databaseReference.child("posts").child("fromAriel").child(post.getDestination()) :
+                        databaseReference.child("posts").child("toAriel").child(post.getSource());
+
+                postRoot.child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
+                postRoot.child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
                 if (post.isFull())
-                    databaseReference.child("posts").child(post.getPostID()).child("full").setValue(true);
+                    postRoot.child(post.getPostID()).child("full").setValue(true);
 
                 // TODO notify driver
 

@@ -125,10 +125,9 @@ public class AddPostFragment extends Fragment {
 
 
     /**
-    Check if the time selected by the user has already passed.
-    @return true if the time selected by the user has not yet passed, false if it has
-    */
-
+     Check if the time selected by the user has already passed.
+     @return true if the time selected by the user has not yet passed, false if it has
+     */
     private boolean checkValidTime() {
         Calendar cal = Calendar.getInstance();
         int currYear = cal.get(Calendar.YEAR);
@@ -153,7 +152,7 @@ public class AddPostFragment extends Fragment {
         DatabaseReference newPostRef;
 
         if(destination.equals("Ariel")){
-             newPostRef = databaseReference.child("posts").child("toAriel").child(source).push();
+            newPostRef = databaseReference.child("posts").child("toAriel").child(source).push();
         }
         else{
             newPostRef = databaseReference.child("posts").child("fromAriel").child(destination).push();
