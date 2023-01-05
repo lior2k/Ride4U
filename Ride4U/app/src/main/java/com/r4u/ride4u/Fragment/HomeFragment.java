@@ -18,10 +18,9 @@ import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
-import com.r4u.ride4u.UserActivities.MainActivity;
 
 import java.util.ArrayList;
-import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 
 public class HomeFragment extends Fragment {
 
@@ -39,9 +38,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        initPostList();
-        setupListView(view);
-        setupSearchView(view);
+        initPostList(view);
 
         return view;
     }
@@ -74,18 +71,18 @@ public class HomeFragment extends Fragment {
         listView.setAdapter(postAdapter);
     }
 
+
     // Iterate over firebase's posts, create each post and add it to an arraylist which is later used
     // by the listview adapter to represent the posts onto the screen.
-
-
-    private void initPostList() {
+    private void initPostList(View view) {
         valueEventListener = databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+
                 posts = new ArrayList<>();
-                for(DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
-                    for(DataSnapshot cities : toOrfrom.getChildren()) {
-                        for(DataSnapshot snapshot : cities.getChildren()) {
+                for (DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
+                    for (DataSnapshot cities : toOrfrom.getChildren()) {
+                        for (DataSnapshot snapshot : cities.getChildren()) {
                             Post newPost = Post.createPost(snapshot);
                             // if post is full or user already joined or time has passed - don't show it
                             String date_time = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
@@ -94,6 +91,9 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 }
+                setupListView(view);
+                setupSearchView(view);
+                view.refreshDrawableState();
             }
 
             @Override
@@ -103,6 +103,7 @@ public class HomeFragment extends Fragment {
 
         });
     }
+
 
     @Override
     public void onDestroy() {
