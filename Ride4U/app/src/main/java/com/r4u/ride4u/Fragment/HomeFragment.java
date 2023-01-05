@@ -31,6 +31,9 @@ public class HomeFragment extends Fragment {
     ValueEventListener valueEventListener;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
 
+    // on first launch setup listview and searchview
+    public boolean setup = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -91,8 +94,12 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 }
-                setupListView(view);
-                setupSearchView(view);
+
+                if (!setup) {
+                    setupListView(view);
+                    setupSearchView(view);
+                    setup = true;
+                }
                 view.refreshDrawableState();
             }
 
