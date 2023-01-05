@@ -39,20 +39,16 @@ public class MyPostsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_myposts, container, false);
-        setupListView(view);
 
+        initPostList(view);
         setupSwapButton(view);
-
-        initPostList();
 
         return view;
     }
     /**
     This function sets up a list view for displaying active and history rides.
      */
-    private void setupListView(View view) {
-        active_rides = view.findViewById(R.id.history_);
-        ride_history = view.findViewById(R.id.active_);
+    private void setupListView() {
         HistoryRideAdapter = new PostAdapter(getContext(), 0, history, false);
         ActiveRideAdapter = new PostAdapter(getContext(), 0, active, false);
         ride_history.setAdapter(HistoryRideAdapter);
@@ -90,7 +86,9 @@ public class MyPostsFragment extends Fragment {
     */
 
 
-    private void initPostList() {
+    private void initPostList(View view) {
+        active_rides = view.findViewById(R.id.history_);
+        ride_history = view.findViewById(R.id.active_);
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
@@ -104,6 +102,8 @@ public class MyPostsFragment extends Fragment {
                         }
                     }
                 }
+                setupListView();
+                view.refreshDrawableState();
             }
 
             @Override
