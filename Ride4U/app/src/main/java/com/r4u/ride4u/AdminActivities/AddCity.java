@@ -58,6 +58,14 @@ public class AddCity extends AppCompatActivity {
         setupSubmitButton();
     }
 
+    /**
+     * Sets up the behavior of the submit button in the AddCity activity.
+     * When the submit button is clicked, the function checks if the city and price fields have been filled out.
+     * If both fields have been filled out, the function checks if the city already exists in the database.
+     * If the city does not exist in the database, the function adds the city and price to the database and closes the activity.
+     * If the city does exist in the database, a toast message is displayed.
+     * If either of the fields has not been filled out, a toast message is displayed.
+     */
     public void setupSubmitButton() {
         submitBtn = findViewById(R.id.submit_button_c);
         submitBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +118,10 @@ public class AddCity extends AppCompatActivity {
 //        }
 //    }
 
+    /**
+     * Checks if a city already exists in the database
+     * @return true if the city exists or false if it isnt.
+     */
     private boolean checkCityExistsInDatabase() {
         flag = false;
         databaseReference.child("cities").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -126,7 +138,6 @@ public class AddCity extends AppCompatActivity {
                 System.out.println(error.getMessage());
             }
         });
-
         return flag;
     }
 }

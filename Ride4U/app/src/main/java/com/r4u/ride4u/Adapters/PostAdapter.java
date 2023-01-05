@@ -21,7 +21,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     boolean usedByHomeFrg; // should be true if this adapter is used for the home fragment posts
 
-
     public PostAdapter(Context ctx, int resource, List<Post> posts, boolean usedByHomeFrg) {
         super(ctx, resource, posts);
         this.usedByHomeFrg = usedByHomeFrg;
@@ -46,6 +45,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     }
 
     // Dynamically draw person drawings on the post layout according to the amount of available seats and total seats.
+    // empty person for available seats and filled person for a taken seat.
     private void addPersonsDrawings(View convertView, Post post) {
         RelativeLayout RL = convertView.findViewById(R.id.relativeLayout);
         int persons = Integer.parseInt(post.getSeats());
@@ -113,6 +113,5 @@ public class PostAdapter extends ArrayAdapter<Post> {
             }
         });
     }
-
 
 }
