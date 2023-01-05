@@ -69,6 +69,10 @@ public class AddPost extends AppCompatActivity {
         setupSubmitButton();
     }
 
+    /*
+        setupSubmitButton like it's name handles the submit button, when clicked takes all values from all fields
+        and check if it's not null and valid. Finally insert the post info to the data base.
+    */
     private void setupSubmitButton() {
         submitButton = findViewById(R.id.submit_button);
         submitButton.setOnClickListener(v -> {
@@ -87,6 +91,7 @@ public class AddPost extends AppCompatActivity {
                     date = dateButton.getText().toString();
                     time = timeButton.getText().toString();
                     cost = (source.equals("Ariel")) ? citiesAndPrices.get(destination) : citiesAndPrices.get(source);
+
 
                     if ((!source.equals("Ariel") && !destination.equals("Ariel"))) {
                         Toast.makeText(AddPost.this, "Either source of destination has to be Ariel!", Toast.LENGTH_SHORT).show();
