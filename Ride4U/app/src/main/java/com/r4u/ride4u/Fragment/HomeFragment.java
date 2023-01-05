@@ -78,9 +78,6 @@ public class HomeFragment extends Fragment {
     // by the listview adapter to represent the posts onto the screen.
 
 
-
-
-
     private void initPostList() {
         valueEventListener = databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override

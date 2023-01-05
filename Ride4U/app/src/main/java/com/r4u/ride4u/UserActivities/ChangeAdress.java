@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.r4u.ride4u.R;
 
-public class ChangeEmail extends AppCompatActivity {
+public class ChangeAdress extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

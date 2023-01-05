@@ -98,8 +98,17 @@ public class PostAdapter extends ArrayAdapter<Post> {
                     return;
                 }
                 // user joined the ride - update database
-                databaseReference.child("posts").child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
-                databaseReference.child("posts").child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
+                /** PROBLEM HERE
+                 * Since we updated posts in firebase to have To-Ariel and From-Ariel and inside each the relevant city
+                 * we now don't have direct access to the post-id meaning we have to know on-click if the post is inside To-Ariel or From-Ariel and then
+                 * we need to know which city is related to the post and just then get the post id.
+                 * Sol.1 - Create 2 seperate directories in firebase to hold the posts, one for search using the method above.
+                 * second for the whole list of posts to update the wanted post.
+                 */
+                databaseReference.child("posts").child("fromAriel").child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
+                databaseReference.child("posts").child("fromAriel").child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
+                databaseReference.child("posts").child("toAriel").child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
+                databaseReference.child("posts").child("toAriel").child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
                 if (post.isFull())
                     databaseReference.child("posts").child(post.getPostID()).child("full").setValue(true);
 

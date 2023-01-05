@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.r4u.ride4u.AdminActivities.Operations;
+import com.r4u.ride4u.UserActivities.ChangeAdress;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.R;
 
@@ -20,6 +21,8 @@ public class ProfileFragment extends Fragment {
     //    private String user_password;
     TextView profileName;
     TextView profileEmail;
+    TextView changePassword;
+    TextView changeAdress;
     Button adminBtn;
 
     // This function creates the screen using the data pulled from the functions below.
@@ -49,7 +52,23 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private void setChangeBtns(View view) {
+        changePassword = view.findViewById(R.id.change_pass_text);
+        changeAdress = view.findViewById(R.id.adress_text2);
 
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), ChangeAdress.class));
+            }
+        });
+        changeAdress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), ChangeAdress.class));
+            }
+        });
+    }
     // Initialize the profile's name and email acoording to the set database.
 
     private void initProfile(View view) {
