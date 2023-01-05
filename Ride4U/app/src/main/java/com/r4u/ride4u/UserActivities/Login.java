@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -29,7 +30,7 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login2);
 
         setupLoginButton();
         setupRegisterButton();
@@ -80,13 +81,13 @@ public class Login extends AppCompatActivity {
 
     // go to register activity
     private void setupRegisterButton() {
-        final Button registerBtn = findViewById(R.id.registerBtn);
+        final TextView registerBtn = findViewById(R.id.registerBtn);
         registerBtn.setOnClickListener(view -> startActivity(new Intent(Login.this, Register.class)));
     }
 
     // go to reset password activity
     private void setupForgotPasswordButton() {
-        final Button forgotPWBtn = findViewById(R.id.forgotPWBtn);
+        final TextView forgotPWBtn = findViewById(R.id.forgotPWBtn);
         forgotPWBtn.setOnClickListener(view -> startActivity(new Intent(Login.this, ForgotPassword.class)));
     }
 

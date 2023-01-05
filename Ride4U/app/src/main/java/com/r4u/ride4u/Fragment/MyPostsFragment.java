@@ -88,19 +88,22 @@ public class MyPostsFragment extends Fragment {
      Iterate over firebase's posts, create each post and add it to an arraylist that belongs to him which is later used
      by the listview adapter to represent the posts onto the screen.
     */
+
+
     private void initPostList() {
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 history = new ArrayList<>();
                 active = new ArrayList<>();
-                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-
-                    Post newPost = Post.createPost(snapshot);
-                    classificationHistoryOrActive(newPost);
-
+                for(DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
+                    for(DataSnapshot cities : toOrfrom.getChildren()) {
+                        for(DataSnapshot snapshot : cities.getChildren()) {
+                            Post newPost = Post.createPost(snapshot);
+                            classificationHistoryOrActive(newPost);
+                        }
+                    }
                 }
-
             }
 
             @Override

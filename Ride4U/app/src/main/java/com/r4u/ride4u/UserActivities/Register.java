@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +39,7 @@ public class Register extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_register2);
 
         setupSignUpButton();
         setupBackToLoginBtn();
@@ -90,7 +91,7 @@ public class Register extends AppCompatActivity {
     }
 
     private void setupBackToLoginBtn() {
-        final Button backToLoginBtn = findViewById(R.id.backToLoginBtn);
+        final TextView backToLoginBtn = findViewById(R.id.backToLoginBtn);
         backToLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

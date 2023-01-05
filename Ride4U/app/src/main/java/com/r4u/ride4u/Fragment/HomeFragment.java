@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 import androidx.appcompat.widget.SearchView;
 import com.google.firebase.database.DataSnapshot;
@@ -48,6 +49,9 @@ public class HomeFragment extends Fragment {
     // setup the search bar to filter the post list according to the poster (driver) full name.
     private void setupSearchView(View view) {
         searchView = view.findViewById(R.id.search_bar);
+        EditText searchEditText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.white));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -76,19 +80,26 @@ public class HomeFragment extends Fragment {
 
     // Iterate over firebase's posts, create each post and add it to an arraylist which is later used
     // by the listview adapter to represent the posts onto the screen.
+
+
+
+
+
     private void initPostList() {
         valueEventListener = databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 posts = new ArrayList<>();
-                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
-
-                    Post newPost = Post.createPost(snapshot);
-
-                    // if post is full or user already joined or time has passed - don't show it
-                    String date_time = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
-                    if (!newPost.isFull() && !DateAndTimeFormat.compareDateAndTime(date_time, "EET"))
-                        posts.add(newPost);
+                for(DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
+                    for(DataSnapshot cities : toOrfrom.getChildren()) {
+                        for(DataSnapshot snapshot : cities.getChildren()) {
+                            Post newPost = Post.createPost(snapshot);
+                            // if post is full or user already joined or time has passed - don't show it
+                            String date_time = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
+                            if (!newPost.isFull() && !DateAndTimeFormat.compareDateAndTime(date_time, "EET"))
+                                posts.add(newPost);
+                        }
+                    }
                 }
             }
 

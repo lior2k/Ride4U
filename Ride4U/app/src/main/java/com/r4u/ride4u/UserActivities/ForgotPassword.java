@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +24,7 @@ public class ForgotPassword extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+        setContentView(R.layout.activity_forgot_password2);
 
         setupSendNewPasswordButton();
         setupBackBtn();
@@ -88,7 +89,7 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     private void setupBackBtn() {
-        final Button backBtn = findViewById(R.id.backBtn);
+        final TextView backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(view -> finish());
     }
 
