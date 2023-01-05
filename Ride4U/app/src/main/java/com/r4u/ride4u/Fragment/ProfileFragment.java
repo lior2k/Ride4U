@@ -12,7 +12,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.r4u.ride4u.AdminActivities.Operations;
-import com.r4u.ride4u.UserActivities.ChangeAdress;
+//import com.r4u.ride4u.UserActivities.ChangeAdress;
+import com.r4u.ride4u.UserActivities.EditProfile;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.R;
 
@@ -21,9 +22,8 @@ public class ProfileFragment extends Fragment {
     //    private String user_password;
     TextView profileName;
     TextView profileEmail;
-    TextView changePassword;
-    TextView changeAdress;
     Button adminBtn;
+    Button editProfile;
 
     // This function creates the screen using the data pulled from the functions below.
     @Override
@@ -32,6 +32,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         initProfile(view);
+        setEditProfileBtn(view);
         setAdminBtn(view);
         return view;
     }
@@ -52,20 +53,12 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    private void setChangeBtns(View view) {
-        changePassword = view.findViewById(R.id.change_pass_text);
-        changeAdress = view.findViewById(R.id.adress_text2);
-
-        changePassword.setOnClickListener(new View.OnClickListener() {
+    private void setEditProfileBtn(View view) {
+        editProfile = view.findViewById(R.id.edit_profile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), ChangeAdress.class));
-            }
-        });
-        changeAdress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), ChangeAdress.class));
+                startActivity(new Intent(getContext(), EditProfile.class));
             }
         });
     }

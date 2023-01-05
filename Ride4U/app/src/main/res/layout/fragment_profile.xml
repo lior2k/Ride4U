@@ -261,11 +261,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Change"
+                                android:text="*********"
                                 android:textAlignment="viewEnd"
                                 android:textColor="#5B5B5B"
-                                android:textSize="16sp"
-                                android:clickable="true"/>
+                                android:textSize="16sp"/>
 
                         </LinearLayout>
 
@@ -334,11 +333,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Change"
+                                android:text="Adress filler"
                                 android:textAlignment="viewEnd"
                                 android:textColor="#5B5B5B"
-                                android:textSize="16sp"
-                                android:clickable="true"/>
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
