@@ -59,7 +59,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -71,14 +71,9 @@
         android:hint="Number of seats"
         android:background="@color/white"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    </com.google.android.material.textfield.TextInputEditText>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textColorHint="#757575" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/date_picker_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,7 +89,7 @@
         style="?android:spinnerStyle"
         />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/time_picker_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -110,7 +105,7 @@
         style="?android:spinnerStyle"
         />
 
-    <com.google.android.material.textfield.TextInputLayout
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -120,10 +115,7 @@
         android:hint="Description"
         android:background="@color/white"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </com.google.android.material.textfield.TextInputLayout>
+    </com.google.android.material.textfield.TextInputEditText>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/submit_button"
