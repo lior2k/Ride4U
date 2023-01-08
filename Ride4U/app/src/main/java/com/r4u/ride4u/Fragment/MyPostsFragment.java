@@ -27,9 +27,11 @@ public class MyPostsFragment extends Fragment {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     ListView active_rides;
     ListView ride_history;
-    PostAdapter HistoryRideAdapter;
-    PostAdapter ActiveRideAdapter;
+    PostAdapter historyRideAdapter;
+    PostAdapter activeRideAdapter;
     TextView listTitle;
+
+    private boolean setup = false;
 
     public static ArrayList<Post> history = new ArrayList<>();
     public static ArrayList<Post> active = new ArrayList<>();
@@ -49,10 +51,10 @@ public class MyPostsFragment extends Fragment {
      This function sets up a list view for displaying active and history rides.
      */
     private void setupListView() {
-        HistoryRideAdapter = new PostAdapter(getContext(), 0, history, false);
-        ActiveRideAdapter = new PostAdapter(getContext(), 0, active, false);
-        ride_history.setAdapter(HistoryRideAdapter);
-        active_rides.setAdapter(ActiveRideAdapter);
+        historyRideAdapter = new PostAdapter(getActivity(), 0, history, Type.History);
+        activeRideAdapter = new PostAdapter(getActivity(), 0, active, Type.Active);
+        ride_history.setAdapter(historyRideAdapter);
+        active_rides.setAdapter(activeRideAdapter);
     }
 
     /**
@@ -69,6 +71,7 @@ public class MyPostsFragment extends Fragment {
                 active_rides.setVisibility(View.GONE);
                 ride_history.setVisibility(View.VISIBLE);
                 listTitle.setText(requireContext().getString(R.string.historyRides));
+
             } else {
                 active_rides.setVisibility(View.VISIBLE);
                 ride_history.setVisibility(View.GONE);
@@ -92,6 +95,7 @@ public class MyPostsFragment extends Fragment {
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+
                 history = new ArrayList<>();
                 active = new ArrayList<>();
                 for(DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
@@ -102,8 +106,12 @@ public class MyPostsFragment extends Fragment {
                         }
                     }
                 }
-                setupListView();
-                view.refreshDrawableState();
+                if (!setup) {
+                    setupListView();
+                    setup = true;
+                }
+                historyRideAdapter.notifyDataSetChanged();
+                activeRideAdapter.notifyDataSetChanged();
             }
 
             @Override

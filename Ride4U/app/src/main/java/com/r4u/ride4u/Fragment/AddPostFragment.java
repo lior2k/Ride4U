@@ -87,7 +87,7 @@ public class AddPostFragment extends Fragment {
             final TextInputEditText descriptionView = view.findViewById(R.id.description);
 
             // Check if the EditText views are not null
-            if (descriptionView != null && seatsView.getText() != null) {
+            if (descriptionView.getText() != null && seatsView.getText() != null) {
                 // Check if all required fields are filled
                 if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsView.getText().length() > 0
                         && descriptionView.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0) {

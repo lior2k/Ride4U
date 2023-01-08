@@ -1,5 +1,7 @@
 package com.r4u.ride4u.Adapters;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,21 +11,26 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.r4u.ride4u.Fragment.Type;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
+
 import java.util.List;
 
 public class PostAdapter extends ArrayAdapter<Post> {
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
-    boolean usedByHomeFrg; // should be true if this adapter is used for the home fragment posts
+    Type type; // corresponds the type of the adapter (home / active rides / history rides)
 
-    public PostAdapter(Context ctx, int resource, List<Post> posts, boolean usedByHomeFrg) {
+    public PostAdapter(Context ctx, int resource, List<Post> posts, Type type) {
         super(ctx, resource, posts);
-        this.usedByHomeFrg = usedByHomeFrg;
+        this.type = type;
     }
 
     @Override
@@ -36,10 +43,16 @@ public class PostAdapter extends ArrayAdapter<Post> {
         addPersonsDrawings(convertView, post);
 
         // at home fragment we need to see and setup the join ride button, at my posts fragment we hide the join ride button
-        if (usedByHomeFrg)
+        if (type == Type.Home) {
             setupJoinRideBtn(convertView, post);
-        else
+        } else if (type == Type.Active) {
             convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
+            convertView.findViewById(R.id.mapsButton).setVisibility(View.VISIBLE);
+            setupMapsBtn(convertView, post);
+        } else {
+            convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
+            convertView.findViewById(R.id.mapsButton).setVisibility(View.INVISIBLE);
+        }
 
         return convertView;
     }
@@ -115,6 +128,31 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
             }
+        });
+    }
+
+    private void setupMapsBtn(View convertView, Post post) {
+        ImageButton mapsBtn = convertView.findViewById(R.id.mapsButton);
+        mapsBtn.setOnClickListener(v -> {
+            AppCompatActivity activity = (AppCompatActivity) convertView.getContext();
+
+
+            String src = post.getSource();
+            String dest = post.getDestination();
+            src = src.equals("Ariel")? "Ariel University, Ramat HaGolan Street, Ari'el" : src + ", Israel";
+            dest = dest.equals("Ariel")? "Ariel University, Ramat HaGolan Street, Ari'el" : dest + ", Israel";
+
+            // Create a Uri from the source and destination locations
+            Uri uri = Uri.parse("http://maps.google.com/maps?saddr=" + src + "&daddr=" + dest + "&mode=driving");
+
+            // Create an Intent with the action set to ACTION_VIEW
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+
+            // Make the Intent explicit by setting the Google Maps package
+            mapIntent.setPackage("com.google.android.apps.maps");
+
+            // Attempt to start an activity that can handle the Intent
+            activity.startActivity(mapIntent);
         });
     }
 

@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
     // Create a new PostAdapter and set it to be the listview adapter.
     private void setupListView(View view) {
         listView = view.findViewById(R.id.list_view);
-        postAdapter = new PostAdapter(getContext(), 0, posts, true);
+        postAdapter = new PostAdapter(getActivity(), 0, posts, Type.Home);
         listView.setAdapter(postAdapter);
     }
 
@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment {
                     setupSearchView(view);
                     setup = true;
                 }
-                view.refreshDrawableState();
+                postAdapter.notifyDataSetChanged();
             }
 
             @Override

@@ -24,4 +24,5 @@
     <string name="costNIS">%1$s NIS</string>
     <string name="activeRides">Active Rides</string>
     <string name="historyRides">History Rides</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>
