@@ -20,42 +20,40 @@
     </TextView>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/white"
         android:hint="@string/src">
 
-        <AutoCompleteTextView
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/src"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:inputType="none">
 
-        </AutoCompleteTextView>
+        </androidx.appcompat.widget.AppCompatAutoCompleteTextView>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="52dp"
         android:layout_marginTop="8dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:background="@color/white"
         android:hint="@string/dest">
 
-        <AutoCompleteTextView
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
             android:id="@+id/dest"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:inputType="none">
 
-        </AutoCompleteTextView>
+        </androidx.appcompat.widget.AppCompatAutoCompleteTextView>
 
     </com.google.android.material.textfield.TextInputLayout>
 

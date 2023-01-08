@@ -47,6 +47,7 @@ public class MyPostsFragment extends Fragment {
 
         return view;
     }
+
     /**
      This function sets up a list view for displaying active and history rides.
      */
@@ -83,12 +84,11 @@ public class MyPostsFragment extends Fragment {
         ride_history.setVisibility(View.GONE);
         listTitle.setText(requireContext().getString(R.string.activeRides));
     }
+
     /**
      Iterate over firebase's posts, create each post and add it to an arraylist that belongs to him which is later used
      by the listview adapter to represent the posts onto the screen.
      */
-
-
     private void initPostList(View view) {
         active_rides = view.findViewById(R.id.history_);
         ride_history = view.findViewById(R.id.active_);
@@ -121,6 +121,7 @@ public class MyPostsFragment extends Fragment {
         });
 
     }
+
     /**
      This function classifies a given post as either an active ride or a history ride depending on the current date and time and the post's leaving date and time.
      @param newPost the post to classify as either active or history

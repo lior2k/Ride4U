@@ -21,6 +21,7 @@ import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends ArrayAdapter<Post> {
@@ -38,6 +39,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         Post post = getItem(position);
         if (convertView == null)
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_postview, parent, false);
+
         setupPostText(convertView, post);
 
         addPersonsDrawings(convertView, post);
@@ -57,25 +59,45 @@ public class PostAdapter extends ArrayAdapter<Post> {
         return convertView;
     }
 
+    private void removePreviousDrawings(RelativeLayout RL) {
+        List<View> viewsToRemove = new ArrayList<>();
+        for (int i = 0; i < RL.getChildCount(); i++) {
+            View child = RL.getChildAt(i);
+            if (child instanceof ImageView) {
+                if ((int) child.getId() > 0 && (int) child.getId() < 6) {
+                    viewsToRemove.add(child);
+                }
+            }
+        }
+        for (View view : viewsToRemove) {
+            RL.removeView(view);
+        }
+    }
+
     // Dynamically draw person drawings on the post layout according to the amount of available seats and total seats.
     // empty person for available seats and filled person for a taken seat.
     private void addPersonsDrawings(View convertView, Post post) {
         RelativeLayout RL = convertView.findViewById(R.id.relativeLayout);
+
+        removePreviousDrawings(RL);
+
         int persons = Integer.parseInt(post.getSeats());
         int unfilledPersons = Integer.parseInt(post.getAvailableSeats());
         for (int i = 0; i < persons; i++) {
             ImageView personImage = new ImageView(getContext());
             personImage.setId(i+1);
-            if (i >= (persons - unfilledPersons)) {
-                personImage.setImageResource(R.drawable.ic_personempty);
-            } else {
-                personImage.setImageResource(R.drawable.ic_person);
-            }
+
             RL.addView(personImage);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) personImage.getLayoutParams();
             layoutParams.addRule(RelativeLayout.BELOW, R.id.postTextContent);
             if (i != 0)
                 layoutParams.addRule(RelativeLayout.RIGHT_OF, i);
+
+            if (i >= (persons - unfilledPersons)) {
+                personImage.setImageResource(R.drawable.ic_personempty);
+            } else {
+                personImage.setImageResource(R.drawable.ic_person);
+            }
 
         }
     }
@@ -122,10 +144,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
                 // TODO notify driver
 
-                // TODO add to my rides
-//                Login.user.getRideHistory().add(post);
-//                databaseReference.child("users").child(Login.user.getId()).child("rideHistory").setValue(Login.user.getRideHistory());
-
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -144,6 +162,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
             // Create a Uri from the source and destination locations
             Uri uri = Uri.parse("http://maps.google.com/maps?saddr=" + src + "&daddr=" + dest + "&mode=driving");
+//            Uri uri = Uri.parse("google.navigation:q=" + dest);
 
             // Create an Intent with the action set to ACTION_VIEW
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);

@@ -3,11 +3,11 @@
     <string name="ride4u">Ride4U</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="src">From</string>
-    <string name="dest">To</string>
-    <string name="seats">Number od seats</string>
-    <string name="date_picker_button">Select Date</string>
-    <string name="time_picker_button">Select Time</string>
+    <string name="src">From where?</string>
+    <string name="dest">Where to?</string>
+    <string name="seats">Number of seats</string>
+    <string name="date_picker_button">Select date</string>
+    <string name="time_picker_button">Select time</string>
     <string name="submit">Submit</string>
     <string name="title_activity_login23">LoginActivity23</string>
     <string name="prompt_email">Email</string>
