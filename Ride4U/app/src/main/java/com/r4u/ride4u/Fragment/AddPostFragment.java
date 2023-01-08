@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -81,22 +83,20 @@ public class AddPostFragment extends Fragment {
     private void setupSubmitButton(View view) {
         submitButton = view.findViewById(R.id.submit_button);
         submitButton.setOnClickListener(v -> {
-            final TextInputLayout seatsView = view.findViewById(R.id.seats_number);
-            final TextInputLayout descriptionView = view.findViewById(R.id.description);
-            final EditText seatsTxt = seatsView.getEditText();
-            final EditText descriptionTxt = descriptionView.getEditText();
+            final TextInputEditText seatsView = view.findViewById(R.id.seats_number);
+            final TextInputEditText descriptionView = view.findViewById(R.id.description);
 
             // Check if the EditText views are not null
-            if (descriptionTxt != null && seatsTxt != null) {
+            if (descriptionView != null && seatsView.getText() != null) {
                 // Check if all required fields are filled
-                if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsTxt.getText().length() > 0
-                        && descriptionTxt.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0) {
+                if (autoCompleteTextViewSrc.getText().length() > 0 && autoCompleteTextViewDest.getText().length() > 0 && seatsView.getText().length() > 0
+                        && descriptionView.getText().length() > 0 && dateButton.getText().length() > 0 && timeButton.getText().length() > 0) {
 
                     // Save the user input in variables
                     source = autoCompleteTextViewSrc.getText().toString();
                     destination = autoCompleteTextViewDest.getText().toString();
-                    seats = seatsTxt.getText().toString();
-                    description = descriptionTxt.getText().toString();
+                    seats = seatsView.getText().toString();
+                    description = descriptionView.getText().toString();
                     date = dateButton.getText().toString();
                     time = timeButton.getText().toString();
                     cost = (source.equals("Ariel")) ? citiesAndPrices.get(destination) : citiesAndPrices.get(source);
