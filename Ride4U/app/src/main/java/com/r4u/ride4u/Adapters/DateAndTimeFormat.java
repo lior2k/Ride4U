@@ -22,7 +22,6 @@ public class DateAndTimeFormat {
         String [] Splited_String = date.split("\\s+");
         int MonthNumber =  Arrays.asList(months).indexOf(Splited_String[1])+1;
         return  Splited_String[0]+"\\"+ MonthNumber +"\\"+Splited_String[2]+" "+time;
-
     }
 
     /**
