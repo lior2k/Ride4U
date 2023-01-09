@@ -27,9 +27,11 @@ public class MyPostsFragment extends Fragment {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     ListView active_rides;
     ListView ride_history;
-    PostAdapter HistoryRideAdapter;
-    PostAdapter ActiveRideAdapter;
+    PostAdapter historyRideAdapter;
+    PostAdapter activeRideAdapter;
     TextView listTitle;
+
+    private boolean setup = false;
 
     public static ArrayList<Post> history = new ArrayList<>();
     public static ArrayList<Post> active = new ArrayList<>();
@@ -39,31 +41,28 @@ public class MyPostsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_myposts, container, false);
-        setupListView(view);
 
+        initPostList(view);
         setupSwapButton(view);
-
-        initPostList();
 
         return view;
     }
+
     /**
-    This function sets up a list view for displaying active and history rides.
+     This function sets up a list view for displaying active and history rides.
      */
-    private void setupListView(View view) {
-        active_rides = view.findViewById(R.id.history_);
-        ride_history = view.findViewById(R.id.active_);
-        HistoryRideAdapter = new PostAdapter(getContext(), 0, history, false);
-        ActiveRideAdapter = new PostAdapter(getContext(), 0, active, false);
-        ride_history.setAdapter(HistoryRideAdapter);
-        active_rides.setAdapter(ActiveRideAdapter);
+    private void setupListView() {
+        historyRideAdapter = new PostAdapter(getActivity(), 0, history, Type.History);
+        activeRideAdapter = new PostAdapter(getActivity(), 0, active, Type.Active);
+        ride_history.setAdapter(historyRideAdapter);
+        active_rides.setAdapter(activeRideAdapter);
     }
 
     /**
-    This function sets up a toggle button for switching between displaying active rides and history rides.
+     This function sets up a toggle button for switching between displaying active rides and history rides.
      The active rides list view is initially set to be visible, while the history rides list view is set to be invisible.
-      When the toggle button is clicked, the visibility of the list views is switched and the text of the list title is
-       updated to reflect the currently displayed list.
+     When the toggle button is clicked, the visibility of the list views is switched and the text of the list title is
+     updated to reflect the currently displayed list.
      */
     private void setupSwapButton(View view) {
         listTitle = view.findViewById(R.id.listTitle);
@@ -73,6 +72,7 @@ public class MyPostsFragment extends Fragment {
                 active_rides.setVisibility(View.GONE);
                 ride_history.setVisibility(View.VISIBLE);
                 listTitle.setText(requireContext().getString(R.string.historyRides));
+
             } else {
                 active_rides.setVisibility(View.VISIBLE);
                 ride_history.setVisibility(View.GONE);
@@ -84,16 +84,18 @@ public class MyPostsFragment extends Fragment {
         ride_history.setVisibility(View.GONE);
         listTitle.setText(requireContext().getString(R.string.activeRides));
     }
+
     /**
      Iterate over firebase's posts, create each post and add it to an arraylist that belongs to him which is later used
      by the listview adapter to represent the posts onto the screen.
-    */
-
-
-    private void initPostList() {
+     */
+    private void initPostList(View view) {
+        active_rides = view.findViewById(R.id.history_);
+        ride_history = view.findViewById(R.id.active_);
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+
                 history = new ArrayList<>();
                 active = new ArrayList<>();
                 for(DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
@@ -104,6 +106,12 @@ public class MyPostsFragment extends Fragment {
                         }
                     }
                 }
+                if (!setup) {
+                    setupListView();
+                    setup = true;
+                }
+                historyRideAdapter.notifyDataSetChanged();
+                activeRideAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -113,9 +121,10 @@ public class MyPostsFragment extends Fragment {
         });
 
     }
+
     /**
-    This function classifies a given post as either an active ride or a history ride depending on the current date and time and the post's leaving date and time.
-    @param newPost the post to classify as either active or history
+     This function classifies a given post as either an active ride or a history ride depending on the current date and time and the post's leaving date and time.
+     @param newPost the post to classify as either active or history
      */
     private void classificationHistoryOrActive(Post newPost){
         if(Login.user.getId().equals(newPost.getPublisherID()) || newPost.getPassengerIDs().contains(Login.user.getId())) {

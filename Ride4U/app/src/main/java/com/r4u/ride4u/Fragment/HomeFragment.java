@@ -18,11 +18,9 @@ import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
-import com.r4u.ride4u.UserActivities.MainActivity;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.concurrent.CountDownLatch;
 
 public class HomeFragment extends Fragment {
 
@@ -33,6 +31,9 @@ public class HomeFragment extends Fragment {
     ValueEventListener valueEventListener;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
 
+    // on first launch setup listview and searchview
+    public boolean setup = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,9 +41,7 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        initPostList();
-        setupListView(view);
-        setupSearchView(view);
+        initPostList(view);
 
         return view;
     }
@@ -51,32 +50,19 @@ public class HomeFragment extends Fragment {
     private void setupSearchView(View view) {
         searchView = view.findViewById(R.id.search_bar);
         EditText searchEditText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchEditText.setTextColor(getResources().getColor(R.color.white));
-        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
+        searchEditText.setTextColor(getResources().getColor(R.color.black));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.black));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                for(Post p : posts){
-                    if(p.getSource().contains(query) && p.getDestination().contains(query)){
-                        postAdapter.add(p);
-                    }
-                }
-                return true;
+                postAdapter.getFilter().filter(query);
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
-                for(Post p : posts){
-                    if(p.getSource().contains(newText) ||
-                            p.getDestination().contains(newText)){
-                        postAdapter.add(p);
-                    }
-                }
-
-
-
-                return true;
+                postAdapter.getFilter().filter(newText);
+                return false;
             }
         });
     }
@@ -84,29 +70,22 @@ public class HomeFragment extends Fragment {
     // Create a new PostAdapter and set it to be the listview adapter.
     private void setupListView(View view) {
         listView = view.findViewById(R.id.list_view);
-        postAdapter = new PostAdapter(getContext(), 0, posts, true);
+        postAdapter = new PostAdapter(getActivity(), 0, posts, Type.Home);
         listView.setAdapter(postAdapter);
-
-
-
     }
 
 
     // Iterate over firebase's posts, create each post and add it to an arraylist which is later used
     // by the listview adapter to represent the posts onto the screen.
-
-
-
-
-
-    private void initPostList() {
+    private void initPostList(View view) {
         valueEventListener = databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+
                 posts = new ArrayList<>();
-                for(DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
-                    for(DataSnapshot cities : toOrfrom.getChildren()) {
-                        for(DataSnapshot snapshot : cities.getChildren()) {
+                for (DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
+                    for (DataSnapshot cities : toOrfrom.getChildren()) {
+                        for (DataSnapshot snapshot : cities.getChildren()) {
                             Post newPost = Post.createPost(snapshot);
                             // if post is full or user already joined or time has passed - don't show it
                             String date_time = DateAndTimeFormat.getDateAndTime(newPost.getLeavingDate(), newPost.getLeavingTime());
@@ -115,6 +94,13 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 }
+
+                if (!setup) {
+                    setupListView(view);
+                    setupSearchView(view);
+                    setup = true;
+                }
+                postAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -124,6 +110,7 @@ public class HomeFragment extends Fragment {
 
         });
     }
+
 
     @Override
     public void onDestroy() {
