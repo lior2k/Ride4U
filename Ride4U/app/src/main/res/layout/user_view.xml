@@ -9,23 +9,26 @@
         android:id="@+id/fullname_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fullname"
+        android:text="Full Name"
         android:textColor="#730101"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintRight_toRightOf="@id/id_text"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/id_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ID"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/fullname_text"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

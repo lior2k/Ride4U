@@ -32,8 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class RemoveUser extends AppCompatActivity {
     final private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
@@ -44,16 +42,15 @@ public class RemoveUser extends AppCompatActivity {
     UsersAdapter usersAdapter;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
-    FirebaseAuth autoProfile;
+
+    // on first launch setup listview and searchview
+    public boolean setup = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_user);
-
         initUsersList();
-        setupListView();
-        setupSearchView();
     }
 
     private void setupSearchView() {
@@ -87,43 +84,28 @@ public class RemoveUser extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("adminID", Login.user.getId());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
                     jsonObject.put("userID", selectedUser.getId());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
                     jsonObject.put("authID", selectedUser.getUid());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                String jsonString = jsonObject.toString();
 
                 removeUserFromDB(jsonObject).addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
                     public void onComplete(@NonNull Task<String> task) {
                         if(task.isSuccessful()){
-                            Log.d("print :",task.getResult());
+                            Log.d("print: ",task.getResult());
                         }
                         else{
                             task.getException().printStackTrace();
                         }
                     }
                 });
-
-
-
             }
         });
     }
 
-
-
     private Task<String> removeUserFromDB(JSONObject data) {
-
         return mFunctions.getHttpsCallable("removeUserFromDB")
                 .call(data)
                 .continueWith(new Continuation<HttpsCallableResult, String>() {
@@ -143,6 +125,13 @@ public class RemoveUser extends AppCompatActivity {
                     usersList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
                             snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class)));
                 }
+
+                if (!setup) {
+                    setupListView();
+                    setupSearchView();
+                    setup = true;
+                }
+                usersAdapter.notifyDataSetChanged();
             }
 
             @Override
