@@ -35,6 +35,7 @@ public class Register extends AppCompatActivity {
     private String passwordTxt;
     private String confirmPasswordTxt;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,10 +77,10 @@ public class Register extends AppCompatActivity {
                         confirmPasswordTxt = confirmPasswordETxt.getText().toString();
 
                         // check that passwords match
-                        if (!passwordTxt.equals(confirmPasswordTxt)) {
-                            Toast.makeText(Register.this, "Passwords are not matching", Toast.LENGTH_SHORT).show();
+                        if (passwordTxt.equals(confirmPasswordTxt)) {
+                            validateStudent();
                         } else {
-                            authRegistration();
+                            Toast.makeText(Register.this, "Passwords are not matching", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -141,15 +142,6 @@ public class Register extends AppCompatActivity {
                     if (currentUser != null) {
                         databaseReference.child("users").child(idTxt).child("AuthUid").setValue(currentUser.getUid());
                     }
-
-//                    String uID = "";
-//                    FirebaseUser currentUser = authProfile.getCurrentUser();
-//                    if (currentUser != null) {
-//                        uID = currentUser.getUid();
-//                    }
-//                    User newUser = new User(firstnameTxt, lastnameTxt, emailTxt, idTxt, false, uID);
-//                    databaseReference.child("users").child(idTxt).setValue(newUser);
-//                    databaseReference.child("users").child(idTxt).child("userId").removeValue();
                 }
             }
 
@@ -180,5 +172,23 @@ public class Register extends AppCompatActivity {
         });
     }
 
+    private void validateStudent() {
+        databaseReference.child("students").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot sp : snapshot.getChildren()) {
+                    if (idTxt.equals(sp.getKey())) {
+                        authRegistration();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error.getCode());
+            }
+        });
+    }
 
 }
