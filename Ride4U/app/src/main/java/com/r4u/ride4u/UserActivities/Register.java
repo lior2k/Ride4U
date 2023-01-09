@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.r4u.ride4u.R;
 
 import java.util.Objects;
@@ -137,6 +138,7 @@ public class Register extends AppCompatActivity {
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
+                    databaseReference.child("users").child(idTxt).child("devicetoken").setValue(String.valueOf(FirebaseMessaging.getInstance().getToken()));
                     FirebaseUser currentUser = authProfile.getCurrentUser();
                     if (currentUser != null) {
                         databaseReference.child("users").child(idTxt).child("AuthUid").setValue(currentUser.getUid());
