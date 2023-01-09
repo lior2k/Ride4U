@@ -119,8 +119,9 @@ public class Post {
 
     @Override
     public String toString() {
-        return getPublisherFullName();
+        return getSource();
     }
+
 
     // Create and return a new post built from a snapshot of the realtime firebase.
     public static Post createPost(DataSnapshot snapshot) {

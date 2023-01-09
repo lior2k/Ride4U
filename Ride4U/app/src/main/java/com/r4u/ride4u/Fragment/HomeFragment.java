@@ -21,6 +21,7 @@ import com.r4u.ride4u.R;
 import com.r4u.ride4u.UserActivities.MainActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
@@ -55,14 +56,27 @@ public class HomeFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                postAdapter.getFilter().filter(query);
-                return false;
+                for(Post p : posts){
+                    if(p.getSource().contains(query) && p.getDestination().contains(query)){
+                        postAdapter.add(p);
+                    }
+                }
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                postAdapter.getFilter().filter(newText);
-                return false;
+
+                for(Post p : posts){
+                    if(p.getSource().contains(newText) ||
+                            p.getDestination().contains(newText)){
+                        postAdapter.add(p);
+                    }
+                }
+
+
+
+                return true;
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.r4u.ride4u.Adapters;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +10,27 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
+import com.google.firebase.functions.FirebaseFunctions;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 public class PostAdapter extends ArrayAdapter<Post> {
+    private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     boolean usedByHomeFrg; // should be true if this adapter is used for the home fragment posts
@@ -92,17 +106,33 @@ public class PostAdapter extends ArrayAdapter<Post> {
         joinRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                CallHiWorld("Bob smith").addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if(task.isSuccessful()){
+                            Log.d("demo" , "onComplete "+task.getResult());
+                        }
+                        else{
+                            task.getException().printStackTrace();
+                        }
+                    }
+                });
+
                 // validate joining (user not already signed up for this ride / ride is not full / user is not the poster of the post)
                 if (!post.addPassenger(Login.user.getId())) {
                     Toast.makeText(getContext(), "Already part of this post", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 // user joined the ride - update database
-                databaseReference.child("posts").child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
-                databaseReference.child("posts").child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
-                if (post.isFull())
-                    databaseReference.child("posts").child(post.getPostID()).child("full").setValue(true);
+                DatabaseReference postRoot = post.getSource().equals("Ariel") ?
+                        databaseReference.child("posts").child("fromAriel").child(post.getDestination()) :
+                        databaseReference.child("posts").child("toAriel").child(post.getSource());
 
+                postRoot.child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
+                postRoot.child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
+                if (post.isFull())
+                    postRoot.child(post.getPostID()).child("full").setValue(true);
                 // TODO notify driver
 
                 // TODO add to my rides
@@ -110,6 +140,22 @@ public class PostAdapter extends ArrayAdapter<Post> {
 //                databaseReference.child("users").child(Login.user.getId()).child("rideHistory").setValue(Login.user.getRideHistory());
 
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
+            }
+
+
+            private Task<String> CallHiWorld(String name){
+                Map<String , Object> data = new HashMap<>();
+                data.put("name" , name);
+
+                return mFunctions.getHttpsCallable("helloWorld3")
+                        .call(data)
+                        .continueWith(new Continuation<HttpsCallableResult, String>() {
+                            @Override
+                            public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                                String result = (String)task.getResult().getData();
+                                return result;
+                            }
+                        });
             }
         });
     }
