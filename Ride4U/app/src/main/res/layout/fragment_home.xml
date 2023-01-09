@@ -28,7 +28,7 @@
         app:layout_constraintHeight="50dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="Search Item"
+        app:queryHint="Search by driver name or city"
         android:backgroundTint="@color/white"
         android:background="@color/white">
     </androidx.appcompat.widget.SearchView>
