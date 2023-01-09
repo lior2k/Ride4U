@@ -31,6 +31,9 @@ public class HomeFragment extends Fragment {
     ValueEventListener valueEventListener;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
 
+    // on first launch setup listview and searchview
+    public boolean setup = false;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,8 +50,8 @@ public class HomeFragment extends Fragment {
     private void setupSearchView(View view) {
         searchView = view.findViewById(R.id.search_bar);
         EditText searchEditText = (EditText) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
-        searchEditText.setTextColor(getResources().getColor(R.color.white));
-        searchEditText.setHintTextColor(getResources().getColor(R.color.white));
+        searchEditText.setTextColor(getResources().getColor(R.color.black));
+        searchEditText.setHintTextColor(getResources().getColor(R.color.black));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -67,7 +70,7 @@ public class HomeFragment extends Fragment {
     // Create a new PostAdapter and set it to be the listview adapter.
     private void setupListView(View view) {
         listView = view.findViewById(R.id.list_view);
-        postAdapter = new PostAdapter(getContext(), 0, posts, true);
+        postAdapter = new PostAdapter(getActivity(), 0, posts, Type.Home);
         listView.setAdapter(postAdapter);
     }
 
@@ -91,9 +94,13 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 }
-                setupListView(view);
-                setupSearchView(view);
-                view.refreshDrawableState();
+
+                if (!setup) {
+                    setupListView(view);
+                    setupSearchView(view);
+                    setup = true;
+                }
+                postAdapter.notifyDataSetChanged();
             }
 
             @Override
