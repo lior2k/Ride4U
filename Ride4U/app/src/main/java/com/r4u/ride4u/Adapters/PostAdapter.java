@@ -2,6 +2,7 @@ package com.r4u.ride4u.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +13,29 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.r4u.ride4u.Fragment.Type;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class PostAdapter extends ArrayAdapter<Post> {
-
+    final private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     Type type; // corresponds the type of the adapter (home / active rides / history rides)
 
@@ -145,6 +155,30 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 // TODO notify driver
 
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("publisherID", post.getPublisherID());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    jsonObject.put("username", Login.user.getFullName());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                sendNotification(jsonObject).addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if(task.isSuccessful()){
+                            Log.d("print :",task.getResult());
+                        }
+                        else{
+                            task.getException().printStackTrace();
+                        }
+                    }
+                });
+
             }
         });
     }
@@ -173,6 +207,18 @@ public class PostAdapter extends ArrayAdapter<Post> {
             // Attempt to start an activity that can handle the Intent
             activity.startActivity(mapIntent);
         });
+    }
+
+    private Task<String> sendNotification(JSONObject data) {
+
+        return mFunctions.getHttpsCallable("sendNotification")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        return (String)task.getResult().getData();
+                    }
+                });
     }
 
 }

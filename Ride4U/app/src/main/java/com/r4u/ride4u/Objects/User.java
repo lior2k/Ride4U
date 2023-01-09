@@ -13,14 +13,16 @@ public class User {
     private final String email;
     private final String Uid;
     private final Boolean isAdmin;
+    private final String deviceToken;
 
-    public User(String firstname, String lastname, String email, String id, Boolean isAdmin, String u_id) {
+    public User(String firstname, String lastname, String email, String id, Boolean isAdmin, String u_id, String deviceToken) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
         this.id = id;
         this.isAdmin = isAdmin;
         this.Uid = u_id;
+        this.deviceToken = deviceToken;
     }
     public String getUid() { return Uid; }
 
@@ -43,6 +45,8 @@ public class User {
     public String getId() {
         return id;
     }
+
+    public String getDeviceToken(){return deviceToken;}
 
     public String getFullName() {
         return Login.user.getFirstname() + " " + Login.user.getLastname();
