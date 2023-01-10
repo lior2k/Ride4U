@@ -13,11 +13,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.r4u.ride4u.AdminActivities.serverFunctions;
 import com.r4u.ride4u.Fragment.Type;
 import com.r4u.ride4u.UserActivities.Login;
@@ -28,6 +32,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class PostAdapter extends ArrayAdapter<Post> {
@@ -52,16 +57,30 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         addPersonsDrawings(convertView, post);
 
-        // at home fragment we need to see and setup the join ride button, at my posts fragment we hide the join ride button
         if (type == Type.Home) {
-            setupJoinRideBtn(convertView, post);
+            if (post.getPublisherFullName().contains(Login.user.getId()) || post.getPassengerIDs().contains(Login.user.getId())) {
+                convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
+            } else {
+                setupJoinRideBtn(convertView, post);
+            }
         } else if (type == Type.Active) {
-            convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
-            convertView.findViewById(R.id.mapsButton).setVisibility(View.VISIBLE);
-            setupMapsBtn(convertView, post);
+            // if driver -> set google maps button
+            if (post.getPublisherID().equals(Login.user.getId())) {
+                convertView.findViewById(R.id.leaveButton).setVisibility(View.INVISIBLE);
+                convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
+                convertView.findViewById(R.id.mapsButton).setVisibility(View.VISIBLE);
+                setupMapsBtn(convertView, post);
+            } else {
+                // if passenger -> set leave post button
+                convertView.findViewById(R.id.leaveButton).setVisibility(View.VISIBLE);
+                convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
+                convertView.findViewById(R.id.mapsButton).setVisibility(View.INVISIBLE);
+                setupLeaveButton(convertView, post);
+            }
         } else {
             convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
             convertView.findViewById(R.id.mapsButton).setVisibility(View.INVISIBLE);
+            convertView.findViewById(R.id.leaveButton).setVisibility(View.INVISIBLE);
         }
 
         return convertView;
@@ -132,6 +151,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 //     Set the join ride button functionality.
     private void setupJoinRideBtn(View convertView, Post post) {
         ImageButton joinRideBtn = convertView.findViewById(R.id.joinRideImgBtn);
+
         joinRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,11 +190,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
         });
     }
 
+
     private void setupMapsBtn(View convertView, Post post) {
         ImageButton mapsBtn = convertView.findViewById(R.id.mapsButton);
         mapsBtn.setOnClickListener(v -> {
             AppCompatActivity activity = (AppCompatActivity) convertView.getContext();
-
 
             String src = post.getSource();
             String dest = post.getDestination();
@@ -187,12 +207,29 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
             // Create an Intent with the action set to ACTION_VIEW
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
-
             // Make the Intent explicit by setting the Google Maps package
             mapIntent.setPackage("com.google.android.apps.maps");
-
             // Attempt to start an activity that can handle the Intent
             activity.startActivity(mapIntent);
+        });
+    }
+
+    private void setupLeaveButton(View convertView, Post post) {
+        ImageButton leavePostBtn = convertView.findViewById(R.id.leaveButton);
+        leavePostBtn.setOnClickListener(v -> {
+            if (post.removeUser(Login.user.getId())) {
+                DatabaseReference postRoot = post.getSource().equals("Ariel") ?
+                        databaseReference.child("posts").child("fromAriel").child(post.getDestination()) :
+                        databaseReference.child("posts").child("toAriel").child(post.getSource());
+
+                HashMap<String, Object> updates = new HashMap<>();
+                updates.put("availableSeats", post.getAvailableSeats());
+                updates.put("passengerIDs", post.getPassengerIDs());
+                updates.put("full", post.isFull());
+                postRoot.child(post.getPostID()).updateChildren(updates);
+                this.remove(post);
+                this.notifyDataSetChanged();
+            }
         });
     }
 

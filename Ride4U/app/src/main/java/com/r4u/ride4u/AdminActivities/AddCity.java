@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.gcm.Task;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,9 +37,6 @@ public class AddCity extends AppCompatActivity {
     TextInputLayout cityInput;
     TextInputLayout priceInput;
 
-    MapView mapView;
-    Geocoder geocoder;
-
     Button submitBtn;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
@@ -53,8 +52,6 @@ public class AddCity extends AppCompatActivity {
         setContentView(R.layout.activity_add_city);
         cityInput = findViewById(R.id.city_input);
         priceInput = findViewById(R.id.set_price);
-        mapView = findViewById(R.id.city_map_view);
-        geocoder = new Geocoder(this);
         setupSubmitButton();
     }
 
@@ -78,15 +75,8 @@ public class AddCity extends AppCompatActivity {
                         insertedCity = cityText.getText().toString();
                         insertedPrice = priceText.getText().toString();
 
-//                        checkRealCity();
-                        boolean cityExistsInDatabase = checkCityExistsInDatabase();
-                        if(!cityExistsInDatabase) {
-                            databaseReference.child("cities").child(insertedCity).setValue(insertedPrice);
-                            finish();
-                        }
-                        else {
-                            Toast.makeText(AddCity.this, "City already exists in database", Toast.LENGTH_SHORT).show();
-                        }
+                        checkCityExistsInDatabase();
+
                     }
                     else {
                         Toast.makeText(AddCity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
@@ -96,33 +86,11 @@ public class AddCity extends AppCompatActivity {
         });
     }
 
-//    private boolean checkRealCity() throws IOException {
-//        // Search for the city using the Geocoder
-//        List<Address> addresses = geocoder.getFromLocationName(insertedCity, 1,
-//                37.4219999, -122.0862462, 37.4219999, -122.0862462);
-//
-//        // If the search returns a result, display the city on the map
-//        if (addresses != null && addresses.size() > 0) {
-//            Address address = addresses.get(0);
-//            double latitude = address.getLatitude();
-//            double longitude = address.getLongitude();
-//
-//            // Create a new LatLng object for the city's location
-//            LatLng cityLocation = new LatLng(latitude, longitude);
-//
-//            // Add a marker to the map at the city's location
-//            mapView.addMarker(new MarkerOptions().position(cityLocation));
-//            mapView.add
-//            // Move the map camera to the city's location
-//            mapView.moveCamera(CameraUpdateFactory.newLatLng(cityLocation));
-//        }
-//    }
-
     /**
      * Checks if a city already exists in the database
      * @return true if the city exists or false if it isnt.
      */
-    private boolean checkCityExistsInDatabase() {
+    private void checkCityExistsInDatabase() {
         flag = false;
         databaseReference.child("cities").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -130,14 +98,21 @@ public class AddCity extends AppCompatActivity {
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     if (insertedCity.equals(snapshot.getKey())) {
                         flag = true;
+                        break;
                     }
                 }
+                if (!flag) {
+                    databaseReference.child("cities").child(insertedCity).setValue(insertedPrice);
+                    finish();
+                } else {
+                    Toast.makeText(AddCity.this, "City already exists in database", Toast.LENGTH_SHORT).show();
+                }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getMessage());
             }
         });
-        return flag;
     }
 }

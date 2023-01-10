@@ -19,7 +19,7 @@ public class Post {
     private final String cost;
     private final String description;
 
-    private List<String> passengerIDs;
+    private final List<String> passengerIDs;
 
     public Post(String postID, String publisherID, String publisherFirstName, String publisherLastName, String seats , String source,
                 String destination, String leavingTime, String leavingDate, String cost,String description) {
@@ -127,7 +127,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return getSource();
+        return getPublisherFullName() + " " + getSource() + " " + getDestination();
     }
 
 
@@ -143,9 +143,9 @@ public class Post {
         return newPost;
     }
 
-    // update passengers and available seats
-//    public static void updatePost(Post oldPost, Post newPost) {
-//        oldPost.passengerIDs = new ArrayList<>(newPost.passengerIDs);
-//    }
+    // remove passenger user
+    public boolean removeUser(String userId) {
+        return passengerIDs.remove(userId);
+    }
 
 }

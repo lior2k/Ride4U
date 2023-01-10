@@ -151,10 +151,9 @@ public class AddPostFragment extends Fragment {
     private void insertPostToDataBase() {
         DatabaseReference newPostRef;
 
-        if(destination.equals("Ariel")){
+        if (destination.equals("Ariel")) {
             newPostRef = databaseReference.child("posts").child("toAriel").child(source).push();
-        }
-        else{
+        } else {
             newPostRef = databaseReference.child("posts").child("fromAriel").child(destination).push();
         }
 

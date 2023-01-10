@@ -1,41 +1,36 @@
-package com.r4u.ride4u.AdminActivities;
-import static com.google.android.material.internal.ContextUtils.getActivity;
+package com.r4u.ride4u.UserActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import androidx.appcompat.widget.SearchView;
-
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
 import com.r4u.ride4u.Adapters.UsersAdapter;
-import com.r4u.ride4u.R;
 import com.r4u.ride4u.Objects.User;
-import com.r4u.ride4u.UserActivities.Login;
+import com.r4u.ride4u.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class RemoveUser extends AppCompatActivity {
-    final private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
+public class Chat extends AppCompatActivity {
+
     SearchView searchView;
     ListView listView;
     ArrayList<User> usersList;
@@ -48,9 +43,9 @@ public class RemoveUser extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_remove_user);
-        initUsersList();
+        setContentView(R.layout.activity_chat);
         setupBackButtonListener();
+        initUsersList();
     }
 
     private void setupSearchView() {
@@ -61,6 +56,7 @@ public class RemoveUser extends AppCompatActivity {
                 usersAdapter.getFilter().filter(query);
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 usersAdapter.getFilter().filter(newText);
@@ -80,29 +76,14 @@ public class RemoveUser extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent chatRoom = new Intent(Chat.this, ChatRoom.class);
                 User selectedUser = (User) parent.getAdapter().getItem(position);
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("adminID", Login.user.getId());
-                    jsonObject.put("userID", selectedUser.getId());
-                    jsonObject.put("authID", selectedUser.getUid());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                serverFunctions removeUser = new serverFunctions(jsonObject);
-                removeUser.removeUserFromDB();
-
+                chatRoom.putExtra("userName", selectedUser.getFullName());
+                chatRoom.putExtra("userId", selectedUser.getId());
+                startActivity(chatRoom);
             }
         });
     }
-
-
-
-
-
-
-
 
     private void initUsersList() {
 
@@ -110,9 +91,12 @@ public class RemoveUser extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersList = new ArrayList<>();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    usersList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
-                            snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class),snapshot.child("deviceToken").getValue(String.class)));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    User user = new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
+                            snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class), snapshot.child("deviceToken").getValue(String.class));
+                    if (!user.getId().equals(Login.user.getId())) {
+                        usersList.add(user);
+                    }
                 }
 
                 if (!setup) {
@@ -136,6 +120,5 @@ public class RemoveUser extends AppCompatActivity {
             finish();
         });
     }
-
 
 }
