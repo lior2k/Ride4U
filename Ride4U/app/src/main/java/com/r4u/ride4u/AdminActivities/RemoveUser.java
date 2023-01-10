@@ -92,18 +92,19 @@ public class RemoveUser extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                removeUserFromDB(jsonObject).addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if(task.isSuccessful()){
-                            Log.d("print :",task.getResult());
-                        }
-                        else{
-                            task.getException().printStackTrace();
-                        }
-                    }
-                });
+                serverFunctions removeUser = new serverFunctions(jsonObject);
+                removeUser.removeUserFromDB();
+//                removeUserFromDB(jsonObject).addOnCompleteListener(new OnCompleteListener<String>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<String> task) {
+//                        if(task.isSuccessful()){
+//                            Log.d("print :",task.getResult());
+//                        }
+//                        else{
+//                            task.getException().printStackTrace();
+//                        }
+//                    }
+//                });
 
 
 
@@ -113,17 +114,17 @@ public class RemoveUser extends AppCompatActivity {
 
 
 
-    private Task<String> removeUserFromDB(JSONObject data) {
-
-        return mFunctions.getHttpsCallable("removeUserFromDB")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        return (String)task.getResult().getData();
-                    }
-                });
-    }
+//    private Task<String> removeUserFromDB(JSONObject data) {
+//
+//        return mFunctions.getHttpsCallable("removeUserFromDB")
+//                .call(data)
+//                .continueWith(new Continuation<HttpsCallableResult, String>() {
+//                    @Override
+//                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+//                        return (String)task.getResult().getData();
+//                    }
+//                });
+//    }
 
     private void initUsersList() {
         usersList = new ArrayList<>();
