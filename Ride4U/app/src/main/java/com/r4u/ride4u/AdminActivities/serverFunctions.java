@@ -1,11 +1,8 @@
 package com.r4u.ride4u.AdminActivities;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
@@ -21,8 +18,9 @@ public class serverFunctions {
         this.jsonObject = jsonObject;
     }
 
-    public Task<String> sendNotification() {
-        return mFunctions.getHttpsCallable("sendNotification")
+
+    private Task<String> sendToServer(String functionName) {
+        return mFunctions.getHttpsCallable(functionName)
                 .call(this.jsonObject)
                 .continueWith(new Continuation<HttpsCallableResult, String>() {
                     @Override
@@ -35,28 +33,13 @@ public class serverFunctions {
                         e.printStackTrace();
                     }
                 });
-
     }
 
-    public Task<String> removeUserFromDB() {
+    public void sendNotification() {
+        this.sendToServer("sendNotification");
+    }
 
-        return mFunctions.getHttpsCallable("removeUserFromDB")
-                .call(this.jsonObject)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        return (String)task.getResult().getData();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<String>() {
-            @Override
-            public void onComplete(@NonNull Task<String> task) {
-                if(task.isSuccessful()){
-                    Log.d("print :",task.getResult());
-                }
-                else{
-                    task.getException().printStackTrace();
-                }
-            }
-        });
+    public void removeUserFromDB() {
+        this.sendToServer("removeUserFromDB");
     }
 }
