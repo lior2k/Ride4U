@@ -62,7 +62,11 @@ public class PostAdapter extends ArrayAdapter<Post> {
         addPersonsDrawings(convertView, post);
 
         if (type == Type.Home) {
-            setupJoinRideBtn(convertView, post);
+            if (post.getPublisherFullName().contains(Login.user.getId()) || post.getPassengerIDs().contains(Login.user.getId())) {
+                convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
+            } else {
+                setupJoinRideBtn(convertView, post);
+            }
         } else if (type == Type.Active) {
             // if driver -> set google maps button
             if (post.getPublisherID().equals(Login.user.getId())) {
@@ -151,6 +155,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
     // Set the join ride button functionality.
     private void setupJoinRideBtn(View convertView, Post post) {
         ImageButton joinRideBtn = convertView.findViewById(R.id.joinRideImgBtn);
+
         joinRideBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -208,7 +213,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
                     }
                 });
     }
-
 
     private void setupMapsBtn(View convertView, Post post) {
         ImageButton mapsBtn = convertView.findViewById(R.id.mapsButton);

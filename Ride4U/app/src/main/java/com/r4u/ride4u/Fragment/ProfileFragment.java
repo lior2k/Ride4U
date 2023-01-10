@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,17 +26,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.r4u.ride4u.AdminActivities.Operations;
 //import com.r4u.ride4u.UserActivities.ChangeAdress;
+import com.r4u.ride4u.UserActivities.Chat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.R;
 
 public class ProfileFragment extends Fragment {
 
     private final FirebaseAuth authProfile = FirebaseAuth.getInstance();
-    //    private String user_password;
     TextView profileName;
     TextView profileEmail;
     TextView profileAddress;
-    Button adminBtn;
 
     // This function creates the screen using the data pulled from the functions below.
     @Override
@@ -46,13 +46,14 @@ public class ProfileFragment extends Fragment {
         initProfile(view);
         setAdminBtn(view);
         setupChangePassBtn(view);
+        setupNotificationBtn(view);
         return view;
     }
 
     // setting the admin options button
     // if the user viewing the profile page is an admin he'll see an admin options button
     private void setAdminBtn(View view) {
-        adminBtn = view.findViewById(R.id.admin_options);
+        Button adminBtn = view.findViewById(R.id.admin_options);
         if (!Login.user.getIsAdmin()) {
             adminBtn.setVisibility(View.INVISIBLE);
         } else {
@@ -147,5 +148,12 @@ public class ProfileFragment extends Fragment {
         profileEmail = view.findViewById(R.id.profile_email);
         profileName.setText(Login.user.getFullName());
         profileEmail.setText(Login.user.getEmail());
+    }
+
+    private void setupNotificationBtn(View view) {
+        ImageView notificationsBtn = view.findViewById(R.id.notfication);
+        notificationsBtn.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), Chat.class));
+        });
     }
 }

@@ -191,7 +191,7 @@
                                     android:layout_height="0dp"
                                     android:layout_marginBottom="8dp"
                                     android:layout_weight="1"
-                                    android:text="Notifcation"
+                                    android:text="Chat"
                                     android:textAlignment="center"
                                     android:textColor="#000000"
                                     android:textSize="13sp"

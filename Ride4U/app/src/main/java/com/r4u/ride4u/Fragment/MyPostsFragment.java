@@ -52,8 +52,8 @@ public class MyPostsFragment extends Fragment {
      This function sets up a list view for displaying active and history rides.
      */
     private void setupListView() {
-        historyRideAdapter = new PostAdapter(getActivity(), 0, history, Type.History);
-        activeRideAdapter = new PostAdapter(getActivity(), 0, active, Type.Active);
+        historyRideAdapter = new PostAdapter(getContext(), 0, history, Type.History);
+        activeRideAdapter = new PostAdapter(getContext(), 0, active, Type.Active);
         ride_history.setAdapter(historyRideAdapter);
         active_rides.setAdapter(activeRideAdapter);
     }
