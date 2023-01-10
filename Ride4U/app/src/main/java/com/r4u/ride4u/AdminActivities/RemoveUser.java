@@ -87,15 +87,7 @@ public class RemoveUser extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject();
                 try {
                     jsonObject.put("adminID", Login.user.getId());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
                     jsonObject.put("userID", selectedUser.getId());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                try {
                     jsonObject.put("authID", selectedUser.getUid());
                 } catch (JSONException e) {
                     e.printStackTrace();
