@@ -167,6 +167,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 try {
                     jsonObject.put("publisherID", post.getPublisherID());
                     jsonObject.put("username", Login.user.getFullName());
+                    System.out.println("publisherID: " + post.getPublisherID());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

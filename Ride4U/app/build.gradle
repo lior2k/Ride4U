@@ -36,7 +36,7 @@ android {
 
 dependencies {
     implementation 'com.google.firebase:firebase-functions:20.2.1'
-    implementation 'com.google.firebase:firebase-admin:xx.y.zz'
+
     implementation platform('com.google.firebase:firebase-bom:31.1.0')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'androidx.appcompat:appcompat:1.5.1'
@@ -58,10 +58,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-gcm:17.0.0'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.firebase:firebase-messaging:23.1.1'
-<<<<<<< HEAD
+
 
 }
-=======
-}
+
+
 apply plugin: 'com.google.gms.google-services'
->>>>>>> 7d9849010105c9f70648669fbb88ab87ef456586
+
