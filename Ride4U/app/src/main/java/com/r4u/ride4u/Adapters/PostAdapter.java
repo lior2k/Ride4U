@@ -162,23 +162,10 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject();
-                DatabaseReference ref = databaseReference.child("users").child(post.getPublisherID()).child("devicetoken");
 
-                ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        val = snapshot.getValue(String.class);
-                        System.out.println(val);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle error
-                    }
-                });
 
                     try {
-                        jsonObject.put("devicetoken", val);
+                        jsonObject.put("publisherID", post.getPublisherID());
                         jsonObject.put("username", Login.user.getFullName());
                     } catch (JSONException e) {
                         e.printStackTrace();
