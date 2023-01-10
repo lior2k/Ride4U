@@ -139,7 +139,7 @@ public class Register extends AppCompatActivity {
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
-                    databaseReference.child("users").child(idTxt).child("devicetoken").setValue(String.valueOf(FirebaseMessaging.getInstance().getToken()));
+                    databaseReference.child("users").child(idTxt).child("devicetoken").setValue(FirebaseMessaging.getInstance().getToken());
                     FirebaseUser currentUser = authProfile.getCurrentUser();
                     if (currentUser != null) {
                         databaseReference.child("users").child(idTxt).child("AuthUid").setValue(currentUser.getUid());
