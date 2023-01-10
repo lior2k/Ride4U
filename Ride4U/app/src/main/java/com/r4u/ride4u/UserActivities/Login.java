@@ -107,7 +107,7 @@ public class Login extends AppCompatActivity {
                         String Uid = snapshot.child("AuthUid").getValue(String.class);
                         String isAdminStr = snapshot.child("isAdmin").getValue(String.class);
                         Boolean isAdmin = false;
-                        String deviceToken = String.valueOf(FirebaseMessaging.getInstance().getToken());
+                        String deviceToken = FirebaseMessaging.getInstance().getToken().toString();
                         if (isAdminStr != null) {
                             isAdmin = str_to_boolean(isAdminStr);
                         }
