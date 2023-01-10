@@ -39,7 +39,7 @@ public class DateAndTimeFormat {
         format.setTimeZone(TimeZone.getTimeZone(timeZone));
         Date PostDate;
         try {
-            PostDate = format.parse(dateAndTime);
+                PostDate = format.parse(dateAndTime);
             return (new Date().after(PostDate));
         } catch (ParseException e) {
             e.printStackTrace();

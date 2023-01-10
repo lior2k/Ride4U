@@ -126,7 +126,7 @@ public class RemoveUser extends AppCompatActivity {
                 usersList = new ArrayList<>();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     usersList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
-                            snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class)));
+                            snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class),snapshot.child("deviceToken").getValue(String.class)));
                 }
 
                 if (!setup) {

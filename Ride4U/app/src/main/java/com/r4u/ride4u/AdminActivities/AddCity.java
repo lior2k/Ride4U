@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.gcm.Task;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,9 +37,6 @@ public class AddCity extends AppCompatActivity {
     TextInputLayout cityInput;
     TextInputLayout priceInput;
 
-    MapView mapView;
-    Geocoder geocoder;
-
     Button submitBtn;
 
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
@@ -53,8 +52,6 @@ public class AddCity extends AppCompatActivity {
         setContentView(R.layout.activity_add_city);
         cityInput = findViewById(R.id.city_input);
         priceInput = findViewById(R.id.set_price);
-        mapView = findViewById(R.id.city_map_view);
-        geocoder = new Geocoder(this);
         setupSubmitButton();
     }
 

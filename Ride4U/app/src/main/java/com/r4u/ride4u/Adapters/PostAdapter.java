@@ -2,6 +2,7 @@ package com.r4u.ride4u.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +13,38 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 import com.r4u.ride4u.Fragment.Type;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class PostAdapter extends ArrayAdapter<Post> {
-
+    final private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     Type type; // corresponds the type of the adapter (home / active rides / history rides)
+
+    static String val = "";
 
     public PostAdapter(Context ctx, int resource, List<Post> posts, Type type) {
         super(ctx, resource, posts);
@@ -156,9 +172,56 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 // TODO notify driver
 
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
+                JSONObject jsonObject = new JSONObject();
+                DatabaseReference ref = databaseReference.child("users").child(post.getPublisherID()).child("devicetoken");
+
+                ref.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        val = snapshot.getValue(String.class);
+                        System.out.println(val);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle error
+                    }
+                });
+
+                    try {
+                        jsonObject.put("devicetoken", val);
+                        jsonObject.put("username", Login.user.getFullName());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    sendNotification(jsonObject).addOnSuccessListener(new OnSuccessListener<String>() {
+                        @Override
+                        public void onSuccess(String result) {
+                            Log.d("print :", result);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+
             }
         });
     }
+
+    private Task<String> sendNotification(JSONObject data) {
+        return mFunctions.getHttpsCallable("sendNotification")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        return (String) task.getResult().getData();
+                    }
+                });
+    }
+
 
     private void setupMapsBtn(View convertView, Post post) {
         ImageButton mapsBtn = convertView.findViewById(R.id.mapsButton);
@@ -201,4 +264,17 @@ public class PostAdapter extends ArrayAdapter<Post> {
             }
         });
     }
+
+//    private Task<String> sendNotification(JSONObject data) {
+//
+//        return mFunctions.getHttpsCallable("sendNotification")
+//                .call(data)
+//                .continueWith(new Continuation<HttpsCallableResult, String>() {
+//                    @Override
+//                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+//                        return (String)task.getResult().getData();
+//                    }
+//                });
+//    }
+
 }

@@ -3,6 +3,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.Objects.User;
 
@@ -104,10 +107,11 @@ public class Login extends AppCompatActivity {
                         String Uid = snapshot.child("AuthUid").getValue(String.class);
                         String isAdminStr = snapshot.child("isAdmin").getValue(String.class);
                         Boolean isAdmin = false;
+                        String deviceToken = String.valueOf(FirebaseMessaging.getInstance().getToken());
                         if (isAdminStr != null) {
                             isAdmin = str_to_boolean(isAdminStr);
                         }
-                        user = new User(firstName, lastName, email, userID, isAdmin, Uid);
+                        user = new User(firstName, lastName, email, userID, isAdmin, Uid, deviceToken);
                         break;
                     }
                 }
