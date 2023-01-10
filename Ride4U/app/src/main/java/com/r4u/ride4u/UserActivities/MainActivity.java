@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.r4u.ride4u.Fragment.AddPostFragment;
 import com.r4u.ride4u.Fragment.HomeFragment;
 import com.r4u.ride4u.Fragment.ProfileFragment;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         setupNavBar();
 
