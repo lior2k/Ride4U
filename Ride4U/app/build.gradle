@@ -36,7 +36,6 @@ android {
 
 dependencies {
     implementation 'com.google.firebase:firebase-functions:20.2.1'
-
     implementation platform('com.google.firebase:firebase-bom:31.1.0')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'androidx.appcompat:appcompat:1.5.1'
@@ -61,7 +60,10 @@ dependencies {
 
 
 }
+<<<<<<< HEAD
 
 
 apply plugin: 'com.google.gms.google-services'
 
+=======
+>>>>>>> e1acbeb4a875c8641bd7da31c42e2ddcf6466416
