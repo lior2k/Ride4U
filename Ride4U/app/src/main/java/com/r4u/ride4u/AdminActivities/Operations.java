@@ -1,12 +1,17 @@
 package com.r4u.ride4u.AdminActivities;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.UserActivities.Login;
 
@@ -18,15 +23,35 @@ public class Operations extends AppCompatActivity {
     TextView userName;
     TextView email;
 
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
+    StorageReference picturesRef;
+    ImageView profilePicture;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_operations);
+        picturesRef = storageRef.child("pictures").child(Login.user.getId());
+
         setupRemoveUserBtn();
         setupPricesBtn();
         setupAddCityBtn();
         setupBackButtonListener();
         initProfile();
+        displayProfilePic();
+    }
+
+    private void displayProfilePic() {
+        profilePicture = findViewById(R.id.profilePicture);
+        picturesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(getApplicationContext())
+                        .load(uri)
+                        .into(profilePicture);
+            }
+        });
     }
 
     private void setupPricesBtn() {

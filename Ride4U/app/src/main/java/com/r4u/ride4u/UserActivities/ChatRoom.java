@@ -60,7 +60,6 @@ public class ChatRoom extends AppCompatActivity {
         firebaseSelfRoot.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
-
                 messages.clear();
                 for (DataSnapshot data : dataSnapShot.getChildren()) {
                     String message = data.getValue(String.class);

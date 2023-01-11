@@ -33,8 +33,8 @@ public class MyPostsFragment extends Fragment {
 
     private boolean setup = false;
 
-    public static ArrayList<Post> history = new ArrayList<>();
-    public static ArrayList<Post> active = new ArrayList<>();
+    ArrayList<Post> history = new ArrayList<>();
+    ArrayList<Post> active = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,9 +95,8 @@ public class MyPostsFragment extends Fragment {
         databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
-
-                history = new ArrayList<>();
-                active = new ArrayList<>();
+                history.clear();
+                active.clear();
                 for(DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
                     for(DataSnapshot cities : toOrfrom.getChildren()) {
                         for(DataSnapshot snapshot : cities.getChildren()) {

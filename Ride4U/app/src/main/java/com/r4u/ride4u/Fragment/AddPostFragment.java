@@ -72,6 +72,8 @@ public class AddPostFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_post, container, false);
+        cities = new ArrayList<>();
+        citiesAndPrices = new HashMap<>();
         initCitiesList();
         setupFromAndToAutoComplete(view);
         setupDateButton(view);
@@ -270,15 +272,17 @@ public class AddPostFragment extends Fragment {
      and add the mapping of the city name to its price to the citiesAndPrices map.
      */
     private void initCitiesList() {
-        cities = new ArrayList<>();
-        citiesAndPrices = new HashMap<>();
         databaseReference.child("cities").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+                citiesAndPrices.clear();
+                cities.clear();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     cities.add(snapshot.getKey());
                     citiesAndPrices.put(snapshot.getKey(), snapshot.getValue(String.class));
                 }
+                adapterDestCities.notifyDataSetChanged();
+                adapterSrcCities.notifyDataSetChanged();
             }
 
             @Override

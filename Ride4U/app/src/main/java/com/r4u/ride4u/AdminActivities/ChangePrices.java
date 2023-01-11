@@ -40,6 +40,9 @@ public class ChangePrices extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_prices);
 
+        citiesAndPrices = new HashMap<>();
+        citiesList = new ArrayList<>();
+
         initCitiesAndPrices();
         setupCityAutoComplete();
         setupCurrentPrice();
@@ -120,15 +123,16 @@ public class ChangePrices extends AppCompatActivity {
      * Populates the map and list with data from the database by using a value event listener.
      */
     private void initCitiesAndPrices() {
-        citiesAndPrices = new HashMap<>();
-        citiesList = new ArrayList<>();
         databaseReference.child("cities").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
+                citiesAndPrices.clear();
+                citiesList.clear();
                 for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     citiesAndPrices.put(snapshot.getKey(), snapshot.getValue(String.class));
                     citiesList.add(snapshot.getKey());
                 }
+                adapterCities.notifyDataSetChanged();
             }
 
             @Override

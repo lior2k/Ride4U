@@ -41,6 +41,7 @@ public class RemoveUser extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_user);
+        usersList = new ArrayList<>();
         initUsersList();
         setupBackButtonListener();
     }
@@ -89,19 +90,11 @@ public class RemoveUser extends AppCompatActivity {
         });
     }
 
-
-
-
-
-
-
-
     private void initUsersList() {
-
         databaseReference.child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                usersList = new ArrayList<>();
+                usersList.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     usersList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
                             snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class),snapshot.child("deviceToken").getValue(String.class)));

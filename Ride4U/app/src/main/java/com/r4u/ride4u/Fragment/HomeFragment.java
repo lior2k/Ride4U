@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
     SearchView searchView;
     ListView listView;
     PostAdapter postAdapter;
-    public static ArrayList<Post> posts = new ArrayList<>();
+    ArrayList<Post> posts = new ArrayList<>();
     ValueEventListener valueEventListener;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
 
@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
         valueEventListener = databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
-                posts = new ArrayList<>();
+                posts.clear();
                 for (DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
                     for (DataSnapshot cities : toOrfrom.getChildren()) {
                         for (DataSnapshot snapshot : cities.getChildren()) {
