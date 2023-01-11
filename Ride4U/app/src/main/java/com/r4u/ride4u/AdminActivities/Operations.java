@@ -24,33 +24,17 @@ public class Operations extends AppCompatActivity {
     TextView userName;
     TextView email;
 
-    FirebaseStorage storage = FirebaseStorage.getInstance();
-    StorageReference storageRef = storage.getReference();
-    StorageReference picturesRef;
-    ImageView profilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_operations);
-        picturesRef = storageRef.child("pictures").child(Login.user.getId());
 
         setupRemoveUserBtn();
         setupPricesBtn();
         setupAddCityBtn();
         setupBackButtonListener();
         initProfile();
-        displayProfilePic();
-    }
-
-    private void displayProfilePic() {
-        profilePicture = findViewById(R.id.profilePicture);
-        picturesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(getApplicationContext()).load(uri).into(profilePicture);
-            }
-        });
     }
 
     private void setupPricesBtn() {
@@ -71,7 +55,7 @@ public class Operations extends AppCompatActivity {
     private void initProfile() {
         userName = findViewById(R.id.profile_name);
         email = findViewById(R.id.profile_email);
-        userName.setText(Login.user.getFirstname() + " " + Login.user.getLastname());
+        userName.setText(Login.user.getFullName());
         email.setText(Login.user.getEmail());
     }
 

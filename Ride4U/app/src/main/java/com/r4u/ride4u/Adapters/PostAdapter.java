@@ -130,7 +130,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         // set post contents
         TextView postContent = convertView.findViewById(R.id.postTextContent);
-        String content = getContext().getString(R.string.postContent, post.getSource(), post.getDestination(), post.getLeavingDate(), post.getLeavingTime(), post.getAvailableSeats(), post.getSeats(), post.getDescription());
+        String content = getContext().getString(R.string.postContent, post.getSource(), post.getDestination(), post.getLeavingDate(), post.getLeavingTime(), post.getAvailableSeats(), post.getSeats());
         postContent.setText(content);
 
         // set post price on top right
