@@ -32,15 +32,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 public class PostAdapter extends ArrayAdapter<Post> {
-    final private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     Type type; // corresponds the type of the adapter (home / active rides / history rides)
 
-    static String val = "";
 
     public PostAdapter(Context ctx, int resource, List<Post> posts, Type type) {
         super(ctx, resource, posts);
@@ -175,16 +174,16 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject();
 
-
-
                 try {
                     jsonObject.put("publisherID", post.getPublisherID());
                     jsonObject.put("username", Login.user.getFullName());
+                    jsonObject.put("startTime", DateAndTimeFormat.getDateAndTime(post.getLeavingDate(),post.getLeavingTime()));
+                    serverFunctions notificationSender = new serverFunctions(jsonObject);
+                    notificationSender.sendNotification();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                serverFunctions notificationSender = new serverFunctions(jsonObject);
-                notificationSender.sendNotification();
+
 
             }
         });

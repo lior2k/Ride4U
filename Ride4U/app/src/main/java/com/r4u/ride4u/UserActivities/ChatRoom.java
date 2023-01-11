@@ -14,8 +14,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.Adapters.MessageAdapter;
+import com.r4u.ride4u.AdminActivities.serverFunctions;
 import com.r4u.ride4u.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -88,6 +93,20 @@ public class ChatRoom extends AppCompatActivity {
                 selfRef.setValue("T:"+message);
                 otherRef.setValue("F:"+message);
                 messageView.setText("");
+                JSONObject jsonObject = new JSONObject();
+
+                try {
+                    jsonObject.put("publisherID", id);
+                    jsonObject.put("username", Login.user.getFullName());
+                    jsonObject.put("content", message);
+                    serverFunctions notificationSender = new serverFunctions(jsonObject);
+                    notificationSender.messageNotification();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
             }
         });
     }
