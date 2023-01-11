@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.r4u.ride4u.R;
@@ -24,6 +25,7 @@ public class Operations extends AppCompatActivity {
         setupRemoveUserBtn();
         setupPricesBtn();
         setupAddCityBtn();
+        setupBackButtonListener();
         initProfile();
     }
 
@@ -62,5 +64,12 @@ public class Operations extends AppCompatActivity {
         email = findViewById(R.id.profile_email);
         userName.setText(Login.user.getFirstname() + " " + Login.user.getLastname());
         email.setText(Login.user.getEmail());
+    }
+
+    private void setupBackButtonListener() {
+        ImageView backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener(v -> {
+            finish();
+        });
     }
 }
