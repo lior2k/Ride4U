@@ -1,9 +1,10 @@
 package com.r4u.ride4u.AdminActivities;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,41 +48,24 @@ public class Operations extends AppCompatActivity {
         picturesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(getApplicationContext())
-                        .load(uri)
-                        .into(profilePicture);
+                Glide.with(getApplicationContext()).load(uri).into(profilePicture);
             }
         });
     }
 
     private void setupPricesBtn() {
         pricesBtn = findViewById(R.id.money);
-        pricesBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Operations.this, ChangePrices.class));
-            }
-        });
+        pricesBtn.setOnClickListener(v -> startActivity(new Intent(Operations.this, ChangePrices.class)));
     }
 
     private void setupRemoveUserBtn() {
         removeUserBtn = findViewById(R.id.blocking);
-        removeUserBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Operations.this, RemoveUser.class));
-            }
-        });
+        removeUserBtn.setOnClickListener(v -> startActivity(new Intent(Operations.this, RemoveUser.class)));
     }
 
     private void setupAddCityBtn() {
         addCityBtn = findViewById(R.id.add_city);
-        addCityBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Operations.this, AddCity.class));
-            }
-        });
+        addCityBtn.setOnClickListener(v -> startActivity(new Intent(Operations.this, AddCity.class)));
     }
 
     private void initProfile() {

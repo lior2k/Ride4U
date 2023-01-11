@@ -2,9 +2,8 @@ package com.r4u.ride4u.AdminActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -54,6 +53,7 @@ public class RemoveUser extends AppCompatActivity {
                 usersAdapter.getFilter().filter(query);
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 usersAdapter.getFilter().filter(newText);
@@ -70,23 +70,18 @@ public class RemoveUser extends AppCompatActivity {
     }
 
     private void setupItemFromListView() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                User selectedUser = (User) parent.getAdapter().getItem(position);
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("adminID", Login.user.getId());
-                    jsonObject.put("userID", selectedUser.getId());
-                    jsonObject.put("authID", selectedUser.getUid());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                ServerFunctions removeUser = new ServerFunctions(jsonObject);
-                removeUser.removeUserFromDB();
-
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            User selectedUser = (User) parent.getAdapter().getItem(position);
+            JSONObject jsonObject = new JSONObject();
+            try {
+                jsonObject.put("adminID", Login.user.getId());
+                jsonObject.put("userID", selectedUser.getId());
+                jsonObject.put("authID", selectedUser.getUid());
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+            ServerFunctions removeUser = new ServerFunctions(jsonObject);
+            removeUser.removeUserFromDB();
         });
     }
 
@@ -95,9 +90,8 @@ public class RemoveUser extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 usersList.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    usersList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class),
-                            snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class),snapshot.child("deviceToken").getValue(String.class)));
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    usersList.add(new User(snapshot.child("firstname").getValue(String.class), snapshot.child("lastname").getValue(String.class), snapshot.child("email").getValue(String.class), snapshot.getKey(), false, snapshot.child("AuthUid").getValue(String.class), snapshot.child("deviceToken").getValue(String.class)));
                 }
 
                 if (!setup) {

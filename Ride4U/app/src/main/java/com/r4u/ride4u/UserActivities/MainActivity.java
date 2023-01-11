@@ -1,14 +1,16 @@
 package com.r4u.ride4u.UserActivities;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
+
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.r4u.ride4u.Fragment.AddPostFragment;
 import com.r4u.ride4u.Fragment.HomeFragment;
 import com.r4u.ride4u.Fragment.ProfileFragment;
@@ -25,11 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         setupNavBar();
-
-//        Client client = new Client(Login.user.getId());
-//        client.run();
 
         // on create we load the home fragment straight away
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();

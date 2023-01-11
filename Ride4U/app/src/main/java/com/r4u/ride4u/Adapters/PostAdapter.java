@@ -1,5 +1,5 @@
-
 package com.r4u.ride4u.Adapters;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,7 +17,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.r4u.ride4u.AdminActivities.ServerFunctions;
 import com.r4u.ride4u.AdminActivities.ServerFunctions;
 import com.r4u.ride4u.Fragment.Type;
 import com.r4u.ride4u.UserActivities.Login;
@@ -106,13 +105,12 @@ public class PostAdapter extends ArrayAdapter<Post> {
         int unfilledPersons = Integer.parseInt(post.getAvailableSeats());
         for (int i = 0; i < persons; i++) {
             ImageView personImage = new ImageView(getContext());
-            personImage.setId(i+1);
+            personImage.setId(i + 1);
 
             RL.addView(personImage);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) personImage.getLayoutParams();
             layoutParams.addRule(RelativeLayout.BELOW, R.id.postTextContent);
-            if (i != 0)
-                layoutParams.addRule(RelativeLayout.RIGHT_OF, i);
+            if (i != 0) layoutParams.addRule(RelativeLayout.RIGHT_OF, i);
 
             if (i >= (persons - unfilledPersons)) {
                 personImage.setImageResource(R.drawable.ic_personempty);
@@ -132,8 +130,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
         // set post contents
         TextView postContent = convertView.findViewById(R.id.postTextContent);
-        String content = getContext().getString(R.string.postContent, post.getSource(), post.getDestination(),
-                post.getLeavingDate(),post.getLeavingTime(), post.getAvailableSeats(), post.getSeats());
+        String content = getContext().getString(R.string.postContent, post.getSource(), post.getDestination(), post.getLeavingDate(), post.getLeavingTime(), post.getAvailableSeats(), post.getSeats(), post.getDescription());
         postContent.setText(content);
 
         // set post price on top right
@@ -146,38 +143,45 @@ public class PostAdapter extends ArrayAdapter<Post> {
     private void setupJoinRideBtn(View convertView, Post post) {
         ImageButton joinRideBtn = convertView.findViewById(R.id.joinRideImgBtn);
 
-        joinRideBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // validate joining (user not already signed up for this ride / ride is not full / user is not the poster of the post)
-                if (!post.addPassenger(Login.user.getId())) {
-                    Toast.makeText(getContext(), "Already part of this post", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                // user joined the ride - update database
-                DatabaseReference postRoot = post.getSource().equals("Ariel") ?
-                        databaseReference.child("posts").child("fromAriel").child(post.getDestination()) :
-                        databaseReference.child("posts").child("toAriel").child(post.getSource());
-
-                postRoot.child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
-                postRoot.child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
-                if (post.isFull())
-                    postRoot.child(post.getPostID()).child("full").setValue(true);
-
-
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("publisherID", post.getPublisherID());
-                    jsonObject.put("username", Login.user.getFullName());
-                    notificationSender = new ServerFunctions(jsonObject);
-                    notificationSender.sendNotification();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
+        joinRideBtn.setOnClickListener(v -> {
+            // validate joining (user not already signed up for this ride / ride is not full / user is not the poster of the post)
+            if (!post.addPassenger(Login.user.getId())) {
+                Toast.makeText(getContext(), "Already part of this post", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            // user joined the ride - update database
+            updateDB(post);
+
+            // notify driver
+            notifyDriver(post, true);
+
+            Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private void updateDB(Post post) {
+        DatabaseReference postRoot = post.getSource().equals("Ariel") ? databaseReference.child("posts").child("fromAriel").child(post.getDestination()) : databaseReference.child("posts").child("toAriel").child(post.getSource());
+
+        postRoot.child(post.getPostID()).child("availableSeats").setValue(post.getAvailableSeats());
+        postRoot.child(post.getPostID()).child("passengerIDs").setValue(post.getPassengerIDs());
+        if (post.isFull()) postRoot.child(post.getPostID()).child("full").setValue(true);
+    }
+
+    private void notifyDriver(Post post, boolean joined) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("publisherID", post.getPublisherID());
+            jsonObject.put("username", Login.user.getFullName());
+            notificationSender = new ServerFunctions(jsonObject);
+            if (joined) {
+                notificationSender.passengerJoinedNotification();
+            } else {
+                notificationSender.passengerLeftNotification();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -188,8 +192,8 @@ public class PostAdapter extends ArrayAdapter<Post> {
 
             String src = post.getSource();
             String dest = post.getDestination();
-            src = src.equals("Ariel")? "Ariel University, Ramat HaGolan Street, Ari'el" : src + ", Israel";
-            dest = dest.equals("Ariel")? "Ariel University, Ramat HaGolan Street, Ari'el" : dest + ", Israel";
+            src = src.equals("Ariel") ? "Ariel University, Ramat HaGolan Street, Ari'el" : src + ", Israel";
+            dest = dest.equals("Ariel") ? "Ariel University, Ramat HaGolan Street, Ari'el" : dest + ", Israel";
 
             // Create a Uri from the source and destination locations
             Uri uri = Uri.parse("http://maps.google.com/maps?saddr=" + src + "&daddr=" + dest + "&mode=driving");
@@ -208,9 +212,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         ImageButton leavePostBtn = convertView.findViewById(R.id.leaveButton);
         leavePostBtn.setOnClickListener(v -> {
             if (post.removeUser(Login.user.getId())) {
-                DatabaseReference postRoot = post.getSource().equals("Ariel") ?
-                        databaseReference.child("posts").child("fromAriel").child(post.getDestination()) :
-                        databaseReference.child("posts").child("toAriel").child(post.getSource());
+                DatabaseReference postRoot = post.getSource().equals("Ariel") ? databaseReference.child("posts").child("fromAriel").child(post.getDestination()) : databaseReference.child("posts").child("toAriel").child(post.getSource());
 
                 HashMap<String, Object> updates = new HashMap<>();
                 updates.put("availableSeats", post.getAvailableSeats());
@@ -219,30 +221,9 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 postRoot.child(post.getPostID()).updateChildren(updates);
                 this.remove(post);
                 this.notifyDataSetChanged();
-                JSONObject jsonObject = new JSONObject();
-                try {
-                    jsonObject.put("publisherID", post.getPublisherID());
-                    jsonObject.put("username", Login.user.getFullName());
-                    notificationSender = new ServerFunctions(jsonObject);
-                    notificationSender.passengerLeftNotification();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                notifyDriver(post, false);
             }
         });
     }
-
-//    private Task<String> sendNotification(JSONObject data) {
-//
-//        return mFunctions.getHttpsCallable("sendNotification")
-//                .call(data)
-//                .continueWith(new Continuation<HttpsCallableResult, String>() {
-//                    @Override
-//                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-//                        return (String)task.getResult().getData();
-//                    }
-//                });
-//    }
 
 }

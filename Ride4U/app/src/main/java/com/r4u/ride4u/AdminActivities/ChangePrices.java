@@ -2,6 +2,7 @@ package com.r4u.ride4u.AdminActivities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -75,8 +78,7 @@ public class ChangePrices extends AppCompatActivity {
                     } else {
                         ChangePriceInDataBase();
                     }
-                }
-                else {
+                } else {
                     Toast.makeText(ChangePrices.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -88,9 +90,7 @@ public class ChangePrices extends AppCompatActivity {
      * Show a toast message if a failure occures.
      */
     private void ChangePriceInDataBase() {
-        databaseReference.child("cities").child(chosenCity).setValue(newPrice)
-                .addOnSuccessListener(aVoid -> finish())
-                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(),"Changing price failed!! Please try again later", Toast.LENGTH_LONG).show());
+        databaseReference.child("cities").child(chosenCity).setValue(newPrice).addOnSuccessListener(aVoid -> finish()).addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Changing price failed!! Please try again later", Toast.LENGTH_LONG).show());
     }
 
     /**
@@ -128,7 +128,7 @@ public class ChangePrices extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 citiesAndPrices.clear();
                 citiesList.clear();
-                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+                for (DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     citiesAndPrices.put(snapshot.getKey(), snapshot.getValue(String.class));
                     citiesList.add(snapshot.getKey());
                 }

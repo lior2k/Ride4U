@@ -2,8 +2,6 @@ package com.r4u.ride4u.Objects;
 
 import androidx.annotation.NonNull;
 
-import com.r4u.ride4u.UserActivities.Login;
-
 
 public class User {
 
@@ -24,7 +22,10 @@ public class User {
         this.Uid = u_id;
         this.deviceToken = deviceToken;
     }
-    public String getUid() { return Uid; }
+
+    public String getUid() {
+        return Uid;
+    }
 
     public Boolean getIsAdmin() {
         return isAdmin;
@@ -46,7 +47,9 @@ public class User {
         return id;
     }
 
-    public String getDeviceToken(){return deviceToken;}
+    public String getDeviceToken() {
+        return deviceToken;
+    }
 
     public String getFullName() {
         return getFirstname() + " " + getLastname();
@@ -54,7 +57,7 @@ public class User {
 
     @NonNull
     public String toString() {
-        return "[id: "+id+", firstname: "+firstname+", lastname: "+lastname+", email: "+email+"]";
+        return "[id: " + id + ", firstname: " + firstname + ", lastname: " + lastname + ", email: " + email + "]";
     }
 
 }

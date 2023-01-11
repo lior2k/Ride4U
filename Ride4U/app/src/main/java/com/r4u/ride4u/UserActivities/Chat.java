@@ -73,15 +73,12 @@ public class Chat extends AppCompatActivity {
     }
 
     private void setupItemFromListView() {
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent chatRoom = new Intent(Chat.this, ChatRoom.class);
-                User selectedUser = (User) parent.getAdapter().getItem(position);
-                chatRoom.putExtra("userName", selectedUser.getFullName());
-                chatRoom.putExtra("userId", selectedUser.getId());
-                startActivity(chatRoom);
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent chatRoom = new Intent(Chat.this, ChatRoom.class);
+            User selectedUser = (User) parent.getAdapter().getItem(position);
+            chatRoom.putExtra("userName", selectedUser.getFullName());
+            chatRoom.putExtra("userId", selectedUser.getId());
+            startActivity(chatRoom);
         });
     }
 

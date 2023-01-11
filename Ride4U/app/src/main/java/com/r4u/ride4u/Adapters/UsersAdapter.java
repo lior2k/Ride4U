@@ -13,11 +13,14 @@ import com.r4u.ride4u.R;
 import com.r4u.ride4u.Objects.User;
 
 import java.util.ArrayList;
+
 // This class is an adapter for displaying a list of users in a list view.
 public class UsersAdapter extends ArrayAdapter<User> {
 
 
-    public UsersAdapter(@NonNull Context context, int resource, ArrayList<User> users_list) {super(context, resource, users_list);}
+    public UsersAdapter(@NonNull Context context, int resource, ArrayList<User> users_list) {
+        super(context, resource, users_list);
+    }
 
 
     @Override
@@ -33,7 +36,7 @@ public class UsersAdapter extends ArrayAdapter<User> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.user_view, parent, false);
 
         TextView fullNameView = convertView.findViewById(R.id.fullname_text);
-        String fullName = getContext().getString(R.string.fullName, user.getFirstname() , user.getLastname());
+        String fullName = getContext().getString(R.string.fullName, user.getFirstname(), user.getLastname());
         fullNameView.setText(fullName);
 
         TextView idView = convertView.findViewById(R.id.id_text);

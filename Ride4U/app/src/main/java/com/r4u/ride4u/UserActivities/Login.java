@@ -1,16 +1,18 @@
 package com.r4u.ride4u.UserActivities;
+
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -21,7 +23,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.Objects.User;
@@ -47,39 +48,35 @@ public class Login extends AppCompatActivity {
         final TextInputLayout email = findViewById(R.id.email);
         final TextInputLayout password = findViewById(R.id.password);
         final Button loginBtn = findViewById(R.id.loginBtn);
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final EditText emailETxt = email.getEditText();
-                final EditText passwordETxt = password.getEditText();
+        loginBtn.setOnClickListener(view -> {
+            final EditText emailETxt = email.getEditText();
+            final EditText passwordETxt = password.getEditText();
 
-                // convert fields to string variables and check that they're not empty
-                if (emailETxt != null && passwordETxt != null) {
-                    if (emailETxt.getText() != null && passwordETxt.getText() != null) {
-                        final String emailTxt = emailETxt.getText().toString();
-                        final String passwordTxt = passwordETxt.getText().toString();
+            // convert fields to string variables and check that they're not empty
+            if (emailETxt != null && passwordETxt != null) {
+                if (emailETxt.getText() != null && passwordETxt.getText() != null) {
+                    final String emailTxt = emailETxt.getText().toString();
+                    final String passwordTxt = passwordETxt.getText().toString();
 
-                        //login with authentication
-                        autoProfile = FirebaseAuth.getInstance();
-                        autoProfile.signInWithEmailAndPassword(emailTxt, passwordTxt).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    getIdByEmail(emailTxt);
-                                    Toast.makeText(getApplicationContext(),"Login successful!", Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(Login.this, MainActivity.class));
-                                    finish();
-                                }
-                                else {
-                                    // Login failed
-                                    Toast.makeText(getApplicationContext(),"Login failed!! Please try again later", Toast.LENGTH_LONG).show();
-                                }
+                    //login with authentication
+                    autoProfile = FirebaseAuth.getInstance();
+                    autoProfile.signInWithEmailAndPassword(emailTxt, passwordTxt).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                getIdByEmail(emailTxt);
+                                Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(Login.this, MainActivity.class));
+                                finish();
+                            } else {
+                                // Login failed
+                                Toast.makeText(getApplicationContext(), "Login failed!! Please try again later", Toast.LENGTH_LONG).show();
                             }
-                        });
-                    }
-                } else {
-                    Toast.makeText(Login.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
+            } else {
+                Toast.makeText(Login.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -101,7 +98,7 @@ public class Login extends AppCompatActivity {
         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
-                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+                for (DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     if (email.equals(snapshot.child("email").getValue(String.class))) {
                         String userID = snapshot.getKey();
                         String firstName = snapshot.child("firstname").getValue(String.class);
@@ -120,19 +117,16 @@ public class Login extends AppCompatActivity {
                 }
             }
 
-            public void refreshToken(String userID){
+            public void refreshToken(String userID) {
                 FirebaseMessaging.getInstance().getToken()
-                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                            @Override
-                            public void onComplete(@NonNull Task<String> task) {
-                                if (!task.isSuccessful()) {
-                                    Log.w(TAG, "Failed to get token", task.getException());
-                                    return;
-                                }
-                                String token = task.getResult();
-                                // Store the device token in the Realtime Database
-                                databaseReference.child("users").child(userID).child("devicetoken").setValue(token);
+                        .addOnCompleteListener(task -> {
+                            if (!task.isSuccessful()) {
+                                Log.w(TAG, "Failed to get token", task.getException());
+                                return;
                             }
+                            String token = task.getResult();
+                            // Store the device token in the Realtime Database
+                            databaseReference.child("users").child(userID).child("devicetoken").setValue(token);
                         });
             }
 

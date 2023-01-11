@@ -1,4 +1,5 @@
 package com.r4u.ride4u.Objects;
+
 import com.google.firebase.database.DataSnapshot;
 
 import java.util.ArrayList;
@@ -21,8 +22,7 @@ public class Post {
 
     private final List<String> passengerIDs;
 
-    public Post(String postID, String publisherID, String publisherFirstName, String publisherLastName, String seats , String source,
-                String destination, String leavingTime, String leavingDate, String cost,String description) {
+    public Post(String postID, String publisherID, String publisherFirstName, String publisherLastName, String seats, String source, String destination, String leavingTime, String leavingDate, String cost, String description) {
 
         this.postID = postID;
         this.publisherID = publisherID;
@@ -71,7 +71,9 @@ public class Post {
         return publisherLastName;
     }
 
-    public String getCost() {return cost;}
+    public String getCost() {
+        return cost;
+    }
 
     // The initial amount of seats available for passengers.
     public String getSeats() {
@@ -109,7 +111,7 @@ public class Post {
     }
 
     public String getPublisherFullName() {
-        return getPublisherFirstName()+" "+getPublisherLastName();
+        return getPublisherFirstName() + " " + getPublisherLastName();
     }
 
     // drive is full - signed up passengers are equal to the amount of available seats of the drive.
@@ -127,16 +129,13 @@ public class Post {
 
     @Override
     public String toString() {
-        return getPublisherFullName() + " " + getSource() + " " + getDestination();
+        return getPublisherFullName() + " " + getSource() + " " + getDestination() + " " + getLeavingDate() + " " + getLeavingTime();
     }
 
 
     // Create and return a new post built from a snapshot of the realtime firebase.
     public static Post createPost(DataSnapshot snapshot) {
-        Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class),
-                snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class),
-                snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class),
-                snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
+        Post newPost = new Post(snapshot.getKey(), snapshot.child("publisherID").getValue(String.class), snapshot.child("publisherFirstName").getValue(String.class), snapshot.child("publisherLastName").getValue(String.class), snapshot.child("seats").getValue(String.class), snapshot.child("source").getValue(String.class), snapshot.child("destination").getValue(String.class), snapshot.child("leavingTime").getValue(String.class), snapshot.child("leavingDate").getValue(String.class), snapshot.child("cost").getValue(String.class), snapshot.child("description").getValue(String.class));
         for (DataSnapshot sp : snapshot.child("passengerIDs").getChildren()) {
             newPost.addPassenger(sp.getValue(String.class));
         }

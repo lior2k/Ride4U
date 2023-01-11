@@ -1,9 +1,6 @@
 package com.r4u.ride4u.AdminActivities;
 
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -12,14 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.gcm.Task;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,10 +17,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.UserActivities.Login;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
 
 public class AddCity extends AppCompatActivity {
 
@@ -67,22 +52,18 @@ public class AddCity extends AppCompatActivity {
      */
     public void setupSubmitButton() {
         submitBtn = findViewById(R.id.submit_button_c);
-        submitBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EditText cityText = cityInput.getEditText();
-                final EditText priceText = priceInput.getEditText();
-                if (cityText != null && priceText != null) {
-                    if (cityText.getText().length() > 0 && priceText.getText().length() > 0) {
-                        insertedCity = cityText.getText().toString();
-                        insertedPrice = priceText.getText().toString();
+        submitBtn.setOnClickListener(v -> {
+            final EditText cityText = cityInput.getEditText();
+            final EditText priceText = priceInput.getEditText();
+            if (cityText != null && priceText != null) {
+                if (cityText.getText().length() > 0 && priceText.getText().length() > 0) {
+                    insertedCity = cityText.getText().toString();
+                    insertedPrice = priceText.getText().toString();
 
-                        checkCityExistsInDatabase();
+                    checkCityExistsInDatabase();
 
-                    }
-                    else {
-                        Toast.makeText(AddCity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-                    }
+                } else {
+                    Toast.makeText(AddCity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -90,6 +71,7 @@ public class AddCity extends AppCompatActivity {
 
     /**
      * Checks if a city already exists in the database
+     *
      * @return true if the city exists or false if it isnt.
      */
     private void checkCityExistsInDatabase() {
@@ -97,7 +79,7 @@ public class AddCity extends AppCompatActivity {
         databaseReference.child("cities").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
-                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+                for (DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     if (insertedCity.equals(snapshot.getKey())) {
                         flag = true;
                         break;
@@ -111,6 +93,7 @@ public class AddCity extends AppCompatActivity {
                 }
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getMessage());

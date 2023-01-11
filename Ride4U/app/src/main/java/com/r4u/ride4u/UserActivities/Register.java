@@ -1,4 +1,5 @@
 package com.r4u.ride4u.UserActivities;
+
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
@@ -23,8 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.r4u.ride4u.R;
 
@@ -62,35 +61,32 @@ public class Register extends AppCompatActivity {
 
         final Button signUpBtn = findViewById(R.id.signUpBtn);
 
-        signUpBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final EditText firstnameETxt = firstname.getEditText();
-                final EditText lastnameETxt = lastname.getEditText();
-                final EditText emailETxt = email.getEditText();
-                final EditText idETxt = id.getEditText();
-                final EditText passwordETxt = password.getEditText();
-                final EditText confirmPasswordETxt = confirmPassword.getEditText();
+        signUpBtn.setOnClickListener(view -> {
+            final EditText firstnameETxt = firstname.getEditText();
+            final EditText lastnameETxt = lastname.getEditText();
+            final EditText emailETxt = email.getEditText();
+            final EditText idETxt = id.getEditText();
+            final EditText passwordETxt = password.getEditText();
+            final EditText confirmPasswordETxt = confirmPassword.getEditText();
 
-                // convert fields to string variables and check that they're not empty
-                if (firstnameETxt != null && lastnameETxt != null && emailETxt != null && idETxt != null && passwordETxt != null && confirmPasswordETxt != null) {
-                    if (firstnameETxt.getText().length() > 0 && lastnameETxt.getText().length() > 0 && emailETxt.getText().length() > 0 && idETxt.getText().length() > 0 && passwordETxt.getText().length() > 0 && confirmPasswordETxt.getText().length() > 0) {
-                        firstnameTxt = firstnameETxt.getText().toString();
-                        lastnameTxt = lastnameETxt.getText().toString();
-                        emailTxt = emailETxt.getText().toString();
-                        idTxt = idETxt.getText().toString();
-                        passwordTxt = passwordETxt.getText().toString();
-                        confirmPasswordTxt = confirmPasswordETxt.getText().toString();
+            // convert fields to string variables and check that they're not empty
+            if (firstnameETxt != null && lastnameETxt != null && emailETxt != null && idETxt != null && passwordETxt != null && confirmPasswordETxt != null) {
+                if (firstnameETxt.getText().length() > 0 && lastnameETxt.getText().length() > 0 && emailETxt.getText().length() > 0 && idETxt.getText().length() > 0 && passwordETxt.getText().length() > 0 && confirmPasswordETxt.getText().length() > 0) {
+                    firstnameTxt = firstnameETxt.getText().toString();
+                    lastnameTxt = lastnameETxt.getText().toString();
+                    emailTxt = emailETxt.getText().toString();
+                    idTxt = idETxt.getText().toString();
+                    passwordTxt = passwordETxt.getText().toString();
+                    confirmPasswordTxt = confirmPasswordETxt.getText().toString();
 
-                        // check that passwords match
-                        if (passwordTxt.equals(confirmPasswordTxt)) {
-                            validateStudent();
-                        } else {
-                            Toast.makeText(Register.this, "Passwords are not matching", Toast.LENGTH_SHORT).show();
-                        }
+                    // check that passwords match
+                    if (passwordTxt.equals(confirmPasswordTxt)) {
+                        validateStudent();
                     } else {
-                        Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Register.this, "Passwords are not matching", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(Register.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -98,34 +94,25 @@ public class Register extends AppCompatActivity {
 
     private void setupBackToLoginBtn() {
         final TextView backToLoginBtn = findViewById(R.id.backToLoginBtn);
-        backToLoginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        backToLoginBtn.setOnClickListener(view -> finish());
     }
 
     private void authRegistration() {
         authProfile = FirebaseAuth.getInstance();
         authProfile.createUserWithEmailAndPassword(emailTxt, passwordTxt)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            checkAdmin();
-                            realTimeRegistration();
-                            Toast.makeText(getApplicationContext(),"Registration successful!", Toast.LENGTH_LONG).show();
-                            finish();
-                        }
-                        else {
-                            // Registration failed
-                            String message = Objects.requireNonNull(task.getException()).getLocalizedMessage();
-                            if (message != null && message.startsWith("The given password is invalid")) {
-                                Toast.makeText(getApplicationContext(),"password is invalid, it should be at least 6 characters", Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                            }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        checkAdmin();
+                        realTimeRegistration();
+                        Toast.makeText(getApplicationContext(), "Registration successful!", Toast.LENGTH_LONG).show();
+                        finish();
+                    } else {
+                        // Registration failed
+                        String message = Objects.requireNonNull(task.getException()).getLocalizedMessage();
+                        if (message != null && message.startsWith("The given password is invalid")) {
+                            Toast.makeText(getApplicationContext(), "password is invalid, it should be at least 6 characters", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -180,7 +167,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
                 databaseReference.child("users").child(idTxt).child("isAdmin").setValue("false");
-                for(DataSnapshot snapshot : dataSnapShot.getChildren()) {
+                for (DataSnapshot snapshot : dataSnapShot.getChildren()) {
                     if (idTxt.equals(snapshot.getKey())) {
                         databaseReference.child("users").child(idTxt).child("isAdmin").setValue("true");
                         break;
@@ -199,7 +186,7 @@ public class Register extends AppCompatActivity {
         databaseReference.child("students").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot sp : snapshot.getChildren()) {
+                for (DataSnapshot sp : snapshot.getChildren()) {
                     if (idTxt.equals(sp.getKey())) {
                         authRegistration();
                         break;

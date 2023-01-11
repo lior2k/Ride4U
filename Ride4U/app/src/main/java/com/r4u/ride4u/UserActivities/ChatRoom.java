@@ -89,25 +89,25 @@ public class ChatRoom extends AppCompatActivity {
             if (message.length() > 0) {
                 DatabaseReference selfRef = firebaseSelfRoot.push();
                 DatabaseReference otherRef = firebaseOtherRoot.push();
-                selfRef.setValue("T:"+message);
-                otherRef.setValue("F:"+message);
+                selfRef.setValue("T:" + message);
+                otherRef.setValue("F:" + message);
                 messageView.setText("");
-                JSONObject jsonObject = new JSONObject();
-
-                try {
-                    jsonObject.put("publisherID", id);
-                    jsonObject.put("username", Login.user.getFullName());
-                    jsonObject.put("content", message);
-                    ServerFunctions notificationSender = new ServerFunctions(jsonObject);
-                    notificationSender.messageNotification();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-
+                notifyUser(message);
             }
         });
+    }
+
+    private void notifyUser(String message) {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("publisherID", id);
+            jsonObject.put("username", Login.user.getFullName());
+            jsonObject.put("content", message);
+            ServerFunctions notificationSender = new ServerFunctions(jsonObject);
+            notificationSender.messageNotification();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupListView() {

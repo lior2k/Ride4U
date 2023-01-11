@@ -1,11 +1,14 @@
 package com.r4u.ride4u.UserActivities;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,9 +34,9 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     /**
-     Set up the button for sending a new password.
-     Set an OnClickListener for the sendNewPWBtn Button when clicked, set the emailTxt
-     and idTxt variables to the text in the email and id.
+     * Set up the button for sending a new password.
+     * Set an OnClickListener for the sendNewPWBtn Button when clicked, set the emailTxt
+     * and idTxt variables to the text in the email and id.
      */
     private void setupSendNewPasswordButton() {
         final TextInputLayout email = findViewById(R.id.email);
@@ -59,8 +62,8 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     /**
-     Check the email and ID on the database to see if they match an existing user.
-     If a match is found, reset the user's password.
+     * Check the email and ID on the database to see if they match an existing user.
+     * If a match is found, reset the user's password.
      */
     private void checkIdAndEmailOnDatabase() {
         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -94,12 +97,12 @@ public class ForgotPassword extends AppCompatActivity {
     }
 
     /**
-     Reset the user's password by sending a password reset email to the user's email address.
+     * Reset the user's password by sending a password reset email to the user's email address.
      */
     private void resetPassword() {
         FirebaseAuth authProfile = FirebaseAuth.getInstance();
         authProfile.sendPasswordResetEmail(emailTxt).addOnCompleteListener(task -> {
-            if(task.isSuccessful()) {
+            if (task.isSuccessful()) {
                 Toast.makeText(ForgotPassword.this, "please check your inbox for password reset link", Toast.LENGTH_SHORT).show();
                 finish();
             }
