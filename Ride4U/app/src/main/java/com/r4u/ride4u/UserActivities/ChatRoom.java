@@ -68,6 +68,7 @@ public class ChatRoom extends AppCompatActivity {
                     setup = true;
                 }
                 messageAdapter.notifyDataSetChanged();
+                listView.setSelection(messageAdapter.getCount() - 1);
             }
 
             @Override
@@ -95,6 +96,7 @@ public class ChatRoom extends AppCompatActivity {
     private void setupListView() {
         messageAdapter = new MessageAdapter(this, 0, messages);
         listView.setAdapter(messageAdapter);
+        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
     }
 
     private void setupBackButtonListener() {
