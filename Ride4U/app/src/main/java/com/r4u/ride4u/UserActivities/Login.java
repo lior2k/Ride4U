@@ -1,4 +1,6 @@
 package com.r4u.ride4u.UserActivities;
+import static android.service.controls.ControlsProviderService.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -108,6 +110,7 @@ public class Login extends AppCompatActivity {
                         String isAdminStr = snapshot.child("isAdmin").getValue(String.class);
                         Boolean isAdmin = false;
                         String deviceToken = FirebaseMessaging.getInstance().getToken().toString();
+                        refreshToken(userID);
                         if (isAdminStr != null) {
                             isAdmin = str_to_boolean(isAdminStr);
                         }
@@ -117,6 +120,21 @@ public class Login extends AppCompatActivity {
                 }
             }
 
+            public void refreshToken(String userID){
+                FirebaseMessaging.getInstance().getToken()
+                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                            @Override
+                            public void onComplete(@NonNull Task<String> task) {
+                                if (!task.isSuccessful()) {
+                                    Log.w(TAG, "Failed to get token", task.getException());
+                                    return;
+                                }
+                                String token = task.getResult();
+                                // Store the device token in the Realtime Database
+                                databaseReference.child("users").child(userID).child("devicetoken").setValue(token);
+                            }
+                        });
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getMessage());

@@ -1,5 +1,7 @@
 package com.r4u.ride4u.Fragment;
 
+import static android.app.appsearch.AppSearchResult.RESULT_OK;
+
 import android.Manifest;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -7,10 +9,15 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -28,6 +35,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,18 +66,14 @@ public class ProfileFragment extends Fragment {
     TextView profileAddress;
     Button adminBtn;
 
-
     DatabaseReference databaseReference;
-    String storagepath = "Users_Profile_Cover_image/";
+
     ProgressDialog pd;
-    private static final int CAMERA_REQUEST = 100;
-    private static final int STORAGE_REQUEST = 200;
-    private static final int IMAGEPICK_GALLERY_REQUEST = 300;
-    private static final int IMAGE_PICKCAMERA_REQUEST = 400;
-    String cameraPermission[];
-    String storagePermission[];
-    Uri imageuri;
-    String profileOrCoverPhoto;
+
+    private static final int GALLERY_REQUEST_CODE = 1;
+    private static final int CAMERA_REQUEST_CODE = 2;
+    private ActivityResultLauncher<Intent> galleryLauncher;
+    private ActivityResultLauncher<Void> cameraLauncher;
 
     // This function creates the screen using the data pulled from the functions below.
     @Override
@@ -77,6 +84,7 @@ public class ProfileFragment extends Fragment {
         initProfile(view);
         setAdminBtn(view);
         setupChangePassBtn(view);
+        setProfilePic(view);
         return view;
     }
 
@@ -95,6 +103,54 @@ public class ProfileFragment extends Fragment {
             });
         }
     }
+
+    private void setProfilePic(View view) {
+        ImageView profilePic = view.findViewById(R.id.profilePicture);
+        final ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Uri selectedImage = result.getData().getData();
+                            profilePic.setImageURI(selectedImage);
+                        }
+                    }
+                });
+//        final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(),
+//                new ActivityResultCallback<Boolean>() {
+//                    @Override
+//                    public void onActivityResult(Boolean result) {
+//                        if (result) {
+//                            Bundle extras = getActivity().getIntent().getExtras();
+//                            Bitmap image = (Bitmap) extras.get("data");
+//                            profilePic.setImageBitmap(image);
+//                        } else {
+//                            // picture was not taken
+//                        }
+//                    }
+//                });
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Add Photo!");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int item) {
+                        if (options[item].equals("Choose from Gallery")) {
+                            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            galleryLauncher.launch(galleryIntent);
+                        } else if (options[item].equals("Cancel")) {
+                            dialog.dismiss();
+                        }
+                    }
+                });
+                builder.show();
+            }
+        });
+    }
+
 
 
     ProgressDialog loadingBar;
@@ -171,185 +227,16 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    private void setupPaymentBtn(View view) {
-        final ImageView paymentBtn = view.findViewById(R.id.imageView3);
-        paymentBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getContext(), Payment.class));
-            }
-        });
-    }
-//
-//    private void setupProfilePicture(View view) {
-//        ImageView profilePic = view.findViewById(R.id.profilePicture);
-//        profilePic.setOnClickListener(new View.OnClickListener() {
+//    private void setupPaymentBtn(View view) {
+//        final ImageView paymentBtn = view.findViewById(R.id.imageView3);
+//        paymentBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//
+//                startActivity(new Intent(getContext(), Payment.class));
 //            }
 //        });
 //    }
-//    // Initialize the profile's name and email acoording to the set database.
 //
-//    // checking storage permission ,if given then we can add something in our storage
-//    private Boolean checkStoragePermission() {
-//        boolean result = ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-//        return result;
-//    }
-//
-//    // requesting for storage permission
-//    private void requestStoragePermission() {
-//        requestPermissions(storagePermission, STORAGE_REQUEST);
-//    }
-//
-//    // checking camera permission ,if given then we can click image using our camera
-//    private Boolean checkCameraPermission() {
-//        boolean result = ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-//        boolean result1 = ContextCompat.checkSelfPermission(this.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
-//        return result && result1;
-//    }
-//
-//    // requesting for camera permission if not given
-//    private void requestCameraPermission() {
-//        requestPermissions(cameraPermission, CAMERA_REQUEST);
-//    }
-//
-//    // Here we are showing image pic dialog where we will select
-//    // and image either from camera or gallery
-//    private void showImagePicDialog() {
-//        String options[] = {"Camera", "Gallery"};
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
-//        builder.setTitle("Pick Image From");
-//        builder.setItems(options, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                // if access is not given then we will request for permission
-//                if (which == 0) {
-//                    if (!checkCameraPermission()) {
-//                        requestCameraPermission();
-//                    } else {
-//                        pickFromCamera();
-//                    }
-//                } else if (which == 1) {
-//                    if (!checkStoragePermission()) {
-//                        requestStoragePermission();
-//                    } else {
-//                        pickFromGallery();
-//                    }
-//                }
-//            }
-//        });
-//        builder.create().show();
-//    }
-//
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        if (resultCode == Activity.RESULT_OK) {
-//            if (requestCode == IMAGEPICK_GALLERY_REQUEST) {
-//                imageuri = data.getData();
-//                uploadProfileCoverPhoto(imageuri);
-//            }
-//            if (requestCode == IMAGE_PICKCAMERA_REQUEST) {
-//                uploadProfileCoverPhoto(imageuri);
-//            }
-//        }
-//        super.onActivityResult(requestCode, resultCode, data);
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        switch (requestCode) {
-//            case CAMERA_REQUEST: {
-//                if (grantResults.length > 0) {
-//                    boolean camera_accepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-//                    boolean writeStorageaccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-//                    if (camera_accepted && writeStorageaccepted) {
-//                        pickFromCamera();
-//                    } else {
-//                        Toast.makeText(this.getContext(), "Please Enable Camera and Storage Permissions", Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//            }
-//            break;
-//            case STORAGE_REQUEST: {
-//                if (grantResults.length > 0) {
-//                    boolean writeStorageaccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-//                    if (writeStorageaccepted) {
-//                        pickFromGallery();
-//                    } else {
-//                        Toast.makeText(this.getContext(), "Please Enable Storage Permissions", Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//            }
-//            break;
-//        }
-//    }
-//
-//    // Here we will click a photo and then go to startactivityforresult for updating data
-//    private void pickFromCamera() {
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put(MediaStore.Images.Media.TITLE, "Temp_pic");
-//        contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Temp Description");
-//        imageuri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
-//        Intent camerIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        camerIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageuri);
-//        startActivityForResult(camerIntent, IMAGE_PICKCAMERA_REQUEST);
-//    }
-//
-//    // We will select an image from gallery
-//    private void pickFromGallery() {
-//        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
-//        galleryIntent.setType("image/*");
-//        startActivityForResult(galleryIntent, IMAGEPICK_GALLERY_REQUEST);
-//    }
-//
-//    // We will upload the image from here.
-//    private void uploadProfileCoverPhoto(final Uri uri) {
-//        pd.show();
-//
-//        // We are taking the filepath as storagepath + firebaseauth.getUid()+".png"
-//        String filepathname = storagepath + "" + profileOrCoverPhoto + "_" + firebaseUser.getUid();
-//        StorageReference storageReference1 = storageReference.child(filepathname);
-//        storageReference1.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-//                while (!uriTask.isSuccessful()) ;
-//
-//                // We will get the url of our image using uritask
-//                final Uri downloadUri = uriTask.getResult();
-//                if (uriTask.isSuccessful()) {
-//
-//                    // updating our image url into the realtime database
-//                    HashMap<String, Object> hashMap = new HashMap<>();
-//                    hashMap.put(profileOrCoverPhoto, downloadUri.toString());
-//                    databaseReference.child(firebaseUser.getUid()).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-//                        @Override
-//                        public void onSuccess(Void aVoid) {
-//                            pd.dismiss();
-//                            Toast.makeText(ProfileFragment.this.getContext() "Updated", Toast.LENGTH_LONG).show();
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            pd.dismiss();
-//                            Toast.makeText(ProfileFragment.this.getContext(), "Error Updating ", Toast.LENGTH_LONG).show();
-//                        }
-//                    });
-//                } else {
-//                    pd.dismiss();
-//                    Toast.makeText(ProfileFragment.this.getContext(), "Error", Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                pd.dismiss();
-//                Toast.makeText(ProfileFragment.this.getContext(), "Error", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
 
     private void initProfile(View view) {
         profileName = view.findViewById(R.id.profile_name);
@@ -357,6 +244,5 @@ public class ProfileFragment extends Fragment {
         profileName.setText(Login.user.getFullName());
         profileEmail.setText(Login.user.getEmail());
     }
-
 
 }

@@ -60,10 +60,7 @@ dependencies {
 
 
 }
-<<<<<<< HEAD
-
 
 apply plugin: 'com.google.gms.google-services'
 
-=======
->>>>>>> e1acbeb4a875c8641bd7da31c42e2ddcf6466416
+
