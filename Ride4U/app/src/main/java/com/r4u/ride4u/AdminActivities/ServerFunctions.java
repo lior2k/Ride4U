@@ -10,11 +10,11 @@ import com.google.firebase.functions.HttpsCallableResult;
 
 import org.json.JSONObject;
 
-public class serverFunctions {
+public class ServerFunctions {
     final private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
     JSONObject jsonObject;
 
-    public serverFunctions(JSONObject jsonObject) {
+    public ServerFunctions(JSONObject jsonObject) {
         this.jsonObject = jsonObject;
     }
 
