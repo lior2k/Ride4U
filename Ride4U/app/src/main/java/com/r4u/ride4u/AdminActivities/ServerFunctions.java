@@ -22,22 +22,6 @@ public class ServerFunctions {
         }
 
 
-        private Task<Map<String,Object>> sendToServer2(String functionName) {
-            return mFunctions.getHttpsCallable(functionName)
-                    .call(this.jsonObject)
-                    .continueWith(new Continuation<HttpsCallableResult, Map<String,Object>>() {
-                        @Override
-                        public Map<String,Object> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                            return (Map<String,Object>) task.getResult().getData();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
-        }
-
 
         private Task<String> sendToServer(String functionName) {
             return mFunctions.getHttpsCallable(functionName)
@@ -64,5 +48,7 @@ public class ServerFunctions {
         }
 
         public void messageNotification(){this.sendToServer("messageNotification");}
+
+        public void passengerLeftNotification(){this.sendToServer("LeaveNotification");}
 
     }
