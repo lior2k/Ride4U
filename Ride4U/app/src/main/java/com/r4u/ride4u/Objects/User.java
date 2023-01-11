@@ -49,7 +49,7 @@ public class User {
     public String getDeviceToken(){return deviceToken;}
 
     public String getFullName() {
-        return Login.user.getFirstname() + " " + Login.user.getLastname();
+        return getFirstname() + " " + getLastname();
     }
 
     @NonNull

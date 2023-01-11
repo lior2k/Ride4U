@@ -1,5 +1,5 @@
 package com.r4u.ride4u.UserActivities;
-import static android.service.controls.ControlsProviderService.TAG;
+import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -109,7 +109,7 @@ public class Login extends AppCompatActivity {
                         String Uid = snapshot.child("AuthUid").getValue(String.class);
                         String isAdminStr = snapshot.child("isAdmin").getValue(String.class);
                         Boolean isAdmin = false;
-                        String deviceToken = FirebaseMessaging.getInstance().getToken().toString();
+                        String deviceToken = String.valueOf(FirebaseMessaging.getInstance().getToken());
                         refreshToken(userID);
                         if (isAdminStr != null) {
                             isAdmin = str_to_boolean(isAdminStr);
@@ -135,6 +135,7 @@ public class Login extends AppCompatActivity {
                             }
                         });
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getMessage());

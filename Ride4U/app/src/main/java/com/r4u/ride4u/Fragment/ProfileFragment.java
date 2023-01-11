@@ -50,6 +50,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.r4u.ride4u.AdminActivities.Operations;
 //import com.r4u.ride4u.UserActivities.ChangeAdress;
+import com.r4u.ride4u.UserActivities.Chat;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.UserActivities.Payment;
@@ -60,11 +61,9 @@ public class ProfileFragment extends Fragment {
 
     FirebaseUser firebaseUser;
     private final FirebaseAuth authProfile = FirebaseAuth.getInstance();
-    //    private String user_password;
     TextView profileName;
     TextView profileEmail;
     TextView profileAddress;
-    Button adminBtn;
 
     DatabaseReference databaseReference;
 
@@ -85,13 +84,14 @@ public class ProfileFragment extends Fragment {
         setAdminBtn(view);
         setupChangePassBtn(view);
         setProfilePic(view);
+        setupNotificationBtn(view);
         return view;
     }
 
     // setting the admin options button
     // if the user viewing the profile page is an admin he'll see an admin options button
     private void setAdminBtn(View view) {
-        adminBtn = view.findViewById(R.id.admin_options);
+        Button adminBtn = view.findViewById(R.id.admin_options);
         if (!Login.user.getIsAdmin()) {
             adminBtn.setVisibility(View.INVISIBLE);
         } else {
@@ -227,16 +227,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-//    private void setupPaymentBtn(View view) {
-//        final ImageView paymentBtn = view.findViewById(R.id.imageView3);
-//        paymentBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startActivity(new Intent(getContext(), Payment.class));
-//            }
-//        });
-//    }
-//
 
     private void initProfile(View view) {
         profileName = view.findViewById(R.id.profile_name);
@@ -245,4 +235,10 @@ public class ProfileFragment extends Fragment {
         profileEmail.setText(Login.user.getEmail());
     }
 
+    private void setupNotificationBtn(View view) {
+        ImageView notificationsBtn = view.findViewById(R.id.notfication);
+        notificationsBtn.setOnClickListener(v -> {
+            startActivity(new Intent(getContext(), Chat.class));
+        });
+    }
 }

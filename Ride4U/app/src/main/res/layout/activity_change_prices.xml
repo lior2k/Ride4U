@@ -1,26 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/black"
     tools:context=".AdminActivities.ChangePrices">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/login_1"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:srcCompat="@drawable/login_2"
+        android:layout_below="@+id/imageView4"
+        tools:layout_editor_absoluteX="0dp" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/white_background"
         android:elevation="3dp"
         android:orientation="vertical"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:paddingBottom="10dp">
 
         <TextView
             android:layout_width="match_parent"
@@ -28,7 +40,7 @@
             android:layout_margin="16dp"
             android:text="Change Prices"
             android:textSize="30sp"
-            android:textColor="@color/teal_200"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textAlignment="center"/>
 
@@ -37,12 +49,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
+            android:background="@color/black"
             android:hint="City">
 
             <AutoCompleteTextView
                 android:id="@+id/city"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:inputType="none">
 
             </AutoCompleteTextView>
@@ -71,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Current price:"
-                android:textColor="@color/teal_200"
+                android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -80,7 +94,7 @@
                 android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="#5B5B5B"
+                android:textColor="@color/white"
                 android:textSize="16sp" />
 
         </LinearLayout>
@@ -101,21 +115,23 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="New price"
+            android:background="@color/black"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:background="@color/white"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/submit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="22dp"
             android:layout_marginRight="22dp"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/background_button"
-            android:textColor="#ffffff"
+            android:background="@drawable/edittext_background"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="18sp"
             android:text="@string/submit" />
@@ -123,6 +139,13 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout"
+        app:srcCompat="@drawable/login_2"
+        tools:layout_editor_absoluteX="0dp"
+        android:rotation="@integer/material_motion_duration_medium_1"/>
 
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

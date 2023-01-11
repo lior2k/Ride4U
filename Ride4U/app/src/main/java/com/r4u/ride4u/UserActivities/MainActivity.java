@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
         setupNavBar();
 
+//        Client client = new Client(Login.user.getId());
+//        client.run();
+
         // on create we load the home fragment straight away
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
     }
