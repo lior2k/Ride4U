@@ -30,13 +30,13 @@ public class MessageAdapter extends ArrayAdapter<String> {
         String message = getItem(position);
 
         if (message.startsWith("T")) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_messageview, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.send, parent, false);
         } else {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.activity_messageviewgray, parent, false);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.gravity = Gravity.END;
-            LinearLayout msgLayout = convertView.findViewById(R.id.messageLayout);
-            msgLayout.setLayoutParams(params);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.receive, parent, false);
+//            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            params.gravity = Gravity.END;
+//            LinearLayout msgLayout = convertView.findViewById(R.id.messageLayout);
+//            msgLayout.setLayoutParams(params);
         }
 
         TextView messageView = convertView.findViewById(R.id.msgContent);

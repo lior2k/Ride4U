@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,19 +35,19 @@ public class ChatRoom extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_room);
+        setContentView(R.layout.chat_room_test);
         messages = new ArrayList<>();
-        listView = findViewById(R.id.messagesList);
-        messageView = findViewById(R.id.messageInput);
-        TextView username = findViewById(R.id.nameTitle);
+        listView = findViewById(R.id.chat_list_view);
+        messageView = findViewById(R.id.message_box);
+//        TextView username = findViewById(R.id.nameTitle);
         name = getIntent().getExtras().getString("userName");
         id = getIntent().getExtras().getString("userId");
-        username.setText(name);
+//        username.setText(name);
         firebaseSelfRoot = FirebaseDatabase.getInstance(Login.firebase_url).getReference().child("users").child(Login.user.getId()).child("messages").child(id);
         firebaseOtherRoot = FirebaseDatabase.getInstance(Login.firebase_url).getReference().child("users").child(id).child("messages").child(Login.user.getId());
 
         initMsgList();
-        setupBackButtonListener();
+//        setupBackButtonListener();
         setupSendBtn();
 
     }
@@ -78,7 +79,7 @@ public class ChatRoom extends AppCompatActivity {
     }
 
     private void setupSendBtn() {
-        ImageButton sendBtn = findViewById(R.id.sendBtn);
+        ImageView sendBtn = findViewById(R.id.send_btn);
         sendBtn.setOnClickListener(v -> {
             String message = messageView.getText().toString();
             if (message.length() > 0) {
@@ -96,11 +97,11 @@ public class ChatRoom extends AppCompatActivity {
         listView.setAdapter(messageAdapter);
     }
 
-    private void setupBackButtonListener() {
-        ImageButton backBtn = findViewById(R.id.backButton);
-        backBtn.setOnClickListener(v -> {
-            finish();
-        });
-    }
+//    private void setupBackButtonListener() {
+//        ImageButton backBtn = findViewById(R.id.backButton);
+//        backBtn.setOnClickListener(v -> {
+//            finish();
+//        });
+//    }
 
 }
