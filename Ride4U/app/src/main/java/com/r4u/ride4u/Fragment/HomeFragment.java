@@ -13,6 +13,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.r4u.ride4u.Adapters.PostAdapter;
 import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.UserActivities.Login;
@@ -81,7 +83,6 @@ public class HomeFragment extends Fragment {
         valueEventListener = databaseReference.child("posts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapShot) {
-
                 posts = new ArrayList<>();
                 for (DataSnapshot toOrfrom : dataSnapShot.getChildren()) {
                     for (DataSnapshot cities : toOrfrom.getChildren()) {

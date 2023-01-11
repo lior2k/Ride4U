@@ -1,8 +1,11 @@
 package com.r4u.ride4u.UserActivities;
+import static android.content.ContentValues.TAG;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.r4u.ride4u.R;
 
@@ -139,7 +144,23 @@ public class Register extends AppCompatActivity {
                     databaseReference.child("users").child(idTxt).child("firstname").setValue(firstnameTxt);
                     databaseReference.child("users").child(idTxt).child("lastname").setValue(lastnameTxt);
                     databaseReference.child("users").child(idTxt).child("email").setValue(emailTxt);
+
+                    FirebaseMessaging.getInstance().getToken()
+                            .addOnCompleteListener(new OnCompleteListener<String>() {
+                                @Override
+                                public void onComplete(@NonNull Task<String> task) {
+                                    if (!task.isSuccessful()) {
+                                        Log.w(TAG, "Failed to get token", task.getException());
+                                        return;
+                                    }
+                                    String token = task.getResult();
+                                    // Store the device token in the Realtime Database
+                                    databaseReference.child("users").child(idTxt).child("devicetoken").setValue(token);
+                                }
+                            });
+
                     databaseReference.child("users").child(idTxt).child("devicetoken").setValue(FirebaseMessaging.getInstance().getToken());
+
                     FirebaseUser currentUser = authProfile.getCurrentUser();
                     if (currentUser != null) {
                         databaseReference.child("users").child(idTxt).child("AuthUid").setValue(currentUser.getUid());

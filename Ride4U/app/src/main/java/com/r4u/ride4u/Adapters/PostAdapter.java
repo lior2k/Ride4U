@@ -1,8 +1,8 @@
+
 package com.r4u.ride4u.Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +17,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
+import com.r4u.ride4u.AdminActivities.serverFunctions;
 import com.r4u.ride4u.Fragment.Type;
 import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.Objects.Post;
@@ -152,7 +148,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
         postCost.setText(cost);
     }
 
-    // Set the join ride button functionality.
+//     Set the join ride button functionality.
     private void setupJoinRideBtn(View convertView, Post post) {
         ImageButton joinRideBtn = convertView.findViewById(R.id.joinRideImgBtn);
 
@@ -180,39 +176,20 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 JSONObject jsonObject = new JSONObject();
 
 
-                    try {
-                        jsonObject.put("publisherID", post.getPublisherID());
-                        jsonObject.put("username", Login.user.getFullName());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
 
-                    sendNotification(jsonObject).addOnSuccessListener(new OnSuccessListener<String>() {
-                        @Override
-                        public void onSuccess(String result) {
-                            Log.d("print :", result);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
+                try {
+                    jsonObject.put("publisherID", post.getPublisherID());
+                    jsonObject.put("username", Login.user.getFullName());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                serverFunctions notificationSender = new serverFunctions(jsonObject);
+                notificationSender.sendNotification();
 
             }
         });
     }
 
-    private Task<String> sendNotification(JSONObject data) {
-        return mFunctions.getHttpsCallable("sendNotification")
-                .call(data)
-                .continueWith(new Continuation<HttpsCallableResult, String>() {
-                    @Override
-                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        return (String) task.getResult().getData();
-                    }
-                });
-    }
 
     private void setupMapsBtn(View convertView, Post post) {
         ImageButton mapsBtn = convertView.findViewById(R.id.mapsButton);
