@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
@@ -44,6 +45,7 @@ public class ChangePrices extends AppCompatActivity {
         setupCurrentPrice();
         setupNewPrice();
         setupSubmitButton();
+        setupBackButtonListener();
     }
 
     /**
@@ -143,6 +145,13 @@ public class ChangePrices extends AppCompatActivity {
         autoCompleteTextViewCity = findViewById(R.id.city);
         adapterCities = new ArrayAdapter<>(this, R.layout.cities_list, citiesList);
         autoCompleteTextViewCity.setAdapter(adapterCities);
+    }
+
+    private void setupBackButtonListener() {
+        ImageButton backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener(v -> {
+            finish();
+        });
     }
 }
 

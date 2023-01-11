@@ -26,7 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.r4u.ride4u.Adapters.DateAndTimeFormat;
-import com.r4u.ride4u.AdminActivities.serverFunctions;
+import com.r4u.ride4u.AdminActivities.ServerFunctions;
 import com.r4u.ride4u.Objects.Post;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.UserActivities.Login;
@@ -119,17 +119,6 @@ public class AddPostFragment extends Fragment {
                         Toast.makeText(getActivity(), "Time has passed", Toast.LENGTH_SHORT).show();
                     } else {
                         insertPostToDataBase();
-                        JSONObject jsonObject = new JSONObject();
-
-                        try {
-                            jsonObject.put("publisherID", Login.user.getId());
-                            jsonObject.put("startTime", DateAndTimeFormat.getDateAndTime(date, time));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        serverFunctions notificationSender = new serverFunctions(jsonObject);
-                        notificationSender.sendRideNotification();
-
                         Toast.makeText(getActivity(), "Posted successfully", Toast.LENGTH_SHORT).show();
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
                     }

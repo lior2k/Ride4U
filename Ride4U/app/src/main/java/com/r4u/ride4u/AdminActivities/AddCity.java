@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,7 @@ public class AddCity extends AppCompatActivity {
         setContentView(R.layout.activity_add_city);
         cityInput = findViewById(R.id.city_input);
         priceInput = findViewById(R.id.set_price);
+        setupBackButtonListener();
         setupSubmitButton();
     }
 
@@ -113,6 +115,13 @@ public class AddCity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
                 System.out.println(error.getMessage());
             }
+        });
+    }
+
+    private void setupBackButtonListener() {
+        ImageButton backBtn = findViewById(R.id.backButton);
+        backBtn.setOnClickListener(v -> {
+            finish();
         });
     }
 }

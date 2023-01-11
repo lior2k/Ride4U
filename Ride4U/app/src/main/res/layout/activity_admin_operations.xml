@@ -16,14 +16,17 @@
             tools:layout_editor_absoluteX="2dp"
             tools:layout_editor_absoluteY="55dp">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
@@ -42,6 +45,16 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                         </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <ImageView
+                            android:id="@+id/backButton"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            app:srcCompat="@drawable/ic_backarrow"
+                            tools:ignore="MissingConstraints"
+                            android:clickable="true"
+                            android:focusable="true"
+                            app:tint="@color/white" />
 
                         <ImageView
                             android:id="@+id/imageView2"

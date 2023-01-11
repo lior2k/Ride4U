@@ -121,39 +121,9 @@
                                 android:layout_weight="0.3333333"
                                 android:background="@drawable/grey_background"
                                 android:elevation="5dp"
-                                android:orientation="vertical">
+                                android:orientation="vertical"
+                                android:visibility="gone">
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_margin="12dp"
-                                    android:background="@drawable/circle_background">
-
-                                    <ImageView
-                                        android:id="@+id/imageView3"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:src="@drawable/wallet"
-                                        app:layout_constraintBottom_toBottomOf="parent"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent"
-                                        android:clickable="true"
-                                        android:focusable="true" />
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                <TextView
-                                    android:id="@+id/payment_text"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="0dp"
-                                    android:layout_marginBottom="8dp"
-                                    android:layout_weight="1"
-                                    android:text="Payment"
-                                    android:textAlignment="center"
-                                    android:textColor="#000000"
-                                    android:textSize="13sp"
-                                    android:textStyle="bold" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -176,7 +146,7 @@
                                         android:id="@+id/notfication"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:src="@drawable/notification"
+                                        android:src="@drawable/ic_chat"
                                         app:layout_constraintBottom_toBottomOf="parent"
                                         app:layout_constraintEnd_toEndOf="parent"
                                         app:layout_constraintStart_toStartOf="parent"
@@ -311,8 +281,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#000000"
-                >
+                android:background="@color/black">
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/admin_options"
@@ -331,8 +300,9 @@
                     android:id="@+id/imageView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:rotation="@integer/material_motion_duration_medium_1"
                     app:srcCompat="@drawable/login_2"
-                    tools:layout_editor_absoluteX="0dp"/>
+                    android:layout_marginBottom="25dp"/>
 
             </RelativeLayout>
 

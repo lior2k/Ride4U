@@ -14,9 +14,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.r4u.ride4u.Adapters.DateAndTimeFormat;
 import com.r4u.ride4u.Adapters.MessageAdapter;
-import com.r4u.ride4u.AdminActivities.serverFunctions;
+import com.r4u.ride4u.AdminActivities.ServerFunctions;
 import com.r4u.ride4u.R;
 
 import org.json.JSONException;
@@ -73,6 +72,7 @@ public class ChatRoom extends AppCompatActivity {
                     setup = true;
                 }
                 messageAdapter.notifyDataSetChanged();
+                listView.setSelection(messageAdapter.getCount() - 1);
             }
 
             @Override
@@ -99,7 +99,7 @@ public class ChatRoom extends AppCompatActivity {
                     jsonObject.put("publisherID", id);
                     jsonObject.put("username", Login.user.getFullName());
                     jsonObject.put("content", message);
-                    serverFunctions notificationSender = new serverFunctions(jsonObject);
+                    ServerFunctions notificationSender = new ServerFunctions(jsonObject);
                     notificationSender.messageNotification();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -114,6 +114,7 @@ public class ChatRoom extends AppCompatActivity {
     private void setupListView() {
         messageAdapter = new MessageAdapter(this, 0, messages);
         listView.setAdapter(messageAdapter);
+        listView.setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
     }
 
     private void setupBackButtonListener() {
