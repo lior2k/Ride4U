@@ -34,6 +34,7 @@ import java.util.List;
 public class PostAdapter extends ArrayAdapter<Post> {
     DatabaseReference databaseReference = FirebaseDatabase.getInstance(Login.firebase_url).getReference();
     Type type; // corresponds the type of the adapter (home / active rides / history rides)
+    ServerFunctions notificationSender;
 
     public PostAdapter(Context ctx, int resource, List<Post> posts, Type type) {
         super(ctx, resource, posts);
@@ -168,7 +169,7 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 try {
                     jsonObject.put("publisherID", post.getPublisherID());
                     jsonObject.put("username", Login.user.getFullName());
-                    ServerFunctions notificationSender = new ServerFunctions(jsonObject);
+                    notificationSender = new ServerFunctions(jsonObject);
                     notificationSender.sendNotification();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -218,6 +219,16 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 postRoot.child(post.getPostID()).updateChildren(updates);
                 this.remove(post);
                 this.notifyDataSetChanged();
+                JSONObject jsonObject = new JSONObject();
+                try {
+                    jsonObject.put("publisherID", post.getPublisherID());
+                    jsonObject.put("username", Login.user.getFullName());
+                    notificationSender = new ServerFunctions(jsonObject);
+                    notificationSender.passengerLeftNotification();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
     }
