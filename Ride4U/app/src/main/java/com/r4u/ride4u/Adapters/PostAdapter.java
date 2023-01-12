@@ -175,8 +175,6 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 Toast.makeText(getContext(), "Joined ride successfully!", Toast.LENGTH_SHORT).show();
                 JSONObject jsonObject = new JSONObject();
 
-
-
                 try {
                     jsonObject.put("publisherID", post.getPublisherID());
                     jsonObject.put("username", Login.user.getFullName());
@@ -234,17 +232,4 @@ public class PostAdapter extends ArrayAdapter<Post> {
             }
         });
     }
-
-//    private Task<String> sendNotification(JSONObject data) {
-//
-//        return mFunctions.getHttpsCallable("sendNotification")
-//                .call(data)
-//                .continueWith(new Continuation<HttpsCallableResult, String>() {
-//                    @Override
-//                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-//                        return (String)task.getResult().getData();
-//                    }
-//                });
-//    }
-
 }

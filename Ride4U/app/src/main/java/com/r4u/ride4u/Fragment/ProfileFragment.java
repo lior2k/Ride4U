@@ -10,6 +10,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Shader;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -55,6 +59,8 @@ import com.r4u.ride4u.UserActivities.Login;
 import com.r4u.ride4u.R;
 import com.r4u.ride4u.UserActivities.Payment;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class ProfileFragment extends Fragment {
@@ -106,33 +112,44 @@ public class ProfileFragment extends Fragment {
 
     private void setProfilePic(View view) {
         ImageView profilePic = view.findViewById(R.id.profilePicture);
-        final ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+        final ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == Activity.RESULT_OK) {
                             Uri selectedImage = result.getData().getData();
-                            profilePic.setImageURI(selectedImage);
+                            try {
+                                Bitmap original = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                                int size = Math.min(original.getWidth(), original.getHeight());
+                                int x = (original.getWidth() - size) / 20;
+                                int y = (original.getHeight() - size) / 20;
+                                // Create a square bitmap from the selected image
+                                Bitmap squaredBitmap = Bitmap.createBitmap(original, x, y, size, size);
+                                // Create an empty bitmap with the same width and height as the square bitmap
+                                Bitmap output = Bitmap.createBitmap(squaredBitmap.getWidth(), squaredBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+                                // Create a canvas and paint object
+                                Canvas canvas = new Canvas(output);
+                                Paint paint = new Paint();
+                                paint.setAntiAlias(true);
+                                // Create a shader from the square bitmap
+                                Shader shader = new BitmapShader(squaredBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+                                paint.setShader(shader);
+                                // Draw a circle on the canvas using the paint object
+                                float r = size / 2f;
+                                canvas.drawCircle(r, r, r, paint);
+                                // Set the output bitmap as the source of the ImageView
+                                profilePic.setImageBitmap(output);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
-//        final ActivityResultLauncher<Intent> cameraLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(),
-//                new ActivityResultCallback<Boolean>() {
-//                    @Override
-//                    public void onActivityResult(Boolean result) {
-//                        if (result) {
-//                            Bundle extras = getActivity().getIntent().getExtras();
-//                            Bitmap image = (Bitmap) extras.get("data");
-//                            profilePic.setImageBitmap(image);
-//                        } else {
-//                            // picture was not taken
-//                        }
-//                    }
-//                });
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] options = {"Take Photo", "Choose from Gallery", "Cancel"};
+                final CharSequence[] options = {"Choose from Gallery", "Cancel"};
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Add Photo!");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -151,9 +168,7 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-
-
-    ProgressDialog loadingBar;
+        ProgressDialog loadingBar;
     private void showChangePasswordDialog() {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
         builder.setTitle("Change Password");
