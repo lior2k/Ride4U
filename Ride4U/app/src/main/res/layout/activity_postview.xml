@@ -82,4 +82,13 @@
         android:layout_alignParentEnd="true"
         android:visibility="invisible"/>
 
+    <ImageButton
+        android:id="@+id/deleteIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_delete"
+        android:layout_below="@+id/postTextContent"
+        android:visibility="invisible"
+        android:layout_toStartOf="@+id/mapsButton"/>
+
 </RelativeLayout>

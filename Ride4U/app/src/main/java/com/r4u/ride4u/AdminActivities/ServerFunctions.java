@@ -51,4 +51,8 @@ public class ServerFunctions {
         this.sendToServer("LeaveNotification");
     }
 
+    public void postDeletedNotification() {
+        this.sendToServer("postDeletedNotification");
+    }
+
 }

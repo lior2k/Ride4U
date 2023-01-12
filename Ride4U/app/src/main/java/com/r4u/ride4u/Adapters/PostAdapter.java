@@ -62,18 +62,22 @@ public class PostAdapter extends ArrayAdapter<Post> {
                 convertView.findViewById(R.id.leaveButton).setVisibility(View.INVISIBLE);
                 convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
                 convertView.findViewById(R.id.mapsButton).setVisibility(View.VISIBLE);
+                convertView.findViewById(R.id.deleteIcon).setVisibility(View.VISIBLE);
                 setupMapsBtn(convertView, post);
+                setupDeleteIcon(convertView, post);
             } else {
                 // if passenger -> set leave post button
                 convertView.findViewById(R.id.leaveButton).setVisibility(View.VISIBLE);
                 convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
                 convertView.findViewById(R.id.mapsButton).setVisibility(View.INVISIBLE);
+                convertView.findViewById(R.id.deleteIcon).setVisibility(View.INVISIBLE);
                 setupLeaveButton(convertView, post);
             }
         } else {
             convertView.findViewById(R.id.joinRideImgBtn).setVisibility(View.INVISIBLE);
             convertView.findViewById(R.id.mapsButton).setVisibility(View.INVISIBLE);
             convertView.findViewById(R.id.leaveButton).setVisibility(View.INVISIBLE);
+            convertView.findViewById(R.id.deleteIcon).setVisibility(View.INVISIBLE);
         }
 
         return convertView;
@@ -226,4 +230,34 @@ public class PostAdapter extends ArrayAdapter<Post> {
         });
     }
 
+    private void setupDeleteIcon(View convertView, Post post) {
+        ImageButton deleteBtn = convertView.findViewById(R.id.deleteIcon);
+        deleteBtn.setOnClickListener(v -> {
+
+            sendDeleteNotificationToPassengers(post);
+
+            deletePostFromDB(post);
+
+        });
+    }
+
+    // notify all passengers that a driver has cancelled a drive
+    private void sendDeleteNotificationToPassengers(Post post) {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("publisherName", post.getPublisherFullName());
+            jsonObject.put("ids", post.getPassengerIDs());
+            ServerFunctions serverFunctions = new ServerFunctions(jsonObject);
+            serverFunctions.postDeletedNotification();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void deletePostFromDB(Post post) {
+        DatabaseReference postRoot = post.getSource().equals("Ariel") ? databaseReference.child("posts").child("fromAriel").child(post.getDestination()) : databaseReference.child("posts").child("toAriel").child(post.getSource());
+        postRoot.child(post.getPostID()).removeValue();
+        this.remove(post);
+        this.notifyDataSetChanged();
+    }
 }
