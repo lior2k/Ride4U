@@ -9,7 +9,7 @@ admin.initializeApp();
 exports.sendNotification = functions.https.onCall((data, context) => {
   // extract the publisherID and username from the JSON data
   const publisherID = data.publisherID;
-  const username = data.id;
+  const username = data.username;
   // get the device token for the publisher
   return admin.database().ref(`users/${publisherID}/devicetoken`).once('value').then(snapshot => {
       const deviceToken = snapshot.val();
